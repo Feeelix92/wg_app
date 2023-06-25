@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: CustomAppBar(),
-      drawer: AppDrawer(),
+      endDrawer: AppDrawer(),
       body: Center(
         child: Column(
           children: [

@@ -11,6 +11,10 @@ class AppDrawer extends StatelessWidget {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
+          const DrawerHeader(
+            decoration: BoxDecoration(),
+            child: Text('Drawer Header'),
+          ),
           ListTile(
             leading: const Icon(
               Icons.home,

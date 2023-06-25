@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:wg_app/data/constants.dart';
+import 'package:wg_app/routes/app_router.dart';
 
 
 
@@ -9,22 +10,24 @@ Future main() async {
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
   await dotenv.load(fileName: ".env");
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
+  final _appRouter = AppRouter();
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: _appRouter.config(),
+      debugShowCheckedModeBanner: false,
       title: Constants.appName,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: Constants.appName),
     );
   }
 }
