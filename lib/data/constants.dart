@@ -1,3 +1,3 @@
 class Constants {
-  static const String appName = 'WG App';
+  static const String appName = 'Liv2Gether';
 }
