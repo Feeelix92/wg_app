@@ -1,7 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../data/constants.dart';
 import '../model/household.dart';
+import '../routes/app_router.gr.dart';
+import 'home_screen.dart';
 
 @RoutePage()
 class HouseHoldFormScreen extends StatefulWidget {
@@ -18,10 +21,13 @@ class _HouseHoldFormScreenState extends State<HouseHoldFormScreen> {
   void addHousehold(String title, String description) {
     // TODO: Add household to Firebase
     if (title.isNotEmpty && description.isNotEmpty) {
-      AutoRouter.of(context).pop<Household>(Household(
-        title: title,
-        description: description,
-      ));
+      TestData.houseHoldData.add(
+        Household(
+          title: title,
+          description: description,
+        ),
+      );
+      AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
     } else {
       showDialog(
         context: context,
@@ -32,7 +38,7 @@ class _HouseHoldFormScreenState extends State<HouseHoldFormScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  AutoRouter.of(context).pop(); // Schließen des Pop-ups
+                  AutoRouter.of(context).pop(); // Schließe Popup
                 },
                 child: const Text('OK'),
               ),
@@ -74,13 +80,13 @@ class _HouseHoldFormScreenState extends State<HouseHoldFormScreen> {
                 String title = _houseHoldNameController.text;
                 String description = _houseHoldDescriptionController.text;
                 addHousehold(title, description);
-                AutoRouter.of(context).pop(); // Schließen des Bildschirms
+                AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
               },
               child: const Text('Hinzufügen'),
             ),
             ElevatedButton(
               onPressed: () {
-                AutoRouter.of(context).pop(); // Schließen des Bildschirms
+                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
               },
               child: const Text('Abbrechen'),
             ),
