@@ -1,21 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:wg_app/model/household.dart';
-
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/fonts.dart';
-
-// @Todo: Remove this dummy data and replace with Firebase data
-class TestData {
-  static List<Household> houseHoldData = [
-    Household(
-      title: 'WG-Name',
-      description: 'WG-Beschreibung',
-    ),
-  ];
-}
+import '../data/constants.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -47,19 +36,27 @@ class _HomeScreenState extends State<HomeScreen> {
                 scrollDirection: Axis.vertical,
                 itemCount: TestData.houseHoldData.length,
                 itemBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    height: 200,
-                    width: 300,
-                    child: Card(
-                      child: Column(
-                        children: [
-                          Text(TestData.houseHoldData[index].title),
-                          Text(TestData.houseHoldData[index].description),
-                        ],
+                  return InkWell(
+                    onTap: () {
+                      // Route zur Detailseite des Haushalts
+                      // ToDo change to dynamic Route
+                      AutoRouter.of(context).push(HouseHoldDetailRoute(id: index));
+                    },
+                    child: SizedBox(
+                      height: 200,
+                      width: 300,
+                      child: Card(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            H2(text: TestData.houseHoldData[index].title),
+                            H3(text: TestData.houseHoldData[index].description),
+                          ],
+                        ),
                       ),
                     ),
                   );
-                },
+                  },
               ),
             ),
           ],

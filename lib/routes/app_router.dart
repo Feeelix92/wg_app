@@ -11,5 +11,6 @@ class AppRouter extends $AppRouter {
     /// routes go here
     AutoRoute(page: HomeRoute.page, initial: true),
     AutoRoute(page: HouseHoldFormRoute.page, path: '/haushalt'),
+    AutoRoute(page: HouseHoldDetailRoute.page, path: '/haushalt/:id'),
   ];
 }

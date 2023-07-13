@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import '../data/constants.dart';
 import '../model/household.dart';
 import '../routes/app_router.gr.dart';
-import 'home_screen.dart';
 
 @RoutePage()
 class HouseHoldFormScreen extends StatefulWidget {
@@ -18,11 +17,12 @@ class _HouseHoldFormScreenState extends State<HouseHoldFormScreen> {
   final TextEditingController _houseHoldNameController = TextEditingController();
   final TextEditingController _houseHoldDescriptionController = TextEditingController();
 
-  void addHousehold(String title, String description) {
+  void addHousehold(int id, String title, String description) {
     // TODO: Add household to Firebase
     if (title.isNotEmpty && description.isNotEmpty) {
       TestData.houseHoldData.add(
         Household(
+          id: id,
           title: title,
           description: description,
         ),
@@ -77,9 +77,10 @@ class _HouseHoldFormScreenState extends State<HouseHoldFormScreen> {
             const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
+                int id = TestData.houseHoldData.length-1;
                 String title = _houseHoldNameController.text;
                 String description = _houseHoldDescriptionController.text;
-                addHousehold(title, description);
+                addHousehold(id, title, description);
                 AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
               },
               child: const Text('Hinzufügen'),
