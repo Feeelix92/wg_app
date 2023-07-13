@@ -15,6 +15,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  // @Todo: Remove this dummy data and replace with Firebase data
   List<Household> houseHoldData = [
     Household(
       title: 'Beispiel Haushalt',
@@ -24,6 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void addHousehold(String title, String description) {
     setState(() {
+      // @Todo: change to add new Household to Firebase
       houseHoldData.add(Household(
         title: title,
         description: description,
