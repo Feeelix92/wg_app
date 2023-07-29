@@ -28,13 +28,18 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
             const H1(text: 'Haushalt'),
             Text(TestData.houseHoldData[widget.id].title),
             Text(TestData.houseHoldData[widget.id].description),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: () {
+                AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
+              },
+              child: const Text('Zurück'),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Todo Route zur Bearbeitung des Haushalts
-          // AutoRouter.of(context).pop();
           AutoRouter.of(context).push(HouseHoldEditRoute(id: widget.id));
         },
         child: const Icon(Icons.edit),
