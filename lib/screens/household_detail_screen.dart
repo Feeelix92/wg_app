@@ -1,10 +1,8 @@
-import 'dart:ffi';
-
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
 import '../data/constants.dart';
+import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/fonts.dart';
@@ -36,7 +34,8 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Todo Route zur Bearbeitung des Haushalts
-          AutoRouter.of(context).pop();
+          // AutoRouter.of(context).pop();
+          AutoRouter.of(context).push(HouseHoldEditRoute(id: widget.id));
         },
         child: const Icon(Icons.edit),
       ),

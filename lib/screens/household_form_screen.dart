@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../data/constants.dart';
 import '../model/household.dart';
 import '../routes/app_router.gr.dart';
+import '../widgets/navigation/app_drawer.dart';
+import '../widgets/navigation/custom_app_bar.dart';
 
 @RoutePage()
 class HouseHoldFormScreen extends StatefulWidget {
@@ -53,7 +55,8 @@ class _HouseHoldFormScreenState extends State<HouseHoldFormScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: const CustomAppBar(),
+      endDrawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
