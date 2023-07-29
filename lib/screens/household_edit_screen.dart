@@ -34,7 +34,7 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
     TestData.houseHoldData[widget.id] = Household(
       id: id,
       title: title,
-      description: description,
+      description: description, members: [],
     );
     AutoRouter.of(context).push(HouseHoldDetailRoute(id: widget.id)); // Zurück zur Detailseite
   }
@@ -46,41 +46,43 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
       endDrawer: const AppDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            TextField(
-              controller: _houseHoldNameController,
-              maxLength: 20,
-              decoration: const InputDecoration(
-                labelText: 'Name',
-                hintText: 'z.B. Muster WG',
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: _houseHoldNameController,
+                maxLength: 20,
+                decoration: const InputDecoration(
+                  labelText: 'Name',
+                  hintText: 'z.B. Muster WG',
+                ),
               ),
-            ),
-            TextField(
-              controller: _houseHoldDescriptionController,
-              maxLength: 100,
-              decoration: const InputDecoration(
-                labelText: 'Beschreibung',
-                hintText: 'z.B. WG in der Bahnhofstraße 13',
+              TextField(
+                controller: _houseHoldDescriptionController,
+                maxLength: 100,
+                decoration: const InputDecoration(
+                  labelText: 'Beschreibung',
+                  hintText: 'z.B. WG in der Bahnhofstraße 13',
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                int id = widget.id;
-                String title = _houseHoldNameController.text;
-                String description = _houseHoldDescriptionController.text;
-                updateHousehold(id, title, description);
-              },
-              child: const Text('Speichern'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zur Detailseite ohne Änderungen
-              },
-              child: const Text('Abbrechen'),
-            ),
-          ],
+              const SizedBox(height: 16),
+              ElevatedButton(
+                onPressed: () {
+                  int id = widget.id;
+                  String title = _houseHoldNameController.text;
+                  String description = _houseHoldDescriptionController.text;
+                  updateHousehold(id, title, description);
+                },
+                child: const Text('Speichern'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  AutoRouter.of(context).pop(); // Zurück zur Detailseite ohne Änderungen
+                },
+                child: const Text('Abbrechen'),
+              ),
+            ],
+          ),
         ),
       ),
     );
