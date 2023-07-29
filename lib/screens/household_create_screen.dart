@@ -8,14 +8,14 @@ import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 
 @RoutePage()
-class HouseHoldFormScreen extends StatefulWidget {
-  const HouseHoldFormScreen({super.key});
+class HouseHoldCreateScreen extends StatefulWidget {
+  const HouseHoldCreateScreen({super.key});
 
   @override
-  State<HouseHoldFormScreen> createState() => _HouseHoldFormScreenState();
+  State<HouseHoldCreateScreen> createState() => _HouseHoldCreateScreenState();
 }
 
-class _HouseHoldFormScreenState extends State<HouseHoldFormScreen> {
+class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
   final TextEditingController _houseHoldNameController = TextEditingController();
   final TextEditingController _houseHoldDescriptionController = TextEditingController();
 
