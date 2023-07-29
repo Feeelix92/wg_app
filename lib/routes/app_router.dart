@@ -10,7 +10,8 @@ class AppRouter extends $AppRouter {
   List<AutoRoute> get routes => [
     /// routes go here
     AutoRoute(page: HomeRoute.page, initial: true),
-    AutoRoute(page: HouseHoldFormRoute.page, path: '/haushalt'),
+    AutoRoute(page: HouseHoldCreateRoute.page, path: '/haushalt'),
     AutoRoute(page: HouseHoldDetailRoute.page, path: '/haushalt/:id'),
+    AutoRoute(page: HouseHoldEditRoute.page, path: '/haushalt/:id/edit'),
   ];
 }

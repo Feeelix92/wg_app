@@ -11,6 +11,7 @@ class TestData {
       id: 1,
       title: 'Muster-WG',
       description: 'Das ist eine Muster-WG',
+      members: [],
     ),
   ];
 }

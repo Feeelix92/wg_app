@@ -64,7 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            AutoRouter.of(context).push(const HouseHoldFormRoute());
+            AutoRouter.of(context).push(const HouseHoldCreateRoute());
           },
           child: const Icon(Icons.add),
         ),
