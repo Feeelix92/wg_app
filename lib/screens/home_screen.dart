@@ -40,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       // Route zur Detailseite des Haushalts
                       // ToDo change to dynamic Route
-                      AutoRouter.of(context).push(HouseHoldDetailRoute(id: index));
+                      AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: index));
                     },
                     child: SizedBox(
                       height: 200,
@@ -56,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   );
-                  },
+                },
               ),
             ),
           ],

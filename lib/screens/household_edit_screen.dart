@@ -9,8 +9,8 @@ import '../widgets/navigation/custom_app_bar.dart';
 
 @RoutePage()
 class HouseHoldEditScreen extends StatefulWidget {
-  const HouseHoldEditScreen({super.key, @PathParam('id') required this.id });
-  final int id;
+  const HouseHoldEditScreen({super.key, @PathParam('householdId') required this.householdId });
+  final int householdId;
 
   @override
   State<HouseHoldEditScreen> createState() => _HouseHoldEditScreenState();
@@ -24,19 +24,20 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
   void initState() {
     super.initState();
     // Initialize the text controllers with the current household data
-    Household household = TestData.houseHoldData[widget.id];
+    Household household = TestData.houseHoldData[widget.householdId];
     _houseHoldNameController = TextEditingController(text: household.title);
     _houseHoldDescriptionController = TextEditingController(text: household.description);
   }
 
   void updateHousehold(int id, String title, String description) {
     // TODO: Update household data in Firebase
-    TestData.houseHoldData[widget.id] = Household(
+    TestData.houseHoldData[widget.householdId] = Household(
       id: id,
       title: title,
-      description: description, members: [],
+      description: description,
+      members: [],
     );
-    AutoRouter.of(context).push(HouseHoldDetailRoute(id: widget.id)); // Zurück zur Detailseite
+    AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: widget.householdId)); // Zurück zur Detailseite
   }
 
   @override
@@ -68,7 +69,7 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () {
-                  int id = widget.id;
+                  int id = widget.householdId;
                   String title = _houseHoldNameController.text;
                   String description = _houseHoldDescriptionController.text;
                   updateHousehold(id, title, description);

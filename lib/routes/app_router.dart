@@ -13,5 +13,7 @@ class AppRouter extends $AppRouter {
     AutoRoute(page: HouseHoldCreateRoute.page, path: '/haushalt'),
     AutoRoute(page: HouseHoldDetailRoute.page, path: '/haushalt/:id'),
     AutoRoute(page: HouseHoldEditRoute.page, path: '/haushalt/:id/edit'),
+    AutoRoute(page: ShoppingListRoute.page, path: '/haushalt/:id/shoppinglist'),
+    AutoRoute(page: TaskListRoute.page, path: '/haushalt/:id/tasklist'),
   ];
 }

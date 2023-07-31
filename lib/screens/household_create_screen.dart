@@ -70,7 +70,6 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
