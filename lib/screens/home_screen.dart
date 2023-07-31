@@ -5,6 +5,7 @@ import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/fonts.dart';
 import '../data/constants.dart';
+import 'household_create_screen.dart';
 
 @RoutePage()
 class HomeScreen extends StatefulWidget {
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () {
                       // Route zur Detailseite des Haushalts
                       // ToDo change to dynamic Route
-                      AutoRouter.of(context).push(HouseHoldDetailRoute(id: index));
+                      AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: index));
                     },
                     child: SizedBox(
                       height: 200,
@@ -56,18 +57,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   );
-                  },
+                },
               ),
             ),
           ],
         ),
       ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            AutoRouter.of(context).push(const HouseHoldCreateRoute());
-          },
-          child: const Icon(Icons.add),
-        ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => const HouseHoldCreateScreen(),
+          );
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }

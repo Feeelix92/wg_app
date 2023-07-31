@@ -2,8 +2,10 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:wg_app/screens/household_edit_screen.dart';
 
 import '../data/constants.dart';
+import '../model/household.dart';
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
@@ -11,8 +13,8 @@ import '../widgets/text/fonts.dart';
 
 @RoutePage()
 class HouseHoldDetailScreen extends StatefulWidget {
-  const HouseHoldDetailScreen({super.key, @PathParam('id') required this.id });
-  final int id;
+  const HouseHoldDetailScreen({super.key, @PathParam('householdId') required this.householdId });
+  final int householdId;
 
   @override
   State<HouseHoldDetailScreen> createState() => _HouseHoldDetailScreenState();
@@ -21,27 +23,46 @@ class HouseHoldDetailScreen extends StatefulWidget {
 class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
   @override
   Widget build(BuildContext context) {
+    Household currentHousehold = TestData.houseHoldData[widget.householdId];
     return Scaffold(
       appBar: const CustomAppBar(),
       endDrawer: const AppDrawer(),
       body: Center(
         child: Column(
           children: [
-            const H1(text: 'Haushalt'),
-            Text(TestData.houseHoldData[widget.id].title),
-            Text(TestData.houseHoldData[widget.id].description),
+            H1(text: currentHousehold.title),
+            Text(currentHousehold.description),
             // Anzeige der Personen-Kreise
-            if (TestData.houseHoldData[widget.id].members.isNotEmpty)
+            if (currentHousehold.members.isNotEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 16.0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: TestData.houseHoldData[widget.id].members
+                  children: currentHousehold.members
                       .map((member) => _buildMemberCircle(member))
                       .toList(),
                 ),
               ),
-
+            // ShoppingList Card
+            Card(
+              child: ListTile(
+                title: const Text('Einkaufsliste'),
+                onTap: () {
+                  // Navigiere zur ShoppingListScreen
+                  AutoRouter.of(context).push(ShoppingListRoute(householdId: widget.householdId));
+                },
+              ),
+            ),
+            // TaskList Card
+            Card(
+              child: ListTile(
+                title: const Text('Aufgabenliste'),
+                onTap: () {
+                  // Navigiere zur TaskListScreen
+                  AutoRouter.of(context).push(TaskListRoute(householdId: widget.householdId));
+                },
+              ),
+            ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -54,7 +75,10 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          AutoRouter.of(context).push(HouseHoldEditRoute(id: widget.id));
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => HouseHoldEditScreen(householdId: widget.householdId),
+          );
         },
         child: const Icon(Icons.edit),
       ),

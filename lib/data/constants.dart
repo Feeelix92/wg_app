@@ -11,7 +11,9 @@ class TestData {
       id: 1,
       title: 'Muster-WG',
       description: 'Das ist eine Muster-WG',
-      members: [],
+      members: ['Person 1', 'Person 2', 'Person 3'], // Beispiel-Liste der Mitglieder
+      shoppingList: [], // Leere shoppingList als reguläre Liste
+      taskList: [], // Leere taskList als reguläre Liste
     ),
   ];
 }
