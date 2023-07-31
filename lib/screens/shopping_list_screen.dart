@@ -71,21 +71,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(labelText: 'Preis'),
             ),
-            DropdownButtonFormField<String>(
-              value: _selectedPerson,
-              items: TestData.houseHoldData[widget.householdId].members
-                  .map((person) => DropdownMenuItem(
-                value: person,
-                child: Text(person),
-              ))
-                  .toList(),
-              onChanged: (newValue) {
-                setState(() {
-                  _selectedPerson = newValue!;
-                });
-              },
-              decoration: const InputDecoration(labelText: 'Zugewiesen an'),
-            ),
+            // Todo: Dropdown-Liste für Personen zuweisen
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: addShoppingItem,
               child: const Text('Hinzufügen'),
