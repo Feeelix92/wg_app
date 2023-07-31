@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:wg_app/screens/household_edit_screen.dart';
 
 import '../data/constants.dart';
 import '../model/household.dart';
@@ -74,7 +75,10 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          AutoRouter.of(context).push(HouseHoldEditRoute(householdId: widget.householdId));
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => HouseHoldEditScreen(householdId: widget.householdId),
+          );
         },
         child: const Icon(Icons.edit),
       ),

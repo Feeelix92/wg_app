@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../data/constants.dart';
 import '../model/household.dart';
 import '../model/shoppingItem.dart';
+import '../routes/app_router.gr.dart';
 
 class ShoppingListAddScreen extends StatefulWidget {
   const ShoppingListAddScreen({super.key, @PathParam('householdId') required this.householdId });
@@ -40,7 +41,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
         ),
       );
     });
-    Navigator.pop(context); // Gehe zurück zur Listen Ansicht
+    AutoRouter.of(context).push(ShoppingListRoute(householdId: widget.householdId));
   }
 
   @override
