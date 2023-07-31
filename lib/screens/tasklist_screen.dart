@@ -8,6 +8,7 @@ import '../model/household.dart';
 import '../model/taskItem.dart';
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
+import '../widgets/text/h1.dart';
 
 @RoutePage()
 class TaskListScreen extends StatefulWidget {
@@ -28,17 +29,42 @@ class _TaskListScreenState extends State<TaskListScreen> {
     return Scaffold(
       appBar: const CustomAppBar(),
       endDrawer: const AppDrawer(),
-      body: ListView.builder(
-        itemCount: taskList.length,
-        itemBuilder: (context, index) {
-          final taskItem = taskList[index];
-          return ListTile(
-            title: Text(taskItem.title),
-            subtitle: Text(taskItem.description),
-            trailing: Text(DateFormat('dd.MM.yyyy').format(taskItem.date)),
-          );
-        },
-      ),
+        body: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(16.0),
+              child: H1(text: 'Aufgabenliste'),
+            ),
+            Expanded(
+              child: ListView.builder(
+                itemCount: taskList.length,
+                itemBuilder: (context, index) {
+                  final taskItem = taskList[index];
+                  return ListTile(
+                    title: Text(taskItem.title),
+                    subtitle: Text(taskItem.description),
+                    trailing: Switch(
+                      onChanged: (bool? value) {
+                        // This is called when the user toggles the switch.
+                        setState(() {
+                          taskItem.isDone = value!;
+                        });
+                      },
+                      value: taskItem.isDone,
+                    ),
+                  );
+                },
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: widget.householdId)); // Zurück zum HomeScreen
+              },
+              child: const Text('Zurück'),
+            ),
+            const SizedBox(height: 20.0)
+          ],
+        ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
