@@ -5,10 +5,7 @@ import 'package:intl/intl.dart';
 import '../data/constants.dart';
 import '../model/household.dart';
 import '../model/taskItem.dart';
-import '../widgets/navigation/app_drawer.dart';
-import '../widgets/navigation/custom_app_bar.dart';
 
-@RoutePage()
 class TaskListAddScreen extends StatefulWidget {
   const TaskListAddScreen({super.key, @PathParam('householdId') required this.householdId });
   final int householdId;

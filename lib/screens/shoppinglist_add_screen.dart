@@ -4,10 +4,7 @@ import 'package:flutter/material.dart';
 import '../data/constants.dart';
 import '../model/household.dart';
 import '../model/shoppingItem.dart';
-import '../widgets/navigation/app_drawer.dart';
-import '../widgets/navigation/custom_app_bar.dart';
 
-@RoutePage()
 class ShoppingListAddScreen extends StatefulWidget {
   const ShoppingListAddScreen({super.key, @PathParam('householdId') required this.householdId });
   final int householdId;
@@ -43,7 +40,6 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
         ),
       );
     });
-
     Navigator.pop(context); // Gehe zurück zur Listen Ansicht
   }
 
