@@ -29,8 +29,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       body: Center(
         child: Column(
           children: [
-            const H1(text: 'Haushalt'),
-            Text(currentHousehold.title),
+            H1(text: currentHousehold.title),
             Text(currentHousehold.description),
             // Anzeige der Personen-Kreise
             if (currentHousehold.members.isNotEmpty)

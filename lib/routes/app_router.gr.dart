@@ -8,28 +8,30 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i7;
-import 'package:flutter/material.dart' as _i8;
+import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:flutter/material.dart' as _i10;
 import 'package:wg_app/screens/home_screen.dart' as _i1;
 import 'package:wg_app/screens/household_create_screen.dart' as _i2;
 import 'package:wg_app/screens/household_detail_screen.dart' as _i3;
 import 'package:wg_app/screens/household_edit_screen.dart' as _i4;
-import 'package:wg_app/screens/shopping_list_screen.dart' as _i5;
-import 'package:wg_app/screens/task_list_screen.dart' as _i6;
+import 'package:wg_app/screens/shoppinglist_add_screen.dart' as _i5;
+import 'package:wg_app/screens/shoppinglist_screen.dart' as _i6;
+import 'package:wg_app/screens/tasklist_add_screen.dart' as _i7;
+import 'package:wg_app/screens/tasklist_screen.dart' as _i8;
 
-abstract class $AppRouter extends _i7.RootStackRouter {
+abstract class $AppRouter extends _i9.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i7.PageFactory> pagesMap = {
+  final Map<String, _i9.PageFactory> pagesMap = {
     HomeRoute.name: (routeData) {
-      return _i7.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i1.HomeScreen(),
       );
     },
     HouseHoldCreateRoute.name: (routeData) {
-      return _i7.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i2.HouseHoldCreateScreen(),
       );
@@ -39,7 +41,7 @@ abstract class $AppRouter extends _i7.RootStackRouter {
       final args = routeData.argsAs<HouseHoldDetailRouteArgs>(
           orElse: () => HouseHoldDetailRouteArgs(
               householdId: pathParams.getInt('householdId')));
-      return _i7.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i3.HouseHoldDetailScreen(
           key: args.key,
@@ -52,9 +54,22 @@ abstract class $AppRouter extends _i7.RootStackRouter {
       final args = routeData.argsAs<HouseHoldEditRouteArgs>(
           orElse: () => HouseHoldEditRouteArgs(
               householdId: pathParams.getInt('householdId')));
-      return _i7.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i4.HouseHoldEditScreen(
+          key: args.key,
+          householdId: args.householdId,
+        ),
+      );
+    },
+    ShoppingListAddRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<ShoppingListAddRouteArgs>(
+          orElse: () => ShoppingListAddRouteArgs(
+              householdId: pathParams.getInt('householdId')));
+      return _i9.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i5.ShoppingListAddScreen(
           key: args.key,
           householdId: args.householdId,
         ),
@@ -65,9 +80,22 @@ abstract class $AppRouter extends _i7.RootStackRouter {
       final args = routeData.argsAs<ShoppingListRouteArgs>(
           orElse: () => ShoppingListRouteArgs(
               householdId: pathParams.getInt('householdId')));
-      return _i7.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i5.ShoppingListScreen(
+        child: _i6.ShoppingListScreen(
+          key: args.key,
+          householdId: args.householdId,
+        ),
+      );
+    },
+    TaskListAddRoute.name: (routeData) {
+      final pathParams = routeData.inheritedPathParams;
+      final args = routeData.argsAs<TaskListAddRouteArgs>(
+          orElse: () => TaskListAddRouteArgs(
+              householdId: pathParams.getInt('householdId')));
+      return _i9.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: _i7.TaskListAddScreen(
           key: args.key,
           householdId: args.householdId,
         ),
@@ -78,9 +106,9 @@ abstract class $AppRouter extends _i7.RootStackRouter {
       final args = routeData.argsAs<TaskListRouteArgs>(
           orElse: () =>
               TaskListRouteArgs(householdId: pathParams.getInt('householdId')));
-      return _i7.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i6.TaskListScreen(
+        child: _i8.TaskListScreen(
           key: args.key,
           householdId: args.householdId,
         ),
@@ -91,8 +119,8 @@ abstract class $AppRouter extends _i7.RootStackRouter {
 
 /// generated route for
 /// [_i1.HomeScreen]
-class HomeRoute extends _i7.PageRouteInfo<void> {
-  const HomeRoute({List<_i7.PageRouteInfo>? children})
+class HomeRoute extends _i9.PageRouteInfo<void> {
+  const HomeRoute({List<_i9.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -100,13 +128,13 @@ class HomeRoute extends _i7.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i2.HouseHoldCreateScreen]
-class HouseHoldCreateRoute extends _i7.PageRouteInfo<void> {
-  const HouseHoldCreateRoute({List<_i7.PageRouteInfo>? children})
+class HouseHoldCreateRoute extends _i9.PageRouteInfo<void> {
+  const HouseHoldCreateRoute({List<_i9.PageRouteInfo>? children})
       : super(
           HouseHoldCreateRoute.name,
           initialChildren: children,
@@ -114,16 +142,16 @@ class HouseHoldCreateRoute extends _i7.PageRouteInfo<void> {
 
   static const String name = 'HouseHoldCreateRoute';
 
-  static const _i7.PageInfo<void> page = _i7.PageInfo<void>(name);
+  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i3.HouseHoldDetailScreen]
-class HouseHoldDetailRoute extends _i7.PageRouteInfo<HouseHoldDetailRouteArgs> {
+class HouseHoldDetailRoute extends _i9.PageRouteInfo<HouseHoldDetailRouteArgs> {
   HouseHoldDetailRoute({
-    _i8.Key? key,
+    _i10.Key? key,
     required int householdId,
-    List<_i7.PageRouteInfo>? children,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
           HouseHoldDetailRoute.name,
           args: HouseHoldDetailRouteArgs(
@@ -136,8 +164,8 @@ class HouseHoldDetailRoute extends _i7.PageRouteInfo<HouseHoldDetailRouteArgs> {
 
   static const String name = 'HouseHoldDetailRoute';
 
-  static const _i7.PageInfo<HouseHoldDetailRouteArgs> page =
-      _i7.PageInfo<HouseHoldDetailRouteArgs>(name);
+  static const _i9.PageInfo<HouseHoldDetailRouteArgs> page =
+      _i9.PageInfo<HouseHoldDetailRouteArgs>(name);
 }
 
 class HouseHoldDetailRouteArgs {
@@ -146,7 +174,7 @@ class HouseHoldDetailRouteArgs {
     required this.householdId,
   });
 
-  final _i8.Key? key;
+  final _i10.Key? key;
 
   final int householdId;
 
@@ -158,11 +186,11 @@ class HouseHoldDetailRouteArgs {
 
 /// generated route for
 /// [_i4.HouseHoldEditScreen]
-class HouseHoldEditRoute extends _i7.PageRouteInfo<HouseHoldEditRouteArgs> {
+class HouseHoldEditRoute extends _i9.PageRouteInfo<HouseHoldEditRouteArgs> {
   HouseHoldEditRoute({
-    _i8.Key? key,
+    _i10.Key? key,
     required int householdId,
-    List<_i7.PageRouteInfo>? children,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
           HouseHoldEditRoute.name,
           args: HouseHoldEditRouteArgs(
@@ -175,8 +203,8 @@ class HouseHoldEditRoute extends _i7.PageRouteInfo<HouseHoldEditRouteArgs> {
 
   static const String name = 'HouseHoldEditRoute';
 
-  static const _i7.PageInfo<HouseHoldEditRouteArgs> page =
-      _i7.PageInfo<HouseHoldEditRouteArgs>(name);
+  static const _i9.PageInfo<HouseHoldEditRouteArgs> page =
+      _i9.PageInfo<HouseHoldEditRouteArgs>(name);
 }
 
 class HouseHoldEditRouteArgs {
@@ -185,7 +213,7 @@ class HouseHoldEditRouteArgs {
     required this.householdId,
   });
 
-  final _i8.Key? key;
+  final _i10.Key? key;
 
   final int householdId;
 
@@ -196,12 +224,51 @@ class HouseHoldEditRouteArgs {
 }
 
 /// generated route for
-/// [_i5.ShoppingListScreen]
-class ShoppingListRoute extends _i7.PageRouteInfo<ShoppingListRouteArgs> {
-  ShoppingListRoute({
-    _i8.Key? key,
+/// [_i5.ShoppingListAddScreen]
+class ShoppingListAddRoute extends _i9.PageRouteInfo<ShoppingListAddRouteArgs> {
+  ShoppingListAddRoute({
+    _i10.Key? key,
     required int householdId,
-    List<_i7.PageRouteInfo>? children,
+    List<_i9.PageRouteInfo>? children,
+  }) : super(
+          ShoppingListAddRoute.name,
+          args: ShoppingListAddRouteArgs(
+            key: key,
+            householdId: householdId,
+          ),
+          rawPathParams: {'householdId': householdId},
+          initialChildren: children,
+        );
+
+  static const String name = 'ShoppingListAddRoute';
+
+  static const _i9.PageInfo<ShoppingListAddRouteArgs> page =
+      _i9.PageInfo<ShoppingListAddRouteArgs>(name);
+}
+
+class ShoppingListAddRouteArgs {
+  const ShoppingListAddRouteArgs({
+    this.key,
+    required this.householdId,
+  });
+
+  final _i10.Key? key;
+
+  final int householdId;
+
+  @override
+  String toString() {
+    return 'ShoppingListAddRouteArgs{key: $key, householdId: $householdId}';
+  }
+}
+
+/// generated route for
+/// [_i6.ShoppingListScreen]
+class ShoppingListRoute extends _i9.PageRouteInfo<ShoppingListRouteArgs> {
+  ShoppingListRoute({
+    _i10.Key? key,
+    required int householdId,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
           ShoppingListRoute.name,
           args: ShoppingListRouteArgs(
@@ -214,8 +281,8 @@ class ShoppingListRoute extends _i7.PageRouteInfo<ShoppingListRouteArgs> {
 
   static const String name = 'ShoppingListRoute';
 
-  static const _i7.PageInfo<ShoppingListRouteArgs> page =
-      _i7.PageInfo<ShoppingListRouteArgs>(name);
+  static const _i9.PageInfo<ShoppingListRouteArgs> page =
+      _i9.PageInfo<ShoppingListRouteArgs>(name);
 }
 
 class ShoppingListRouteArgs {
@@ -224,7 +291,7 @@ class ShoppingListRouteArgs {
     required this.householdId,
   });
 
-  final _i8.Key? key;
+  final _i10.Key? key;
 
   final int householdId;
 
@@ -235,12 +302,51 @@ class ShoppingListRouteArgs {
 }
 
 /// generated route for
-/// [_i6.TaskListScreen]
-class TaskListRoute extends _i7.PageRouteInfo<TaskListRouteArgs> {
-  TaskListRoute({
-    _i8.Key? key,
+/// [_i7.TaskListAddScreen]
+class TaskListAddRoute extends _i9.PageRouteInfo<TaskListAddRouteArgs> {
+  TaskListAddRoute({
+    _i10.Key? key,
     required int householdId,
-    List<_i7.PageRouteInfo>? children,
+    List<_i9.PageRouteInfo>? children,
+  }) : super(
+          TaskListAddRoute.name,
+          args: TaskListAddRouteArgs(
+            key: key,
+            householdId: householdId,
+          ),
+          rawPathParams: {'householdId': householdId},
+          initialChildren: children,
+        );
+
+  static const String name = 'TaskListAddRoute';
+
+  static const _i9.PageInfo<TaskListAddRouteArgs> page =
+      _i9.PageInfo<TaskListAddRouteArgs>(name);
+}
+
+class TaskListAddRouteArgs {
+  const TaskListAddRouteArgs({
+    this.key,
+    required this.householdId,
+  });
+
+  final _i10.Key? key;
+
+  final int householdId;
+
+  @override
+  String toString() {
+    return 'TaskListAddRouteArgs{key: $key, householdId: $householdId}';
+  }
+}
+
+/// generated route for
+/// [_i8.TaskListScreen]
+class TaskListRoute extends _i9.PageRouteInfo<TaskListRouteArgs> {
+  TaskListRoute({
+    _i10.Key? key,
+    required int householdId,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
           TaskListRoute.name,
           args: TaskListRouteArgs(
@@ -253,8 +359,8 @@ class TaskListRoute extends _i7.PageRouteInfo<TaskListRouteArgs> {
 
   static const String name = 'TaskListRoute';
 
-  static const _i7.PageInfo<TaskListRouteArgs> page =
-      _i7.PageInfo<TaskListRouteArgs>(name);
+  static const _i9.PageInfo<TaskListRouteArgs> page =
+      _i9.PageInfo<TaskListRouteArgs>(name);
 }
 
 class TaskListRouteArgs {
@@ -263,7 +369,7 @@ class TaskListRouteArgs {
     required this.householdId,
   });
 
-  final _i8.Key? key;
+  final _i10.Key? key;
 
   final int householdId;
 
