@@ -14,7 +14,8 @@ class Household {
     required this.title,
     required this.description,
     required this.members,
-    this.shoppingList = const [], // Standardmäßig leere Listen
-    this.taskList = const [], // Standardmäßig leere Listen
-  });
+    List<ShoppingItem>? shoppingList, // Standardmäßig leere Listen
+    List<TaskItem>? taskList, // Standardmäßig leere Listen
+  }) : shoppingList = shoppingList ?? [],
+        taskList = taskList ?? [];
 }
