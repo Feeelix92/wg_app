@@ -27,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const CustomAppBar(),
-      drawer: const AppDrawer(),
+      endDrawer: const AppDrawer(),
       body: Center(
         child: Column(
           children: [
@@ -39,8 +39,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (BuildContext context, int index) {
                   return InkWell(
                     onTap: () {
-                      // Route zur Detailseite des Haushalts
-                      // ToDo change to dynamic Route
                       AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: index));
                     },
                     child: SizedBox(
