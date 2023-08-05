@@ -44,40 +44,40 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCiruYJqywi3g354BkL5hNM3Rc5sm9KfoA',
-    appId: '1:265972319969:web:d03ab98a27f09bdf7f59a0',
-    messagingSenderId: '265972319969',
-    projectId: 'tsvmanager-e23a9',
-    authDomain: 'tsvmanager-e23a9.firebaseapp.com',
-    storageBucket: 'tsvmanager-e23a9.appspot.com',
-    measurementId: 'G-D5DQKDMES1',
+    apiKey: 'AIzaSyAWrgfN9G-xVLe7AEpkZO0i4uaeEc9ruzs',
+    appId: '1:223055563717:web:32a2895c623c34615959ac',
+    messagingSenderId: '223055563717',
+    projectId: 'liv2gether-eva',
+    authDomain: 'liv2gether-eva.firebaseapp.com',
+    storageBucket: 'liv2gether-eva.appspot.com',
+    measurementId: 'G-BKDHX068CC',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBCAQcbPZCpre0Ybe9GC-RDU4WLtDWx_nM',
-    appId: '1:265972319969:android:04832ae5dd0d4daf7f59a0',
-    messagingSenderId: '265972319969',
-    projectId: 'tsvmanager-e23a9',
-    storageBucket: 'tsvmanager-e23a9.appspot.com',
+    apiKey: 'AIzaSyCgvYCOnL5-fEZvKgxbvJkK3eWOuVWW9Z4',
+    appId: '1:223055563717:android:611c6ab634673b3c5959ac',
+    messagingSenderId: '223055563717',
+    projectId: 'liv2gether-eva',
+    storageBucket: 'liv2gether-eva.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAtxOnawcS_Hx0XUYNEAjMuSbXSXsdFAaU',
-    appId: '1:265972319969:ios:1ee533e3735c36957f59a0',
-    messagingSenderId: '265972319969',
-    projectId: 'tsvmanager-e23a9',
-    storageBucket: 'tsvmanager-e23a9.appspot.com',
-    iosClientId: '265972319969-jpirr91oc8s26raqvlb8f4aqcceo71cg.apps.googleusercontent.com',
-    iosBundleId: 'com.example.tsvManager',
+    apiKey: 'AIzaSyAVNCn8O_4tuhpkbay-9K0P9EZeA5j3Isc',
+    appId: '1:223055563717:ios:d0a91d87c3e200895959ac',
+    messagingSenderId: '223055563717',
+    projectId: 'liv2gether-eva',
+    storageBucket: 'liv2gether-eva.appspot.com',
+    iosClientId: '223055563717-6sbog6l93f1kr9d6bvaraa1feq3jia46.apps.googleusercontent.com',
+    iosBundleId: 'de.thm.wgApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAtxOnawcS_Hx0XUYNEAjMuSbXSXsdFAaU',
-    appId: '1:265972319969:ios:1ee533e3735c36957f59a0',
-    messagingSenderId: '265972319969',
-    projectId: 'tsvmanager-e23a9',
-    storageBucket: 'tsvmanager-e23a9.appspot.com',
-    iosClientId: '265972319969-jpirr91oc8s26raqvlb8f4aqcceo71cg.apps.googleusercontent.com',
-    iosBundleId: 'com.example.tsvManager',
+    apiKey: 'AIzaSyAVNCn8O_4tuhpkbay-9K0P9EZeA5j3Isc',
+    appId: '1:223055563717:ios:6b837d5fc878601d5959ac',
+    messagingSenderId: '223055563717',
+    projectId: 'liv2gether-eva',
+    storageBucket: 'liv2gether-eva.appspot.com',
+    iosClientId: '223055563717-12if5dspiu7i7ktqrg9l3vqr3uc1mt8p.apps.googleusercontent.com',
+    iosBundleId: 'de.thm.wgApp.RunnerTests',
   );
 }
