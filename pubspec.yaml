@@ -39,11 +39,11 @@ dependencies:
   auto_route: ^7.5.0
   intl: ^0.18.0
   firebase_core: ^2.4.0
-  firebase_auth: ^4.2.3
-  flutterfire_ui: ^0.4.3+20
-  cloud_firestore: ^4.3.1
+  firebase_auth: ^4.7.2
+  cloud_firestore: ^4.8.4
   flutter_localization: ^0.1.9
   flutter_spinkit: ^5.2.0
+  firebase_ui_auth: ^1.6.2
 
 dev_dependencies:
   flutter_test:
