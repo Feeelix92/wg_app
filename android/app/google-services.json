@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "223055563717",
+    "project_id": "liv2gether-eva",
+    "storage_bucket": "liv2gether-eva.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:223055563717:android:611c6ab634673b3c5959ac",
+        "android_client_info": {
+          "package_name": "de.thm.wg_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "223055563717-nu8uo8va1gn57ths9219hggc0a2dpq72.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCgvYCOnL5-fEZvKgxbvJkK3eWOuVWW9Z4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "223055563717-nu8uo8va1gn57ths9219hggc0a2dpq72.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "223055563717-12if5dspiu7i7ktqrg9l3vqr3uc1mt8p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.thm.wgApp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
