@@ -8,33 +8,26 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i10;
-import 'package:flutter/material.dart' as _i11;
-import 'package:wg_app/main.dart' as _i1;
-import 'package:wg_app/screens/home_screen.dart' as _i2;
-import 'package:wg_app/screens/household_detail_screen.dart' as _i3;
-import 'package:wg_app/screens/login_screen.dart' as _i4;
-import 'package:wg_app/screens/myForgotPassword_screen.dart' as _i5;
-import 'package:wg_app/screens/register_screen.dart' as _i6;
-import 'package:wg_app/screens/shoppinglist_screen.dart' as _i7;
-import 'package:wg_app/screens/tasklist_screen.dart' as _i8;
-import 'package:wg_app/screens/verifyEmail_screen.dart' as _i9;
+import 'package:auto_route/auto_route.dart' as _i9;
+import 'package:flutter/material.dart' as _i10;
+import 'package:wg_app/screens/home_screen.dart' as _i1;
+import 'package:wg_app/screens/household_detail_screen.dart' as _i2;
+import 'package:wg_app/screens/login_screen.dart' as _i3;
+import 'package:wg_app/screens/myForgotPassword_screen.dart' as _i4;
+import 'package:wg_app/screens/registration_screen.dart' as _i5;
+import 'package:wg_app/screens/shoppinglist_screen.dart' as _i6;
+import 'package:wg_app/screens/tasklist_screen.dart' as _i7;
+import 'package:wg_app/screens/verifyEmail_screen.dart' as _i8;
 
-abstract class $AppRouter extends _i10.RootStackRouter {
+abstract class $AppRouter extends _i9.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i10.PageFactory> pagesMap = {
-    AuthGate.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i1.AuthGate(),
-      );
-    },
+  final Map<String, _i9.PageFactory> pagesMap = {
     HomeRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i2.HomeScreen(),
+        child: const _i1.HomeScreen(),
       );
     },
     HouseHoldDetailRoute.name: (routeData) {
@@ -42,30 +35,30 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       final args = routeData.argsAs<HouseHoldDetailRouteArgs>(
           orElse: () => HouseHoldDetailRouteArgs(
               householdId: pathParams.getInt('householdId')));
-      return _i10.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i3.HouseHoldDetailScreen(
+        child: _i2.HouseHoldDetailScreen(
           key: args.key,
           householdId: args.householdId,
         ),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.LoginScreen(),
+        child: const _i3.LoginScreen(),
       );
     },
     MyForgotPasswordRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i5.MyForgotPasswordScreen(),
+        child: const _i4.MyForgotPasswordScreen(),
       );
     },
-    MyRegisterRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+    RegistrationRoute.name: (routeData) {
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i6.MyRegisterScreen(),
+        child: const _i5.RegistrationScreen(),
       );
     },
     ShoppingListRoute.name: (routeData) {
@@ -73,9 +66,9 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       final args = routeData.argsAs<ShoppingListRouteArgs>(
           orElse: () => ShoppingListRouteArgs(
               householdId: pathParams.getInt('householdId')));
-      return _i10.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i7.ShoppingListScreen(
+        child: _i6.ShoppingListScreen(
           key: args.key,
           householdId: args.householdId,
         ),
@@ -86,41 +79,27 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       final args = routeData.argsAs<TaskListRouteArgs>(
           orElse: () =>
               TaskListRouteArgs(householdId: pathParams.getInt('householdId')));
-      return _i10.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i8.TaskListScreen(
+        child: _i7.TaskListScreen(
           key: args.key,
           householdId: args.householdId,
         ),
       );
     },
     VerifyEmailRoute.name: (routeData) {
-      return _i10.AutoRoutePage<dynamic>(
+      return _i9.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i9.VerifyEmailScreen(),
+        child: const _i8.VerifyEmailScreen(),
       );
     },
   };
 }
 
 /// generated route for
-/// [_i1.AuthGate]
-class AuthGate extends _i10.PageRouteInfo<void> {
-  const AuthGate({List<_i10.PageRouteInfo>? children})
-      : super(
-          AuthGate.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'AuthGate';
-
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i2.HomeScreen]
-class HomeRoute extends _i10.PageRouteInfo<void> {
-  const HomeRoute({List<_i10.PageRouteInfo>? children})
+/// [_i1.HomeScreen]
+class HomeRoute extends _i9.PageRouteInfo<void> {
+  const HomeRoute({List<_i9.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -128,17 +107,16 @@ class HomeRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i3.HouseHoldDetailScreen]
-class HouseHoldDetailRoute
-    extends _i10.PageRouteInfo<HouseHoldDetailRouteArgs> {
+/// [_i2.HouseHoldDetailScreen]
+class HouseHoldDetailRoute extends _i9.PageRouteInfo<HouseHoldDetailRouteArgs> {
   HouseHoldDetailRoute({
-    _i11.Key? key,
+    _i10.Key? key,
     required int householdId,
-    List<_i10.PageRouteInfo>? children,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
           HouseHoldDetailRoute.name,
           args: HouseHoldDetailRouteArgs(
@@ -151,8 +129,8 @@ class HouseHoldDetailRoute
 
   static const String name = 'HouseHoldDetailRoute';
 
-  static const _i10.PageInfo<HouseHoldDetailRouteArgs> page =
-      _i10.PageInfo<HouseHoldDetailRouteArgs>(name);
+  static const _i9.PageInfo<HouseHoldDetailRouteArgs> page =
+      _i9.PageInfo<HouseHoldDetailRouteArgs>(name);
 }
 
 class HouseHoldDetailRouteArgs {
@@ -161,7 +139,7 @@ class HouseHoldDetailRouteArgs {
     required this.householdId,
   });
 
-  final _i11.Key? key;
+  final _i10.Key? key;
 
   final int householdId;
 
@@ -172,9 +150,9 @@ class HouseHoldDetailRouteArgs {
 }
 
 /// generated route for
-/// [_i4.LoginScreen]
-class LoginRoute extends _i10.PageRouteInfo<void> {
-  const LoginRoute({List<_i10.PageRouteInfo>? children})
+/// [_i3.LoginScreen]
+class LoginRoute extends _i9.PageRouteInfo<void> {
+  const LoginRoute({List<_i9.PageRouteInfo>? children})
       : super(
           LoginRoute.name,
           initialChildren: children,
@@ -182,13 +160,13 @@ class LoginRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i5.MyForgotPasswordScreen]
-class MyForgotPasswordRoute extends _i10.PageRouteInfo<void> {
-  const MyForgotPasswordRoute({List<_i10.PageRouteInfo>? children})
+/// [_i4.MyForgotPasswordScreen]
+class MyForgotPasswordRoute extends _i9.PageRouteInfo<void> {
+  const MyForgotPasswordRoute({List<_i9.PageRouteInfo>? children})
       : super(
           MyForgotPasswordRoute.name,
           initialChildren: children,
@@ -196,30 +174,30 @@ class MyForgotPasswordRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'MyForgotPasswordRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i6.MyRegisterScreen]
-class MyRegisterRoute extends _i10.PageRouteInfo<void> {
-  const MyRegisterRoute({List<_i10.PageRouteInfo>? children})
+/// [_i5.RegistrationScreen]
+class RegistrationRoute extends _i9.PageRouteInfo<void> {
+  const RegistrationRoute({List<_i9.PageRouteInfo>? children})
       : super(
-          MyRegisterRoute.name,
+          RegistrationRoute.name,
           initialChildren: children,
         );
 
-  static const String name = 'MyRegisterRoute';
+  static const String name = 'RegistrationRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i7.ShoppingListScreen]
-class ShoppingListRoute extends _i10.PageRouteInfo<ShoppingListRouteArgs> {
+/// [_i6.ShoppingListScreen]
+class ShoppingListRoute extends _i9.PageRouteInfo<ShoppingListRouteArgs> {
   ShoppingListRoute({
-    _i11.Key? key,
+    _i10.Key? key,
     required int householdId,
-    List<_i10.PageRouteInfo>? children,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
           ShoppingListRoute.name,
           args: ShoppingListRouteArgs(
@@ -232,8 +210,8 @@ class ShoppingListRoute extends _i10.PageRouteInfo<ShoppingListRouteArgs> {
 
   static const String name = 'ShoppingListRoute';
 
-  static const _i10.PageInfo<ShoppingListRouteArgs> page =
-      _i10.PageInfo<ShoppingListRouteArgs>(name);
+  static const _i9.PageInfo<ShoppingListRouteArgs> page =
+      _i9.PageInfo<ShoppingListRouteArgs>(name);
 }
 
 class ShoppingListRouteArgs {
@@ -242,7 +220,7 @@ class ShoppingListRouteArgs {
     required this.householdId,
   });
 
-  final _i11.Key? key;
+  final _i10.Key? key;
 
   final int householdId;
 
@@ -253,12 +231,12 @@ class ShoppingListRouteArgs {
 }
 
 /// generated route for
-/// [_i8.TaskListScreen]
-class TaskListRoute extends _i10.PageRouteInfo<TaskListRouteArgs> {
+/// [_i7.TaskListScreen]
+class TaskListRoute extends _i9.PageRouteInfo<TaskListRouteArgs> {
   TaskListRoute({
-    _i11.Key? key,
+    _i10.Key? key,
     required int householdId,
-    List<_i10.PageRouteInfo>? children,
+    List<_i9.PageRouteInfo>? children,
   }) : super(
           TaskListRoute.name,
           args: TaskListRouteArgs(
@@ -271,8 +249,8 @@ class TaskListRoute extends _i10.PageRouteInfo<TaskListRouteArgs> {
 
   static const String name = 'TaskListRoute';
 
-  static const _i10.PageInfo<TaskListRouteArgs> page =
-      _i10.PageInfo<TaskListRouteArgs>(name);
+  static const _i9.PageInfo<TaskListRouteArgs> page =
+      _i9.PageInfo<TaskListRouteArgs>(name);
 }
 
 class TaskListRouteArgs {
@@ -281,7 +259,7 @@ class TaskListRouteArgs {
     required this.householdId,
   });
 
-  final _i11.Key? key;
+  final _i10.Key? key;
 
   final int householdId;
 
@@ -292,9 +270,9 @@ class TaskListRouteArgs {
 }
 
 /// generated route for
-/// [_i9.VerifyEmailScreen]
-class VerifyEmailRoute extends _i10.PageRouteInfo<void> {
-  const VerifyEmailRoute({List<_i10.PageRouteInfo>? children})
+/// [_i8.VerifyEmailScreen]
+class VerifyEmailRoute extends _i9.PageRouteInfo<void> {
+  const VerifyEmailRoute({List<_i9.PageRouteInfo>? children})
       : super(
           VerifyEmailRoute.name,
           initialChildren: children,
@@ -302,5 +280,5 @@ class VerifyEmailRoute extends _i10.PageRouteInfo<void> {
 
   static const String name = 'VerifyEmailRoute';
 
-  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
+  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
 }

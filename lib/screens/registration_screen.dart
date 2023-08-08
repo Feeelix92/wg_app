@@ -12,16 +12,14 @@ import '../widgets/my_snackbars.dart';
 final _formKeyRegister = GlobalKey<FormState>();
 
 @RoutePage()
-class MyRegisterScreen extends StatefulWidget {
-  static const routeName = '/register';
-
-  const MyRegisterScreen({Key? key}) : super(key: key);
+class RegistrationScreen extends StatefulWidget {
+  const RegistrationScreen({super.key});
 
   @override
-  State<MyRegisterScreen> createState() => _MyRegisterScreenState();
+  State<RegistrationScreen> createState() => _RegistrationScreenState();
 }
 
-class _MyRegisterScreenState extends State<MyRegisterScreen> {
+class _RegistrationScreenState extends State<RegistrationScreen> {
   bool _isObscure = true;
   bool _isLoading = false;
 
@@ -29,14 +27,10 @@ class _MyRegisterScreenState extends State<MyRegisterScreen> {
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   final TextEditingController _nameController = TextEditingController();
-
   final TextEditingController _emailController = TextEditingController();
-
-  final TextEditingController _birthdateController = TextEditingController();
-
   final TextEditingController _passwordController = TextEditingController();
-
   final TextEditingController _passwordRepeatController = TextEditingController();
+  DateTime _selectedDate = DateTime.now();
 
 
   Future signUp() async {
@@ -68,7 +62,7 @@ class _MyRegisterScreenState extends State<MyRegisterScreen> {
   Future sendUserDetails(String uid) async {
     final credentials = db.collection("users").doc(uid).set({
       'name': _nameController.text.trim(),
-      'birthdate': _birthdateController.text.trim(),
+      'birthdate': _selectedDate.toString().trim(),
       'isAdmin': false,
     }).then((value) {
       FirebaseAuth.instance.signOut();
@@ -88,7 +82,6 @@ class _MyRegisterScreenState extends State<MyRegisterScreen> {
     setState(() {
       _nameController.clear();
       _emailController.clear();
-      _birthdateController.clear();
       _passwordController.clear();
       _passwordRepeatController.clear();
     });
@@ -98,7 +91,6 @@ class _MyRegisterScreenState extends State<MyRegisterScreen> {
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
-    _birthdateController.dispose();
     _passwordController.dispose();
     _passwordRepeatController.dispose();
 
@@ -142,8 +134,8 @@ class _MyRegisterScreenState extends State<MyRegisterScreen> {
                     TextFormField(
                       autofocus: false,
                       readOnly: true,
-                      controller: _birthdateController,
-                      keyboardType: TextInputType.emailAddress,
+                      controller: TextEditingController(
+                          text: DateFormat('dd.MM.yyyy').format(_selectedDate)),
                       decoration: InputDecoration(
                         labelText: 'Geburtsdatum',
                         helperText: 'Geburtsdatum auswählen',
@@ -153,28 +145,17 @@ class _MyRegisterScreenState extends State<MyRegisterScreen> {
                         ),
                       ),
                       onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            locale: const Locale('de', 'DE'),
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(1950),
-                            //DateTime.now() - not to allow to choose before today.
-                            lastDate: DateTime.now());
-
-                        if (pickedDate != null) {
-                          if (kDebugMode) {
-                            print(pickedDate);
-                          } //pickedDate output format => 2021-03-10 00:00:00.000
-                          String formattedDate = DateFormat('dd-MM-yyy').format(pickedDate);
-                          if (kDebugMode) {
-                            print(formattedDate);
-                          }
-                          //you can implement different kind of Date Format here according to your requirement
-
+                        final DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: _selectedDate,
+                          firstDate: DateTime.now(),
+                          lastDate: DateTime(2101),
+                        );
+                        if (pickedDate != null && pickedDate != _selectedDate) {
                           setState(() {
-                            _birthdateController.text = formattedDate; //set output date to TextField value.
+                            _selectedDate = pickedDate;
                           });
-                        } else {}
+                        }
                       },
                     ),
                     const SizedBox(

@@ -11,8 +11,6 @@ final _formKeyForgotPassword = GlobalKey<FormState>();
 
 @RoutePage()
 class MyForgotPasswordScreen extends StatefulWidget {
-  static const routeName = '/forgotPassword';
-
   const MyForgotPasswordScreen({Key? key}) : super(key: key);
 
   @override

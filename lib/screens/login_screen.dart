@@ -6,18 +6,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
-
-
 import '../widgets/my_snackbars.dart';
-import 'myForgotPassword_screen.dart';
-import 'register_screen.dart';
+
 
 final _formKeyLogin = GlobalKey<FormState>();
 
 @RoutePage()
 class LoginScreen extends StatefulWidget {
-  static const routeName = '/login';
-
   const LoginScreen({Key? key}) : super(key: key);
 
   @override
@@ -174,6 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (_formKeyLogin.currentState!.validate()) {
                                     setState(() => _isLoading = true);
                                     _signIn(context);
+                                    AutoRouter.of(context).push(const HomeRoute());
                                   }
                                 },
                                 child: const Text('Login'),
@@ -205,7 +201,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.blueAccent),
                         ),
                         onTap: () {
-                         AutoRouter.of(context).push(const MyRegisterRoute());
+                         AutoRouter.of(context).push(const RegistrationRoute());
                         },
                       )
                     ],

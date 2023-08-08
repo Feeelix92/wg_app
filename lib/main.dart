@@ -1,5 +1,3 @@
-import 'package:auto_route/annotations.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -7,8 +5,6 @@ import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/routes/app_router.dart';
 
 import 'firebase_options.dart';
-import 'screens/login_screen.dart';
-import 'screens/verifyEmail_screen.dart';
 
 Future main() async {
   // To load the .env file contents into dotenv.
@@ -41,27 +37,6 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
-    );
-  }
-}
-
-@RoutePage()
-class AuthGate extends StatelessWidget {
-
-  const AuthGate({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
-      builder: (context, snapshot) {
-        // User is not signed in
-        if (snapshot.hasData) {
-          return const VerifyEmailScreen();
-        } else {
-          return const LoginScreen();
-        }
-      },
     );
   }
 }
