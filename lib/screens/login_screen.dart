@@ -1,9 +1,11 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:wg_app/routes/app_router.gr.dart';
 
 
 import '../widgets/my_snackbars.dart';
@@ -12,6 +14,7 @@ import 'register_screen.dart';
 
 final _formKeyLogin = GlobalKey<FormState>();
 
+@RoutePage()
 class LoginScreen extends StatefulWidget {
   static const routeName = '/login';
 
@@ -161,7 +164,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             children: [
                               ElevatedButton(
                                   onPressed: () {
-                                    Navigator.pushNamed(context, MyForgotPasswordScreen.routeName);
+                                   AutoRouter.of(context).push(const MyForgotPasswordRoute());
                                   },
                                   style: ElevatedButton.styleFrom(
                                       backgroundColor: Colors.black12, foregroundColor: Colors.black54),
@@ -202,7 +205,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.blueAccent),
                         ),
                         onTap: () {
-                          Navigator.pushNamed(context, MyRegisterScreen.routeName);
+                         AutoRouter.of(context).push(const MyRegisterRoute());
                         },
                       )
                     ],

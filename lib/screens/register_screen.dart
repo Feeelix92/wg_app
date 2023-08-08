@@ -1,3 +1,4 @@
+import 'package:auto_route/annotations.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +11,7 @@ import '../widgets/my_snackbars.dart';
 
 final _formKeyRegister = GlobalKey<FormState>();
 
+@RoutePage()
 class MyRegisterScreen extends StatefulWidget {
   static const routeName = '/register';
 

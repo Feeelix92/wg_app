@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:auto_route/annotations.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,7 @@ import '../widgets/my_snackbars.dart';
 
 final _formKeyForgotPassword = GlobalKey<FormState>();
 
+@RoutePage()
 class MyForgotPasswordScreen extends StatefulWidget {
   static const routeName = '/forgotPassword';
 
