@@ -27,7 +27,6 @@ class _LoginScreenState extends State<LoginScreen> {
   // show the password or not
   bool _isObscure = true;
   bool _isLoading = false;
-  bool _singedIn = false;
 
   final TextEditingController _emailController = TextEditingController(text: '');
   final TextEditingController _passwordController = TextEditingController(text: '');
@@ -45,24 +44,19 @@ class _LoginScreenState extends State<LoginScreen> {
       );
       setState(() {
         _isLoading = false;
-        _singedIn = true;
       });
-      if(_singedIn) {
         AutoRouter.of(context).push(const HomeRoute());
-      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         if (kDebugMode) {
           print('No user found for that email.');
         }
         showAwesomeSnackbar(context, 'Kein Benutzer gefunden', Colors.red, Icons.close);
-        _singedIn = false;
       } else if (e.code == 'wrong-password') {
         if (kDebugMode) {
           print('Wrong password provided for that user.');
         }
         showAwesomeSnackbar(context, 'Falsches Passwort', Colors.red, Icons.close);
-        _singedIn = false;
       }
     }
   }

@@ -1,4 +1,5 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:wg_app/routes/app_router.gr.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
 import '../widgets/my_snackbars.dart';
@@ -73,6 +75,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       setState(() => _isLoading = false);
       showAwesomeSnackbar(
           context, 'Registrieren erfolgreich\nBestätigen sie ihre Emailadresse', Colors.blue, Icons.email);
+      AutoRouter.of(context).push(const VerifyEmailRoute());
       clearForm();
     }).onError((error, stackTrace) {
       if (kDebugMode) {

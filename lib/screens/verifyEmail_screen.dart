@@ -29,13 +29,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
     final user = FirebaseAuth.instance.currentUser;
 
-    _isEmailVerified = user!.emailVerified;
+    if (user != null) {
+      _isEmailVerified = user.emailVerified;
 
-    if (!_isEmailVerified) {
-      sendVerificationEmail();
+      if (!_isEmailVerified) {
+        sendVerificationEmail();
+      }
+
+      timer = Timer.periodic(const Duration(seconds: 3), (timer) => checkEmailVerified());
     }
-
-    timer = Timer.periodic(const Duration(seconds: 3), (timer) => checkEmailVerified());
   }
 
   Future sendVerificationEmail() async {
