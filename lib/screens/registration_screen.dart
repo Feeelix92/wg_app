@@ -6,10 +6,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
 import '../widgets/my_snackbars.dart';
-
-final _formKeyRegister = GlobalKey<FormState>();
 
 @RoutePage()
 class RegistrationScreen extends StatefulWidget {
@@ -20,6 +19,11 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  GlobalKey<FormState> _formKeyRegister = GlobalKey<FormState>();
+
+  void _initializeFormKey() {
+    _formKeyRegister = GlobalKey<FormState>();
+  }
   bool _isObscure = true;
   bool _isLoading = false;
 
@@ -88,6 +92,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _initializeFormKey();
+  }
+
+  @override
   void dispose() {
     _nameController.dispose();
     _emailController.dispose();
@@ -100,9 +110,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Registrieren'),
-      ),
+      appBar: const CustomAppBar(),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left: 16, right: 16, top: 36),

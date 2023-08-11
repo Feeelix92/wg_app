@@ -18,21 +18,33 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(
-              Icons.home,
-            ),
-            title: const Text('Home'),
-            onTap: () {
-              AutoRouter.of(context).push(const HomeRoute());
-            },
-          ),
-          const Divider(),
-          ListTile(
-            leading: const Icon(
               Icons.logout,
             ),
-            title: const Text('Log out'),
+            title: const Text('Abmelden'),
             onTap: () {
-              FirebaseAuth.instance.signOut();
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Abmelden'),
+                    content: const Text('Möchten Sie sich wirklich abmelden?'),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            AutoRouter.of(context).pop();
+                          },
+                          child: const Text('Abbrechen')),
+                      TextButton(
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                            AutoRouter.of(context).pop();
+                            AutoRouter.of(context).push(const LoginRoute());
+                          },
+                          child: const Text('Abmelden')),
+                    ],
+                  );
+                },
+              );
             },
           ),
         ],

@@ -6,10 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
+import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 import '../widgets/my_snackbars.dart';
 
-
-final _formKeyLogin = GlobalKey<FormState>();
 
 @RoutePage()
 class LoginScreen extends StatefulWidget {
@@ -20,47 +19,58 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  GlobalKey<FormState> _formKeyLogin = GlobalKey<FormState>();
+
+  void _initializeFormKey() {
+    _formKeyLogin = GlobalKey<FormState>();
+  }
   // show the password or not
   bool _isObscure = true;
   bool _isLoading = false;
+  bool _singedIn = false;
 
   final TextEditingController _emailController = TextEditingController(text: '');
   final TextEditingController _passwordController = TextEditingController(text: '');
 
-  final AppBar _appBar = AppBar(
-    title: const Text('Login'),
-  );
-
   Future _signIn(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+
     try {
-      final credential = await FirebaseAuth.instance
+      await FirebaseAuth.instance
           .signInWithEmailAndPassword(
-            email: _emailController.text,
-            password: _passwordController.text,
-          )
-          .then((value) => setState(() => _isLoading = false));
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+      setState(() {
+        _isLoading = false;
+        _singedIn = true;
+      });
+      if(_singedIn) {
+        AutoRouter.of(context).push(const HomeRoute());
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         if (kDebugMode) {
           print('No user found for that email.');
         }
-
         showAwesomeSnackbar(context, 'Kein Benutzer gefunden', Colors.red, Icons.close);
+        _singedIn = false;
       } else if (e.code == 'wrong-password') {
         if (kDebugMode) {
           print('Wrong password provided for that user.');
         }
         showAwesomeSnackbar(context, 'Falsches Passwort', Colors.red, Icons.close);
+        _singedIn = false;
       }
     }
-
-    setState(() => _isLoading = false);
-
   }
 
   @override
   void initState() {
     super.initState();
+    _initializeFormKey();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
@@ -84,11 +94,9 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final double screenHeight = MediaQuery.of(context).size.height - (_appBar.preferredSize.height * 1.7);
-
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      appBar: _appBar,
+      appBar: const CustomAppBar(),
       body: Padding(
         padding: const EdgeInsets.only(left: 16, right: 16, bottom: 22),
         child: Column(
@@ -169,7 +177,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   if (_formKeyLogin.currentState!.validate()) {
                                     setState(() => _isLoading = true);
                                     _signIn(context);
-                                    AutoRouter.of(context).push(const HomeRoute());
                                   }
                                 },
                                 child: const Text('Login'),
