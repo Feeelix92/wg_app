@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../routes/app_router.gr.dart';
 
@@ -22,6 +23,16 @@ class AppDrawer extends StatelessWidget {
             title: const Text('Home'),
             onTap: () {
               AutoRouter.of(context).push(const HomeRoute());
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Icons.logout,
+            ),
+            title: const Text('Log out'),
+            onTap: () {
+              FirebaseAuth.instance.signOut();
             },
           ),
         ],

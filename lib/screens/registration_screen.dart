@@ -148,8 +148,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         final DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: _selectedDate,
-                          firstDate: DateTime.now(),
-                          lastDate: DateTime(2101),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
                         );
                         if (pickedDate != null && pickedDate != _selectedDate) {
                           setState(() {
