@@ -120,24 +120,30 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
             ),
             // Anzeige der hinzugefügten Personen
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                int id = TestData.houseHoldData.length-1;
-                String title = _houseHoldNameController.text;
-                String description = _houseHoldDescriptionController.text;
-                List<String> members = List.from(_addedMembers);
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    int id = TestData.houseHoldData.length-1;
+                    String title = _houseHoldNameController.text;
+                    String description = _houseHoldDescriptionController.text;
+                    List<String> members = List.from(_addedMembers);
 
-                addHousehold(id, title, description, members);
-                AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
-              },
-              child: const Text('Hinzufügen'),
+                    addHousehold(id, title, description, members);
+                    AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
+                  },
+                  child: const Text('Hinzufügen'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+                  },
+                  child: const Text('Abbrechen'),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
-              },
-              child: const Text('Abbrechen'),
-            ),
+
           ],
         ),
       ),

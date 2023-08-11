@@ -53,40 +53,68 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
         children: [
           TextField(
             controller: _titleController,
-            decoration: const InputDecoration(labelText: 'Titel'),
-          ),
-          TextField(
-            controller: _descriptionController,
-            decoration: const InputDecoration(labelText: 'Beschreibung'),
+            decoration: InputDecoration(
+              labelText: 'Titel',
+              prefixIcon: const Icon(Icons.title),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ),
           const SizedBox(height: 20.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              FilledButton(
-                onPressed: () async {
-                  final DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: _selectedDate,
-                    firstDate: DateTime.now(),
-                    lastDate: DateTime(2101),
-                  );
-                  if (pickedDate != null && pickedDate != _selectedDate) {
-                    setState(() {
-                      _selectedDate = pickedDate;
-                    });
-                  }
-                },
-                child: Text(
-                  'Datum: ${DateFormat('dd.MM.yyyy').format(_selectedDate)}',
-                ),
+          TextField(
+            controller: _descriptionController,
+            decoration: InputDecoration(
+              labelText: 'Beschreibung',
+              prefixIcon: const Icon(Icons.description),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
               ),
-            ],
+            ),
+          ),
+          const SizedBox(height: 20.0),
+          TextField(
+            autofocus: false,
+            readOnly: true,
+            controller: TextEditingController(
+                text: DateFormat('dd.MM.yyyy').format(_selectedDate)),
+            decoration: InputDecoration(
+              labelText: 'Geburtsdatum',
+              helperText: 'Geburtsdatum auswählen',
+              prefixIcon: const Icon(Icons.date_range),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
+            onTap: () async {
+              final DateTime? pickedDate = await showDatePicker(
+                context: context,
+                initialDate: _selectedDate,
+                firstDate: DateTime(1900),
+                lastDate: DateTime.now(),
+              );
+              if (pickedDate != null && pickedDate != _selectedDate) {
+                setState(() {
+                  _selectedDate = pickedDate;
+                });
+              }
+            },
           ),
           // ToDo: Dropdown-Button für Personen zuweisen
-          ElevatedButton(
-            onPressed: addTask,
-            child: const Text('Hinzufügen'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: addTask,
+                child: const Text('Hinzufügen'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+                },
+                child: const Text('Abbrechen'),
+              ),
+            ],
           ),
         ],
       ),

@@ -52,27 +52,66 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
         children: [
           TextField(
             controller: _titleController,
-            decoration: const InputDecoration(labelText: 'Titel'),
+            decoration: InputDecoration(
+              labelText: 'Titel',
+              prefixIcon: const Icon(Icons.title),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ),
+          const SizedBox(height: 20.0),
           TextField(
             controller: _descriptionController,
-            decoration: const InputDecoration(labelText: 'Beschreibung'),
+            decoration: InputDecoration(
+              labelText: 'Beschreibung',
+              prefixIcon: const Icon(Icons.description),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ),
+          const SizedBox(height: 20.0),
           TextField(
             controller: _quantityController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Menge'),
+            decoration: InputDecoration(
+              labelText: 'Menge',
+              prefixIcon: const Icon(Icons.shopping_cart),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ),
+          const SizedBox(height: 20.0),
           TextField(
             controller: _priceController,
             keyboardType: TextInputType.number,
-            decoration: const InputDecoration(labelText: 'Preis'),
+            decoration: InputDecoration(
+              labelText: 'Preis',
+              prefixIcon: const Icon(Icons.euro),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+            ),
           ),
           // Todo: Dropdown-Liste für Personen zuweisen
           const SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: addShoppingItem,
-            child: const Text('Hinzufügen'),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              ElevatedButton(
+                onPressed: addShoppingItem,
+                child: const Text('Hinzufügen'),
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+                },
+                child: const Text('Abbrechen'),
+              ),
+            ],
           ),
         ],
       ),

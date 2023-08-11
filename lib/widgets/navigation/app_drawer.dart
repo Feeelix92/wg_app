@@ -37,8 +37,8 @@ class AppDrawer extends StatelessWidget {
                       TextButton(
                           onPressed: () {
                             FirebaseAuth.instance.signOut();
-                            AutoRouter.of(context).pop();
-                            AutoRouter.of(context).push(const LoginRoute());
+                            AutoRouter.of(context).popUntilRoot();
+                            AutoRouter.of(context).replace(const LoginRoute());
                           },
                           child: const Text('Abmelden')),
                     ],
