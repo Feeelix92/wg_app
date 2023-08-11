@@ -28,7 +28,6 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
     double price = double.tryParse(_priceController.text) ?? 0.0;
     String assignedTo = _selectedPerson;
 
-    // Füge das Element der Einkaufsliste hinzu (kann auch Firebase-Speicherung enthalten)
     setState(() {
       Household currentHousehold = TestData.houseHoldData[widget.householdId];
       currentHousehold.shoppingList.add(

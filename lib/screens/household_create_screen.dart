@@ -45,7 +45,7 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
           members: members,
         ),
       );
-      AutoRouter.of(context).pop();
+      AutoRouter.of(context).push(const HomeRoute());
     } else {
       showDialog(
         context: context,
@@ -140,7 +140,7 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
                     String description = _houseHoldDescriptionController.text;
                     List<String> members = List.from(_addedMembers);
                     addHousehold(id, title, description, members);
-                    AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
+                    // Zurück zum HomeScreen
                   },
                   child: const Text('Hinzufügen'),
                 ),

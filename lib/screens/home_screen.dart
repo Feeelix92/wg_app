@@ -65,7 +65,9 @@ class _HomeScreenState extends State<HomeScreen> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            builder: (context) => const HouseHoldCreateScreen(),
+            builder: (context) => const SingleChildScrollView(
+                child: HouseHoldCreateScreen()
+            ),
           );
         },
         child: const Icon(Icons.add),

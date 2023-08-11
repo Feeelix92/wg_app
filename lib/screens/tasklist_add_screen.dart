@@ -29,7 +29,6 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
     String assignedTo = _selectedPerson;
 
     if (title.isNotEmpty && description.isNotEmpty) {
-      // Füge die Aufgabe der Aufgabenliste hinzu (kann auch Firebase-Speicherung enthalten)
       setState(() {
         Household currentHousehold = TestData.houseHoldData[widget.householdId];
         currentHousehold.taskList.add(
@@ -79,8 +78,8 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
             controller: TextEditingController(
                 text: DateFormat('dd.MM.yyyy').format(_selectedDate)),
             decoration: InputDecoration(
-              labelText: 'Geburtsdatum',
-              helperText: 'Geburtsdatum auswählen',
+              labelText: 'Datum',
+              helperText: 'Datum auswählen',
               prefixIcon: const Icon(Icons.date_range),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(30),
