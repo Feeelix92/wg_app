@@ -104,7 +104,6 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                 onPressed: addShoppingItem,
                 child: const Text('Hinzufügen'),
               ),
-
               ElevatedButton(
                 onPressed: () {
                   AutoRouter.of(context).pop(); // Zurück zum HomeScreen
