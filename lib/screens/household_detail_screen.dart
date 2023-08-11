@@ -66,7 +66,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
+                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
               },
               child: const Text('Zurück'),
             ),

@@ -58,7 +58,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: widget.householdId)); // Zurück zum HomeScreen
+                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
               },
               child: const Text('Zurück'),
             ),
