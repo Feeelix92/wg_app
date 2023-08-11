@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../routes/app_router.gr.dart';
 
@@ -17,11 +18,33 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             leading: const Icon(
-              Icons.home,
+              Icons.logout,
             ),
-            title: const Text('Home'),
+            title: const Text('Abmelden'),
             onTap: () {
-              AutoRouter.of(context).push(const HomeRoute());
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: const Text('Abmelden'),
+                    content: const Text('Möchten Sie sich wirklich abmelden?'),
+                    actions: [
+                      TextButton(
+                          onPressed: () {
+                            AutoRouter.of(context).pop();
+                          },
+                          child: const Text('Abbrechen')),
+                      TextButton(
+                          onPressed: () {
+                            FirebaseAuth.instance.signOut();
+                            AutoRouter.of(context).popUntilRoot();
+                            AutoRouter.of(context).replace(const LoginRoute());
+                          },
+                          child: const Text('Abmelden')),
+                    ],
+                  );
+                },
+              );
             },
           ),
         ],

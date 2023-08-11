@@ -1,12 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:wg_app/screens/tasklist_add_screen.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 import '../data/constants.dart';
 import '../model/household.dart';
 import '../model/taskItem.dart';
-import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
 
@@ -58,7 +56,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: widget.householdId)); // Zurück zum HomeScreen
+                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
               },
               child: const Text('Zurück'),
             ),
@@ -69,7 +67,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            builder: (context) => TaskListAddScreen(householdId: widget.householdId),
+            builder: (context) => SingleChildScrollView(
+                child: TaskListAddScreen(householdId: widget.householdId)
+            ),
           );
         },
         child: const Icon(Icons.add),

@@ -13,7 +13,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      automaticallyImplyLeading: false, // Deaktiviere den Pfeil zurück
+      automaticallyImplyLeading: true, // Deaktiviere den Pfeil zurück
       title: const Text(Constants.appName),
     );
   }

@@ -47,35 +47,49 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
             TextField(
               controller: _houseHoldNameController,
               maxLength: 20,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Name',
                 hintText: 'z.B. Muster WG',
+                prefixIcon: const Icon(Icons.title),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
             ),
             TextField(
               controller: _houseHoldDescriptionController,
               maxLength: 100,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Beschreibung',
                 hintText: 'z.B. WG in der Bahnhofstraße 13',
+                prefixIcon: const Icon(Icons.description),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
             ),
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                int id = widget.householdId;
-                String title = _houseHoldNameController.text;
-                String description = _houseHoldDescriptionController.text;
-                updateHousehold(id, title, description);
-              },
-              child: const Text('Speichern'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    int id = widget.householdId;
+                    String title = _houseHoldNameController.text;
+                    String description = _houseHoldDescriptionController.text;
+                    updateHousehold(id, title, description);
+                  },
+                  child: const Text('Speichern'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    AutoRouter.of(context).pop(); // Zurück zur Detailseite ohne Änderungen
+                  },
+                  child: const Text('Abbrechen'),
+                ),
+              ],
             ),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zur Detailseite ohne Änderungen
-              },
-              child: const Text('Abbrechen'),
-            ),
+
           ],
         ),
       ),

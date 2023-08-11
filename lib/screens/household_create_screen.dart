@@ -45,7 +45,7 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
           members: members,
         ),
       );
-      AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
+      AutoRouter.of(context).pop();
     } else {
       showDialog(
         context: context,
@@ -77,21 +77,27 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
             TextField(
               controller: _houseHoldNameController,
               maxLength: 20,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Name',
                 hintText: 'z.B. Muster WG',
+                prefixIcon: const Icon(Icons.title),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
             ),
             TextField(
               controller: _houseHoldDescriptionController,
               maxLength: 100,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'Beschreibung',
                 hintText: 'z.B. WG in der Bahnhofstraße 13',
+                prefixIcon: const Icon(Icons.description),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
               ),
-            ),
-            const SizedBox(height: 16),
-            // Eingabefeld für Personen hinzufügen,
+            ), // Eingabefeld für Personen hinzufügen,
             TextField(
               controller: _personNameController,
               inputFormatters: <TextInputFormatter>[
@@ -100,6 +106,10 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
               decoration: InputDecoration(
                 labelText: 'Person hinzufügen',
                 hintText: 'Name der Person',
+                prefixIcon: const Icon(Icons.person),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
                 suffixIcon: IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
@@ -120,24 +130,29 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
             ),
             // Anzeige der hinzugefügten Personen
             const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () {
-                int id = TestData.houseHoldData.length-1;
-                String title = _houseHoldNameController.text;
-                String description = _houseHoldDescriptionController.text;
-                List<String> members = List.from(_addedMembers);
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    int id = TestData.houseHoldData.length-1;
+                    String title = _houseHoldNameController.text;
+                    String description = _houseHoldDescriptionController.text;
+                    List<String> members = List.from(_addedMembers);
+                    addHousehold(id, title, description, members);
+                    AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
+                  },
+                  child: const Text('Hinzufügen'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+                  },
+                  child: const Text('Abbrechen'),
+                ),
+              ],
+            ),
 
-                addHousehold(id, title, description, members);
-                AutoRouter.of(context).push(const HomeRoute()); // Zurück zum HomeScreen
-              },
-              child: const Text('Hinzufügen'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
-              },
-              child: const Text('Abbrechen'),
-            ),
           ],
         ),
       ),
