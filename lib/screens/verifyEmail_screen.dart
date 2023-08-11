@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wg_app/main.dart';
+import 'package:wg_app/routes/app_router.gr.dart';
+
+import '../widgets/customErrorDialog.dart';
 
 @RoutePage()
 class VerifyEmailScreen extends StatefulWidget {
@@ -59,14 +63,22 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
   Future checkEmailVerified() async {
     // Call after email verification
-    await FirebaseAuth.instance.currentUser!.reload();
+    final user = FirebaseAuth.instance.currentUser;
 
-    setState(() {
-      _isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
-    });
+    if (user != null) {
+      await user.reload();
 
-    if (_isEmailVerified) timer?.cancel();
+      setState(() {
+        _isEmailVerified = user.emailVerified;
+      });
+
+      if (_isEmailVerified) {
+        timer?.cancel();
+        AutoRouter.of(context).replace(const HomeRoute());
+      }
+    }
   }
+
 
   @override
   void dispose() {
@@ -99,7 +111,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
               const SizedBox(
                 height: 36,
               ),
-              Row(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   ElevatedButton.icon(

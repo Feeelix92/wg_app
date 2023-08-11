@@ -4,7 +4,6 @@ import 'package:wg_app/model/shoppingItem.dart';
 import 'package:wg_app/screens/shoppinglist_add_screen.dart';
 import '../data/constants.dart';
 import '../model/household.dart';
-import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/h1.dart';
@@ -60,7 +59,9 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            builder: (context) => ShoppingListAddScreen(householdId: widget.householdId),
+            builder: (context) => SingleChildScrollView(
+                child: ShoppingListAddScreen(householdId: widget.householdId)
+            ),
           );
         },
         child: const Icon(Icons.add),
