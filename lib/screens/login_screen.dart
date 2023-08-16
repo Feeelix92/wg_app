@@ -48,6 +48,9 @@ class _LoginScreenState extends State<LoginScreen> {
       AutoRouter.of(context).replace(const HomeRoute());
       AutoRouter.of(context).popUntilRoot();
     } on FirebaseAuthException catch (e) {
+      setState(() {
+        _isLoading = false;
+      });
       if (e.code == 'user-not-found') {
         if (kDebugMode) {
           print('No user found for that email.');
