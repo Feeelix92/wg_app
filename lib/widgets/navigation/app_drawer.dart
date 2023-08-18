@@ -16,6 +16,14 @@ class AppDrawer extends StatelessWidget {
             decoration: BoxDecoration(),
             child: Text('Drawer Header'),
           ),
+           ListTile(
+            leading: const Icon(Icons.person),
+            title: const Text('Profil'),
+            onTap: () {
+              AutoRouter.of(context).push(const ProfileRoute());
+            },
+          ),
+          const Divider(),
           ListTile(
             leading: const Icon(
               Icons.logout,
