@@ -34,6 +34,8 @@ class MyApp extends StatelessWidget {
   MyApp({super.key});
 
   final _appRouter = AppRouter();
+  final navigatorKey = GlobalKey<NavigatorState>();
+
 
   // This widget is the root of your application.
   @override
