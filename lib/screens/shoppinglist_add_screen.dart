@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:wg_app/widgets/my_snackbars.dart';
 
 import '../data/constants.dart';
 import '../model/household.dart';
@@ -25,21 +26,25 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
     String title = _titleController.text;
     String description = _descriptionController.text;
     double quantity = double.tryParse(_quantityController.text) ?? 0.0;
-    double price = double.tryParse(_priceController.text) ?? 0.0;
+    double price = double.tryParse(_priceController.text.replaceAll(',','.')) ?? 0.0;
     String assignedTo = _selectedPerson;
 
-    setState(() {
-      Household currentHousehold = TestData.houseHoldData[widget.householdId];
-      currentHousehold.shoppingList.add(
-        ShoppingItem(
-          title: title,
-          description: description,
-          quantity: quantity,
-          price: price,
-          assignedTo: assignedTo,
-        ),
-      );
-    });
+    if(title.isNotEmpty && description.isNotEmpty) {
+      setState(() {
+        Household currentHousehold = TestData.houseHoldData[widget.householdId];
+        currentHousehold.shoppingList.add(
+          ShoppingItem(
+            title: title,
+            description: description,
+            quantity: quantity,
+            price: price,
+            assignedTo: assignedTo,
+          ),
+        );
+      });
+    } else {
+      showAwesomeSnackbar(context, "Bitte gib einen Titel und eine Beschreibung an", Colors.redAccent, Icons.warning_amber_outlined);
+    }
     AutoRouter.of(context).push(ShoppingListRoute(householdId: widget.householdId));
   }
 

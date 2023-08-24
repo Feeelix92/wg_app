@@ -34,17 +34,32 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
             child: H1(text: 'Einkaufsliste'),
           ),
           Expanded(
-            child: ListView.builder(
+            child: shoppingList.isNotEmpty ? ListView.separated(
+              separatorBuilder: (context, index) => const Divider(
+                height: 20,
+                thickness: 0,
+                //color: Colors.white,
+              ),
               itemCount: shoppingList.length,
               itemBuilder: (context, index) {
                 final shoppingItem = shoppingList[index];
                 return ListTile(
+                  /*
+                   shape: const RoundedRectangleBorder(
+                     borderRadius: BorderRadius.only(
+                       topLeft: Radius.circular(25),
+                       topRight: Radius.circular(25),
+                       bottomRight: Radius.circular(25),
+                       bottomLeft: Radius.circular(25)),
+                   ),
+                   */
                   title: Text(shoppingItem.title),
                   subtitle: Text(shoppingItem.description),
                   trailing: Text('${shoppingItem.price} €'),
+                  //tileColor: Colors.indigoAccent,
                 );
               },
-            ),
+            ) : const Text("Die Einkaufsliste ist momentan leer."),
           ),
           ElevatedButton(
             onPressed: () {
@@ -59,8 +74,15 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         onPressed: () {
           showModalBottomSheet(
             context: context,
-            builder: (context) => SingleChildScrollView(
-                child: ShoppingListAddScreen(householdId: widget.householdId)
+            isScrollControlled: true,
+            builder: (context) => Padding(
+              padding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget> [ShoppingListAddScreen(householdId: widget.householdId)]
+                )
             ),
           );
         },
