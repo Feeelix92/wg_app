@@ -10,12 +10,9 @@ class AuthGuard extends AutoRouteGuard {
   Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
     final user = FirebaseAuth.instance.currentUser;
 
-   // final userProvider = Provider.of<UserProvider>(router.navigatorKey.currentContext!, listen: false);
-
     if (user == null) {
       router.push(const LoginRoute());
     } else {
-      // userProvider.updateUserInformation().then((value) => resolver.next(true));
       resolver.next(true);
     }
   }

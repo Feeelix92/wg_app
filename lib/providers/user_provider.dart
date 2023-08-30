@@ -10,11 +10,9 @@ class UserProvider extends ChangeNotifier {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   late UserModel _user;
-
   UserModel get user => _user;
 
   bool _userIsSet = false;
-
   bool get userIsSet => _userIsSet;
 
   late DocumentSnapshot snap;
@@ -29,10 +27,12 @@ class UserProvider extends ChangeNotifier {
         final userDetailData = doc.data() as Map<String, dynamic>;
 
         _user = UserModel(
-            name: userDetailData['name'],
+            firstName: userDetailData['name'],
+            lastName: userDetailData['name'],
             uid: auth.currentUser!.uid,
             email: auth.currentUser!.email as String,
-            birthdate: userDetailData['birthdate']);
+            birthdate: userDetailData['birthdate'],
+            username: userDetailData['username']);
       });
 
       _userIsSet = true;
@@ -41,7 +41,9 @@ class UserProvider extends ChangeNotifier {
         print('Aktueller User: ');
         print(user.toString());
       }
+
       notifyListeners();
+
       return;
     } catch (e) {
       if (kDebugMode) {
@@ -49,4 +51,54 @@ class UserProvider extends ChangeNotifier {
       }
     }
   }
+
+
+  Future<bool> changeEmail(String newEmail) async {
+    try {
+      await auth.currentUser!.updateEmail(newEmail);
+
+      await updateUserInformation();
+
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+
+      return false;
+    }
+  }
+
+  Future<bool> changePassword(String newPassword) async {
+    try {
+      await auth.currentUser!.updatePassword(newPassword);
+
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+
+      return false;
+    }
+  }
+
+  Future<bool> changeUsername(String newUsername) async {
+    try {
+      final docRefUser = db.collection("users").doc(_user.uid);
+
+      await docRefUser.update({'username': newUsername});
+
+      await updateUserInformation();
+
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+
+      return false;
+    }
+  }
+
 }
