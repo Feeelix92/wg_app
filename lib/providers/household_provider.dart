@@ -1,11 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:wg_app/model/household.dart';
 import 'package:wg_app/model/shoppingItem.dart';
 
-import '../model/TaskItem_model.dart';
+import '../model/TaskItem.dart';
 
 class HouseholdProvider extends ChangeNotifier {
   final FirebaseFirestore db = FirebaseFirestore.instance;

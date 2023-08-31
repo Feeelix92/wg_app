@@ -43,6 +43,7 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
           title: title,
           description: description,
           members: members,
+          admin: '',
         ),
       );
       AutoRouter.of(context).push(const HomeRoute());
