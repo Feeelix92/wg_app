@@ -134,6 +134,37 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
+  // Funktion die alle Haushalte eines Users lädt
+  Future<List<Household>> loadAllAccessibleHouseholds(String userId) async {
+    try {
+      final querySnapshot = await db.collection("households").where("members", arrayContains: userId).get();
+      final households = <Household>[];
+
+      for (final docSnapshot in querySnapshot.docs) {
+        final householdDetailData = docSnapshot.data();
+
+        final household = Household(
+          admin: householdDetailData['admin'],
+          id: docSnapshot.id,
+          title: householdDetailData['title'],
+          description: householdDetailData['description'],
+          members: householdDetailData['members'].cast<String>(),
+          shoppingList: householdDetailData['shoppingList'].cast<String>(),
+          taskList: householdDetailData['taskList'].cast<String>(),
+        );
+        households.add(household);
+      }
+
+      return households;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      // Hier kannst du Fehlerhandhabung hinzufügen, je nach Bedarf.
+      return [];
+    }
+  }
+
   // Funktion die einen Haushalt anhand der ID lädt
   Future loadHousehold(String id) async {
     try {

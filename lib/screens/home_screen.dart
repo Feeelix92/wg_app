@@ -1,5 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wg_app/providers/household_provider.dart';
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
@@ -25,53 +27,55 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      endDrawer: const AppDrawer(),
-      body: Center(
-        child: Column(
-          children: [
-            const H1(text: 'Haushalt'),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: TestData.houseHoldData.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: index));
-                    },
-                    child: SizedBox(
-                      height: 200,
-                      width: 300,
-                      child: Card(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            H2(text: TestData.houseHoldData[index].title),
-                            H3(text: TestData.houseHoldData[index].description),
-                          ],
+    return Consumer<HouseholdProvider>(builder: (context, houseHoldData, child) {
+      return Scaffold(
+        appBar: const CustomAppBar(),
+        endDrawer: const AppDrawer(),
+        body: Center(
+          child: Column(
+            children: [
+              const H1(text: 'Haushalt'),
+              Expanded(
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  itemCount: houseHoldData.,
+                  itemBuilder: (BuildContext context, int index) {
+                    return InkWell(
+                      onTap: () {
+                        AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: index));
+                      },
+                      child: SizedBox(
+                        height: 200,
+                        width: 300,
+                        child: Card(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              H2(text: houseHoldData[index].title),
+                              H3(text: houseHoldData[index].description),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) => const SingleChildScrollView(
-                child: HouseHoldCreateScreen()
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => const SingleChildScrollView(
+                  child: HouseHoldCreateScreen()
+              ),
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
+      );
+    });
   }
 }
