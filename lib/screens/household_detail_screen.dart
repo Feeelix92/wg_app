@@ -69,81 +69,76 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomAppBar(),
-        endDrawer: const AppDrawer(),
-        body: isLoading
-            ? const Center(
-                child: CircularProgressIndicator(), // Ladekreis anzeigen
-              )
-            : Consumer<HouseholdProvider>(
-                builder: (context, houseHoldProvider, child) {
-                  // Ansonsten baue die Hauptansicht
-                  return Scaffold(
-                    appBar: const CustomAppBar(),
-                    endDrawer: const AppDrawer(),
-                    body: Center(
-                      child: Column(
-                        children: [
-                          H1(text: houseHoldProvider.household.title),
-                          Text(houseHoldProvider.household.description),
-                          // Anzeige der Personen-Kreise
-                          if (houseHoldProvider.household.members.isNotEmpty)
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 16.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: houseHoldProvider.household.members
-                                    .map((member) => _buildMemberCircle(member))
-                                    .toList(),
-                              ),
-                            ),
-                          // ShoppingList Card
-                          Card(
-                            child: ListTile(
-                              title: const Text('Einkaufsliste'),
-                              onTap: () {
-                                // Navigiere zur ShoppingListScreen
-                                AutoRouter.of(context).push(ShoppingListRoute(
-                                    householdId: widget.householdId));
-                              },
-                            ),
+      appBar: const CustomAppBar(),
+      endDrawer: const AppDrawer(),
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(), // Ladekreis anzeigen
+            )
+          : Consumer<HouseholdProvider>(
+              builder: (context, houseHoldProvider, child) {
+                // Ansonsten baue die Hauptansicht
+                return Center(
+                  child: Column(
+                    children: [
+                      H1(text: houseHoldProvider.household.title),
+                      Text(houseHoldProvider.household.description),
+                      // Anzeige der Personen-Kreise
+                      if (houseHoldProvider.household.members.isNotEmpty)
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 16.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: houseHoldProvider.household.members
+                                .map((member) => _buildMemberCircle(member))
+                                .toList(),
                           ),
-                          // TaskList Card
-                          Card(
-                            child: ListTile(
-                              title: const Text('Aufgabenliste'),
-                              onTap: () {
-                                // Navigiere zur TaskListScreen
-                                AutoRouter.of(context).push(TaskListRoute(
-                                    householdId: widget.householdId));
-                              },
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          ElevatedButton(
-                            onPressed: () {
-                              AutoRouter.of(context)
-                                  .pop(); // Zurück zum HomeScreen
-                            },
-                            child: const Text('Zurück'),
-                          ),
-                        ],
+                        ),
+                      // ShoppingList Card
+                      Card(
+                        child: ListTile(
+                          title: const Text('Einkaufsliste'),
+                          onTap: () {
+                            // Navigiere zur ShoppingListScreen
+                            AutoRouter.of(context).push(ShoppingListRoute(
+                                householdId: widget.householdId));
+                          },
+                        ),
                       ),
-                    ),
-                    floatingActionButton: FloatingActionButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          context: context,
-                          builder: (context) => HouseHoldEditScreen(
-                              householdId: widget.householdId),
-                        );
-                      },
-                      child: const Icon(Icons.edit),
-                    ),
-                  );
-                },
-              ));
+                      // TaskList Card
+                      Card(
+                        child: ListTile(
+                          title: const Text('Aufgabenliste'),
+                          onTap: () {
+                            // Navigiere zur TaskListScreen
+                            AutoRouter.of(context).push(
+                                TaskListRoute(householdId: widget.householdId));
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+                        },
+                        child: const Text('Zurück'),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            builder: (context) =>
+                HouseHoldEditScreen(householdId: widget.householdId),
+          );
+        },
+        child: const Icon(Icons.edit),
+      ),
+    );
   }
 }
 

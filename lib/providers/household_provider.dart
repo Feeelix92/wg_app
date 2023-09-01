@@ -240,9 +240,6 @@ class HouseholdProvider extends ChangeNotifier {
         taskList: householdDetailData?['taskList'],
 
       );
-
-      print(household);
-
       notifyListeners();
 
       // Wenn der Haushalt erfolgreich geladen wurde, dann true zurückgeben
