@@ -35,7 +35,7 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<HouseHoldDetailRouteArgs>(
           orElse: () => HouseHoldDetailRouteArgs(
-              householdId: pathParams.getInt('householdId')));
+              householdId: pathParams.getString('householdId')));
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i2.HouseHoldDetailScreen(
@@ -72,7 +72,7 @@ abstract class $AppRouter extends _i10.RootStackRouter {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<ShoppingListRouteArgs>(
           orElse: () => ShoppingListRouteArgs(
-              householdId: pathParams.getInt('householdId')));
+              householdId: pathParams.getString('householdId')));
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i7.ShoppingListScreen(
@@ -84,8 +84,8 @@ abstract class $AppRouter extends _i10.RootStackRouter {
     TaskListRoute.name: (routeData) {
       final pathParams = routeData.inheritedPathParams;
       final args = routeData.argsAs<TaskListRouteArgs>(
-          orElse: () =>
-              TaskListRouteArgs(householdId: pathParams.getInt('householdId')));
+          orElse: () => TaskListRouteArgs(
+              householdId: pathParams.getString('householdId')));
       return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i8.TaskListScreen(
@@ -123,7 +123,7 @@ class HouseHoldDetailRoute
     extends _i10.PageRouteInfo<HouseHoldDetailRouteArgs> {
   HouseHoldDetailRoute({
     _i11.Key? key,
-    required int householdId,
+    required String householdId,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           HouseHoldDetailRoute.name,
@@ -149,7 +149,7 @@ class HouseHoldDetailRouteArgs {
 
   final _i11.Key? key;
 
-  final int householdId;
+  final String householdId;
 
   @override
   String toString() {
@@ -218,7 +218,7 @@ class RegistrationRoute extends _i10.PageRouteInfo<void> {
 class ShoppingListRoute extends _i10.PageRouteInfo<ShoppingListRouteArgs> {
   ShoppingListRoute({
     _i11.Key? key,
-    required int householdId,
+    required String householdId,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           ShoppingListRoute.name,
@@ -244,7 +244,7 @@ class ShoppingListRouteArgs {
 
   final _i11.Key? key;
 
-  final int householdId;
+  final String householdId;
 
   @override
   String toString() {
@@ -257,7 +257,7 @@ class ShoppingListRouteArgs {
 class TaskListRoute extends _i10.PageRouteInfo<TaskListRouteArgs> {
   TaskListRoute({
     _i11.Key? key,
-    required int householdId,
+    required String householdId,
     List<_i10.PageRouteInfo>? children,
   }) : super(
           TaskListRoute.name,
@@ -283,7 +283,7 @@ class TaskListRouteArgs {
 
   final _i11.Key? key;
 
-  final int householdId;
+  final String householdId;
 
   @override
   String toString() {

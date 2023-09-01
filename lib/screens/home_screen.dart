@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
-                        AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: index));
+                        AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: index.toString()));
                       },
                       child: SizedBox(
                         height: 200,
