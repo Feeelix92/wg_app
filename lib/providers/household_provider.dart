@@ -226,14 +226,9 @@ class HouseholdProvider extends ChangeNotifier {
 
   // Funktion die einen Haushalt anhand der ID lädt
   Future<bool> loadHousehold(String id) async {
-    print("Debug 1");
     try {
       final docRefHousehold = await db.collection("households").doc(id).get();
-      print("Debug 2");
-
       final householdDetailData = docRefHousehold.data();
-      print("Debug 3");
-
       print(docRefHousehold.data());
 
       _household = Household(
@@ -245,9 +240,6 @@ class HouseholdProvider extends ChangeNotifier {
         // shoppingList: householdDetailData?['shoppingList'].cast<String>(),
         // taskList: householdDetailData?['taskList'].cast<String>(),
       );
-
-      print("Debug 4");
-      print(_household.title);
 
       notifyListeners();
 
