@@ -69,6 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           : Consumer<HouseholdProvider>(
               builder: (context, householdProvider, child) {
+                _loadData(); // Lade die Daten erneut, wenn der Screen neu aufgebaut wird
                 // Ansonsten baue die Hauptansicht
                 return Center(
                   child: Column(

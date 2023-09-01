@@ -4,6 +4,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/screens/household_edit_screen.dart';
+import 'package:wg_app/widgets/customErrorDialog.dart';
 
 import '../data/constants.dart';
 import '../model/household.dart';
@@ -127,9 +128,14 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                 content: const Text('Möchten Sie diesen Haushalt wirklich löschen?'),
                                 actions: [
                                   TextButton(
-                                      onPressed: () {
-                                        AutoRouter.of(context).popUntilRoot();
-                                        AutoRouter.of(context).replace(const HomeRoute());
+                                      onPressed: () async {
+                                        bool deleted = await houseHoldProvider.deleteHousehold(widget.householdId);
+                                        if (deleted) {
+                                          AutoRouter.of(context).popUntilRoot();
+                                          AutoRouter.of(context).replace(const HomeRoute());
+                                        } else {
+                                          customErrorDialog(context, "Fehler", "Haushalt konnte nicht gelöscht werden!");
+                                        }
                                       },
                                       child: const Text('Löschen')),
                                   TextButton(

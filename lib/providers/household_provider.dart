@@ -67,6 +67,7 @@ class HouseholdProvider extends ChangeNotifier {
       );
 
       await updateHouseholdInformation();
+      notifyListeners();
 
       return true;
     } catch (e) {
@@ -118,6 +119,7 @@ class HouseholdProvider extends ChangeNotifier {
 
       // Löschen des Haushalts
       await db.collection("households").doc(householdId).delete();
+      notifyListeners();
 
       return true;
     } catch (e) {
