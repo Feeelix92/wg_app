@@ -1,7 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:wg_app/model/shoppingItem.dart';
+import 'package:wg_app/routes/app_router.gr.dart';
 import 'package:wg_app/screens/shoppinglist_add_screen.dart';
+import 'package:wg_app/widgets/my_snackbars.dart';
 import '../data/constants.dart';
 import '../model/household.dart';
 import '../widgets/navigation/app_drawer.dart';
@@ -38,32 +40,67 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               separatorBuilder: (context, index) => const Divider(
                 height: 20,
                 thickness: 0,
-                //color: Colors.white,
               ),
               itemCount: shoppingList.length,
               itemBuilder: (context, index) {
                 final shoppingItem = shoppingList[index];
-                return ListTile(
-                  /*
-                   shape: const RoundedRectangleBorder(
-                     borderRadius: BorderRadius.only(
-                       topLeft: Radius.circular(25),
-                       topRight: Radius.circular(25),
-                       bottomRight: Radius.circular(25),
-                       bottomLeft: Radius.circular(25)),
-                   ),
-                   */
+                return Dismissible(
+                  key: UniqueKey(),
+                  onDismissed: (direction) {
+                    setState(() {
+                      shoppingList.removeAt(index);
+                    });
+                    showAwesomeSnackbar(context, "Eintrag gelöscht", Colors.red, Icons.delete);
+                  },
+                  background: Container(
+                    color: Colors.red,
+                    child: const Icon(Icons.delete),
+                  ),
+                  child: ListTile(
                   title: Text(shoppingItem.title),
                   subtitle: Text(shoppingItem.description),
-                  trailing: Text('${shoppingItem.price} €'),
-                  //tileColor: Colors.indigoAccent,
+                  trailing: Text('${shoppingItem.price.toStringAsFixed(2)} €'),
+                  onLongPress: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: const Text("Eintrag bearbeiten?"),
+                        actions: [
+                          IconButton(onPressed: () {
+                            Navigator.of(context, rootNavigator: true).pop('dialog');
+                            showModalBottomSheet(
+                              context: context,
+                              isScrollControlled: true,
+                              builder: (context) => Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                                  child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget> [ShoppingListAddScreen(
+                                          householdId: widget.householdId,
+                                          edit: true,
+                                          title: shoppingItem.title,
+                                          description: shoppingItem.description,
+                                          price: shoppingItem.price.toStringAsFixed(2),
+                                          quantity: shoppingItem.quantity.toString()
+                                      )]
+                                  )
+                              ),
+                            );
+                          }, icon: const Icon(Icons.check))
+                        ]
+                      )
+                    );
+                  },
+                ),
                 );
               },
-            ) : const Text("Die Einkaufsliste ist momentan leer."),
+            ) : const Center(child: Text("Die Einkaufsliste ist momentan leer.")),
           ),
           ElevatedButton(
             onPressed: () {
-              AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+              AutoRouter.of(context).replace(HouseHoldDetailRoute(householdId: widget.householdId)); // Zurück zum HomeScreen
             },
             child: const Text('Zurück'),
           ),
@@ -81,7 +118,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
-                  children: <Widget> [ShoppingListAddScreen(householdId: widget.householdId)]
+                  children: <Widget> [ShoppingListAddScreen(householdId: widget.householdId, edit: false)]
                 )
             ),
           );
