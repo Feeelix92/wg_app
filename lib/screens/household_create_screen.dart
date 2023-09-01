@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../model/household.dart';
-import '../routes/app_router.gr.dart';
+import 'package:provider/provider.dart';
+import '../providers/household_provider.dart';
+import '../widgets/customErrorDialog.dart';
 
 class HouseHoldCreateScreen extends StatefulWidget {
   const HouseHoldCreateScreen({super.key});
@@ -15,60 +16,24 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
   final TextEditingController _houseHoldNameController = TextEditingController();
   final TextEditingController _houseHoldDescriptionController = TextEditingController();
   final TextEditingController _personNameController = TextEditingController();
-  final List<String> _addedMembers = [];
 
-  void addPersonToHousehold(String personName) {
-    if (personName.isNotEmpty) {
-      setState(() {
-        _addedMembers.add(personName);
-        _personNameController.clear();
-      });
-    }
+  @override
+  void initState() {
+    super.initState();
   }
 
-  void _removePersonFromHouseHold(String personName) {
-    setState(() {
-      _addedMembers.remove(personName);
-    });
-  }
-
-  void addHousehold(int id, String title, String description, List<String> members) {
-    // TODO: Add household to Firebase
-    if (title.isNotEmpty && description.isNotEmpty) {
-      TestData.houseHoldData.add(
-        Household(
-          id: id,
-          title: title,
-          description: description,
-          members: members,
-          admin: '',
-        ),
-      );
-      AutoRouter.of(context).push(const HomeRoute());
-    } else {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: const Text('Fehler'),
-            content: const Text('Bitte füllen Sie alle Felder aus.'),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  AutoRouter.of(context).pop(); // Schließe Popup
-                },
-                child: const Text('OK'),
-              ),
-            ],
-          );
-        },
-      );
-    }
+  @override
+  void dispose() {
+    _houseHoldNameController.dispose();
+    _houseHoldDescriptionController.dispose();
+    _personNameController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
+      return Container(
       padding: const EdgeInsets.all(16.0),
       child: SingleChildScrollView(
         child: Column(
@@ -97,49 +62,53 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
                 ),
               ),
             ), // Eingabefeld für Personen hinzufügen,
-            TextField(
-              controller: _personNameController,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
-              ], // Only
-              decoration: InputDecoration(
-                labelText: 'Person hinzufügen',
-                hintText: 'Name der Person',
-                prefixIcon: const Icon(Icons.person),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                suffixIcon: IconButton(
-                  icon: const Icon(Icons.add),
-                  onPressed: () {
-                    addPersonToHousehold(_personNameController.text);
-                    _personNameController.clear();
-                  },
-                ),
-              ),
-            ),
-            Wrap(
-              spacing: 8,
-              children: _addedMembers.map((person) {
-                return Chip(
-                  label: Text(person),
-                  onDeleted: () => _removePersonFromHouseHold(person),
-                );
-              }).toList(),
-            ),
-            // Anzeige der hinzugefügten Personen
+            // TextField(
+            //   controller: _personNameController,
+            //   inputFormatters: <TextInputFormatter>[
+            //     FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
+            //   ], // Only
+            //   decoration: InputDecoration(
+            //     labelText: 'Person hinzufügen',
+            //     hintText: 'Email der Person',
+            //     prefixIcon: const Icon(Icons.email),
+            //     border: OutlineInputBorder(
+            //       borderRadius: BorderRadius.circular(30),
+            //     ),
+            //     suffixIcon: IconButton(
+            //       icon: const Icon(Icons.add),
+            //       onPressed: () {
+            //         householdProvider.addUserToHousehold(_personNameController.text);
+            //         _personNameController.clear();
+            //       },
+            //     ),
+            //   ),
+            // ),
+            // Wrap(
+            //   spacing: 8,
+            //   children: addedMembers.map((person) {
+            //     return Chip(
+            //       label: Text(person),
+            //       onDeleted: () => _removePersonFromHouseHold(person),
+            //     );
+            //   }).toList(),
+            // ),
+            // // Anzeige der hinzugefügten Personen
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  onPressed: () {
-                    int id = TestData.houseHoldData.length-1;
+                  onPressed: () async {
                     String title = _houseHoldNameController.text;
                     String description = _houseHoldDescriptionController.text;
-                    List<String> members = List.from(_addedMembers);
-                    addHousehold(id, title, description, members);
-                    // Zurück zum HomeScreen
+                    final success = await householdProvider.createHousehold(title, description);
+                    if (success) {
+                      // Haushalt wurde erfolgreich erstellt
+                      customErrorDialog(context, 'Erfolg', 'Haushalt wurde erfolgreich erstellt.');
+                    } else {
+                      // Zeige eine Fehlermeldung an, wenn das Erstellen fehlschlägt.
+                      customErrorDialog(context, 'Fehler', 'Fehler beim Erstellen des Haushalts');
+                    }
                   },
                   child: const Text('Hinzufügen'),
                 ),
@@ -151,10 +120,10 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
                 ),
               ],
             ),
-
           ],
         ),
       ),
     );
+  });
   }
 }

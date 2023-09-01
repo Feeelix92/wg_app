@@ -100,6 +100,37 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
+  Future<List<String>> getHouseholdMembersNames(String householdId) async {
+    try {
+      final docRefHousehold = await db.collection("households").doc(householdId).get();
+
+      if (docRefHousehold.exists) {
+        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
+        final memberIds = householdDetailData['members'].cast<String>();
+
+        final memberNames = <String>[];
+
+        for (final memberId in memberIds) {
+          final docRefUser = await db.collection("users").doc(memberId).get();
+          if (docRefUser.exists) {
+            final userData = docRefUser.data() as Map<String, dynamic>;
+            final memberName = userData['username'];
+            memberNames.add(memberName);
+          }
+        }
+        return memberNames;
+      }
+
+      return [];
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return [];
+    }
+  }
+
+
 
 // Suche nach User in der Datenbank anhand der Email und füge ihn dem Haushalt hinzu
   Future<bool> addUserToHousehold(String email) async {
