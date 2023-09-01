@@ -9,7 +9,7 @@ import '../routes/app_router.gr.dart';
 
 class TaskListAddScreen extends StatefulWidget {
   const TaskListAddScreen({super.key, @PathParam('householdId') required this.householdId });
-  final int householdId;
+  final String householdId;
 
   @override
   State<TaskListAddScreen> createState() => _TaskListAddScreenState();

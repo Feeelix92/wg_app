@@ -8,7 +8,7 @@ import '../routes/app_router.gr.dart';
 
 class ShoppingListAddScreen extends StatefulWidget {
   const ShoppingListAddScreen({super.key, @PathParam('householdId') required this.householdId });
-  final int householdId;
+  final String householdId;
 
   @override
   State<ShoppingListAddScreen> createState() => _ShoppingListAddScreenState();

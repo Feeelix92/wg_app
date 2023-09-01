@@ -2,10 +2,12 @@ import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wg_app/screens/household_edit_screen.dart';
 
 import '../data/constants.dart';
 import '../model/household.dart';
+import '../providers/household_provider.dart';
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
@@ -14,7 +16,7 @@ import '../widgets/text/fonts.dart';
 @RoutePage()
 class HouseHoldDetailScreen extends StatefulWidget {
   const HouseHoldDetailScreen({super.key, @PathParam('householdId') required this.householdId });
-  final int householdId;
+  final String householdId;
 
   @override
   State<HouseHoldDetailScreen> createState() => _HouseHoldDetailScreenState();
@@ -23,66 +25,72 @@ class HouseHoldDetailScreen extends StatefulWidget {
 class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    Household currentHousehold = TestData.houseHoldData[widget.householdId];
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      endDrawer: const AppDrawer(),
-      body: Center(
-        child: Column(
-          children: [
-            H1(text: currentHousehold.title),
-            Text(currentHousehold.description),
-            // Anzeige der Personen-Kreise
-            if (currentHousehold.members.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 16.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: currentHousehold.members
-                      .map((member) => _buildMemberCircle(member))
-                      .toList(),
+    return Consumer<HouseholdProvider>(builder: (context, houseHoldData, child){
+      houseHoldData.loadHousehold(widget.householdId);
+      Household currentHousehold = houseHoldData.household;
+      return Scaffold(
+        appBar: const CustomAppBar(),
+        endDrawer: const AppDrawer(),
+        body: Center(
+          child: Column(
+            children: [
+              H1(text: currentHousehold.title),
+              Text(currentHousehold.description),
+              // Anzeige der Personen-Kreise
+              if (currentHousehold.members.isNotEmpty)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: currentHousehold.members
+                        .map((member) => _buildMemberCircle(member))
+                        .toList(),
+                  ),
+                ),
+              // ShoppingList Card
+              Card(
+                child: ListTile(
+                  title: const Text('Einkaufsliste'),
+                  onTap: () {
+                    // Navigiere zur ShoppingListScreen
+                    AutoRouter.of(context).push(
+                        ShoppingListRoute(householdId: widget.householdId));
+                  },
                 ),
               ),
-            // ShoppingList Card
-            Card(
-              child: ListTile(
-                title: const Text('Einkaufsliste'),
-                onTap: () {
-                  // Navigiere zur ShoppingListScreen
-                  AutoRouter.of(context).push(ShoppingListRoute(householdId: widget.householdId));
-                },
+              // TaskList Card
+              Card(
+                child: ListTile(
+                  title: const Text('Aufgabenliste'),
+                  onTap: () {
+                    // Navigiere zur TaskListScreen
+                    AutoRouter.of(context).push(
+                        TaskListRoute(householdId: widget.householdId));
+                  },
+                ),
               ),
-            ),
-            // TaskList Card
-            Card(
-              child: ListTile(
-                title: const Text('Aufgabenliste'),
-                onTap: () {
-                  // Navigiere zur TaskListScreen
-                  AutoRouter.of(context).push(TaskListRoute(householdId: widget.householdId));
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  AutoRouter.of(context).pop(); // Zurück zum HomeScreen
                 },
+                child: const Text('Zurück'),
               ),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
-              },
-              child: const Text('Zurück'),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) => HouseHoldEditScreen(householdId: widget.householdId),
-          );
-        },
-        child: const Icon(Icons.edit),
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) =>
+                  HouseHoldEditScreen(householdId: widget.householdId),
+            );
+          },
+          child: const Icon(Icons.edit),
+        ),
+      );
+    }
   }
 }
 

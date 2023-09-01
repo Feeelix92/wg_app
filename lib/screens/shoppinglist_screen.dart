@@ -13,7 +13,7 @@ class ShoppingListScreen extends StatefulWidget {
   const ShoppingListScreen(
       {super.key, @PathParam('householdId') required this.householdId});
 
-  final int householdId;
+  final String householdId;
 
   @override
   State<ShoppingListScreen> createState() => _ShoppingListScreenState();

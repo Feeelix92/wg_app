@@ -13,7 +13,7 @@ class TaskListScreen extends StatefulWidget {
   const TaskListScreen(
       {super.key, @PathParam('householdId') required this.householdId});
 
-  final int householdId;
+  final String householdId;
 
   @override
   State<TaskListScreen> createState() => _TaskListScreenState();
