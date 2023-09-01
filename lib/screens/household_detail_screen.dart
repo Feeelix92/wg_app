@@ -128,21 +128,32 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                 content: const Text('Möchten Sie diesen Haushalt wirklich löschen?'),
                                 actions: [
                                   TextButton(
-                                      onPressed: () async {
-                                        bool deleted = await houseHoldProvider.deleteHousehold(widget.householdId);
-                                        if (deleted) {
-                                          AutoRouter.of(context).popUntilRoot();
-                                          AutoRouter.of(context).replace(const HomeRoute());
-                                        } else {
-                                          customErrorDialog(context, "Fehler", "Haushalt konnte nicht gelöscht werden!");
-                                        }
-                                      },
-                                      child: const Text('Löschen')),
+                                    onPressed: () async {
+                                      // Setzen Sie isLoading auf true, um die Ladeanzeige anzuzeigen
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      bool deleted = await houseHoldProvider.deleteHousehold(widget.householdId);
+
+                                      if (deleted) {
+                                        AutoRouter.of(context).popUntilRoot();
+                                        AutoRouter.of(context).replace(const HomeRoute());
+                                      } else {
+                                        customErrorDialog(context, "Fehler","Haushalt konnte nicht gelöscht werden!");
+                                      }
+                                      // Nach dem Löschen des Haushalts
+                                      setState(() {
+                                        isLoading = false; // Setzen Sie isDeleting auf false, um die Ladeanzeige auszublenden
+                                      });
+                                    },
+                                    child: const Text('Löschen'),
+                                  ),
                                   TextButton(
-                                      onPressed: () {
-                                        AutoRouter.of(context).pop();
-                                      },
-                                      child: const Text('Abbrechen')),
+                                    onPressed: () {
+                                      AutoRouter.of(context).pop();
+                                    },
+                                    child: const Text('Abbrechen'),
+                                  ),
                                 ],
                               );
                             },
