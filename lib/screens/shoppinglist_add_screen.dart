@@ -100,7 +100,9 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
               children: [
                 ElevatedButton(
                   // onPressed: addShoppingItem,
-                  onPressed: () {},
+                  onPressed: () {
+                    // @ToDo ShoppingItem erstellen und in die ShoppingListe einfügen
+                  },
                   child: const Text('Hinzufügen'),
                 ),
                 ElevatedButton(

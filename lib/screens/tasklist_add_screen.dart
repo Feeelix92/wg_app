@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:wg_app/model/shoppingItem.dart';
 
-import '../data/constants.dart';
-import '../model/household.dart';
-import '../model/taskItem.dart';
-import '../routes/app_router.gr.dart';
+import '../model/TaskItem.dart';
+import '../providers/household_provider.dart';
 
 class TaskListAddScreen extends StatefulWidget {
   const TaskListAddScreen({super.key, @PathParam('householdId') required this.householdId });
@@ -23,7 +23,8 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
+      return Container(
       padding: const EdgeInsets.all(16.0),
       child: Column(
         children: [
@@ -82,7 +83,9 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
             children: [
               ElevatedButton(
                 // onPressed: addTask,
-                onPressed: () {},
+                onPressed: () {
+                  // @ToDo TaskItem erstellen und in die TaskListe einfügen
+                },
                 child: const Text('Hinzufügen'),
               ),
               ElevatedButton(
@@ -95,6 +98,7 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
           ),
         ],
       ),
-    );
+      );
+    });
   }
 }

@@ -1,12 +1,8 @@
-import 'package:wg_app/model/shoppingItem.dart';
-import 'package:wg_app/model/taskItem.dart';
-import 'package:wg_app/model/user_model.dart';
-
 class Household {
-  final String id;
+  final String id; // UUID des Users
   String title;
   String description;
-  String admin; // UUID des Users
+  String admin;
   List<String> members; // Liste der Personen, die dem Haushalt angehören
   List<dynamic> shoppingList; // Liste von Einkäufen
   List<dynamic> taskList; // Liste von Aufgaben
