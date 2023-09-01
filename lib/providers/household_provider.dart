@@ -130,7 +130,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-
+  // Funktion die die Namen aller Mitglieder eines Haushalts lädt
   Future<List<String>> getHouseholdMembersNames(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(householdId).get();
@@ -146,7 +146,9 @@ class HouseholdProvider extends ChangeNotifier {
           if (docRefUser.exists) {
             final userData = docRefUser.data() as Map<String, dynamic>;
             final memberName = userData['username'];
-            memberNames.add(memberName);
+            if(memberName != null) {
+              memberNames.add(memberName);
+            }
           }
         }
         return memberNames;

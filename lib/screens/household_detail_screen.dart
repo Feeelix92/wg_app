@@ -88,11 +88,23 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                       if (houseHoldProvider.household.members.isNotEmpty)
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: houseHoldProvider.household.members
-                                .map((member) => _buildMemberCircle(member))
-                                .toList(),
+                          child: FutureBuilder<List<String>>(
+                            future: houseHoldProvider.getHouseholdMembersNames(houseHoldProvider.household.id),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting) {
+                                return const CircularProgressIndicator(); // Zeige einen Ladekreis während des Ladens an
+                              } else if (snapshot.hasError) {
+                                return Text('Fehler: ${snapshot.error}');
+                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                                return const Text('Keine Mitglieder gefunden');
+                              } else {
+                                final members = snapshot.data;
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: members!.map((member) => _buildMemberCircle(member)).toList(),
+                                );
+                              }
+                            },
                           ),
                         ),
                       // ShoppingList Card
