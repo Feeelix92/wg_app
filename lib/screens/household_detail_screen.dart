@@ -143,7 +143,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                       }
                                       // Nach dem Löschen des Haushalts
                                       setState(() {
-                                        isLoading = false; // Setzen Sie isDeleting auf false, um die Ladeanzeige auszublenden
+                                        isLoading = false; // Setzen Sie isLoading auf false, um die Ladeanzeige auszublenden
                                       });
                                     },
                                     child: const Text('Löschen'),
@@ -185,7 +185,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
 }
 
 Widget _buildMemberCircle(String name) {
-  Color circleColor = _getRandomColor();
+  Color circleColor = _getMemberColor(name);
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
@@ -208,11 +208,11 @@ Widget _buildMemberCircle(String name) {
   );
 }
 
-Color _getRandomColor() {
-  Random random = Random();
-  int r = random.nextInt(256); // Zufälliger Rot-Wert (0-255)
-  int g = random.nextInt(256); // Zufälliger Grün-Wert (0-255)
-  int b = random.nextInt(256); // Zufälliger Blau-Wert (0-255)
-  return Color.fromARGB(255, r, g,
-      b); // ARGB-Format, Alpha auf 255 gesetzt (vollständig sichtbar)
+Color _getMemberColor(String name) {
+  // Name in einen Hash-Wert konvertieren
+  final int hashCode = name.hashCode;
+  final int r = (hashCode & 0xFF0000) >> 16;
+  final int g = (hashCode & 0x00FF00) >> 8;
+  final int b = (hashCode & 0x0000FF);
+  return Color.fromARGB(255, r, g, b);
 }
