@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../providers/household_provider.dart';
+import '../routes/app_router.gr.dart';
 import '../widgets/customErrorDialog.dart';
 
 class HouseHoldCreateScreen extends StatefulWidget {
@@ -101,14 +102,9 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
                   onPressed: () async {
                     String title = _houseHoldNameController.text;
                     String description = _houseHoldDescriptionController.text;
-                    final success = await householdProvider.createHousehold(title, description);
-                    if (success) {
-                      // Haushalt wurde erfolgreich erstellt
-                      customErrorDialog(context, 'Erfolg', 'Haushalt wurde erfolgreich erstellt.');
-                    } else {
-                      // Zeige eine Fehlermeldung an, wenn das Erstellen fehlschlägt.
-                      customErrorDialog(context, 'Fehler', 'Fehler beim Erstellen des Haushalts');
-                    }
+                    householdProvider.createHousehold(title, description);
+                    AutoRouter.of(context).pop(); // Pop Up schließen
+                    AutoRouter.of(context).replace(const HomeRoute()); // Zurück zum HomeScreen
                   },
                   child: const Text('Hinzufügen'),
                 ),

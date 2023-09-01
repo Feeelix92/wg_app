@@ -13,7 +13,7 @@ class HouseholdProvider extends ChangeNotifier {
   late Household _household;
   Household get household => _household;
 
-  late List<Household> _accessibleHouseholds;
+  late List<Household> _accessibleHouseholds = [];
   List<Household> get accessibleHouseholds => _accessibleHouseholds;
 
 
@@ -193,58 +193,70 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
   // Funktion die alle Haushalte eines Users lädt
-  Future<void> loadAllAccessibleHouseholds() async {
+  Future<bool> loadAllAccessibleHouseholds() async {
     try {
       final querySnapshot = await db.collection("households").where("members", arrayContains: auth.currentUser!.uid).get();
       final households = <Household>[];
 
       for (final docSnapshot in querySnapshot.docs) {
-        final householdDetailData = docSnapshot.data();
 
+        final householdDetailData = docSnapshot.data();
         final household = Household(
           admin: householdDetailData['admin'],
           id: docSnapshot.id,
           title: householdDetailData['title'],
           description: householdDetailData['description'],
           members: householdDetailData['members'].cast<String>(),
-          shoppingList: householdDetailData['shoppingList'].cast<String>(),
-          taskList: householdDetailData['taskList'].cast<String>(),
+          // shoppingList: householdDetailData['shoppingList'],
+          // taskList: householdDetailData['taskList'],
         );
         households.add(household);
       }
       _accessibleHouseholds = households;
       notifyListeners();
+      return true;
+
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
+      return false;
     }
   }
 
   // Funktion die einen Haushalt anhand der ID lädt
-  Future loadHousehold(String id) async {
+  Future<bool> loadHousehold(String id) async {
+    print("1");
     try {
       final docRefHousehold = await db.collection("households").doc(id.toString()).get();
+      print("2");
 
-      final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
+      final householdDetailData = docRefHousehold.data();
+      print("3");
 
       _household = Household(
-        admin: householdDetailData['admin'],
-        id: id,
-        title: householdDetailData['title'],
-        description: householdDetailData['description'],
-        members: householdDetailData['members'].cast<String>(),
-        shoppingList: householdDetailData['shoppingList'].cast<String>(),
-        taskList: householdDetailData['taskList'].cast<String>(),
+        admin: householdDetailData?['admin'],
+        id: docRefHousehold.id,
+        title: householdDetailData?['title'],
+        description: householdDetailData?['description'],
+        members: householdDetailData?['members'].cast<String>(),
+        // shoppingList: householdDetailData?['shoppingList'].cast<String>(),
+        // taskList: householdDetailData?['taskList'].cast<String>(),
       );
+
+      print("4");
+      print(_household.title);
 
       notifyListeners();
 
-      return;
+      // Wenn der Haushalt erfolgreich geladen wurde, dann true zurückgeben
+      return true;
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
+      // Wenn der Haushalt nicht geladen werden konnte, dann false zurückgeben
+      return false;
     }
   }
 

@@ -15,7 +15,9 @@ import '../widgets/text/fonts.dart';
 
 @RoutePage()
 class HouseHoldDetailScreen extends StatefulWidget {
-  const HouseHoldDetailScreen({super.key, @PathParam('householdId') required this.householdId });
+  const HouseHoldDetailScreen(
+      {super.key, @PathParam('householdId') required this.householdId});
+
   final String householdId;
 
   @override
@@ -23,73 +25,125 @@ class HouseHoldDetailScreen extends StatefulWidget {
 }
 
 class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
+  bool isLoading = true; // Starte mit dem Ladezustand
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData(); // Starte den Ladevorgang beim Initialisieren des Widgets
+  }
+
+  Future<void> _loadData() async {
+    try {
+      // Lade deine Daten hier, z.B. mit deinem Provider
+      final householdProvider =
+          Provider.of<HouseholdProvider>(context, listen: false);
+      final success = await householdProvider.loadHousehold(widget.householdId);
+
+      if (success) {
+        // Ladevorgang erfolgreich abgeschlossen
+        setState(() {
+          isLoading = false;
+        });
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Fehler beim Laden des Haushalts.'),
+            duration: Duration(seconds: 3),
+          ),
+        );
+        // Fehler beim Laden der Daten
+        setState(() {
+          isLoading = false;
+        });
+      }
+    } catch (e) {
+      // Handle andere Fehler hier
+      print(e);
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<HouseholdProvider>(builder: (context, houseHoldProvider, child){
-      houseHoldProvider.loadHousehold(widget.householdId);
-      return Scaffold(
+    return Scaffold(
         appBar: const CustomAppBar(),
         endDrawer: const AppDrawer(),
-        body: Center(
-          child: Column(
-            children: [
-              H1(text: houseHoldProvider.household.title),
-              Text(houseHoldProvider.household.description),
-              // Anzeige der Personen-Kreise
-              if (houseHoldProvider.household.members.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: houseHoldProvider.household.members
-                        .map((member) => _buildMemberCircle(member))
-                        .toList(),
-                  ),
-                ),
-              // ShoppingList Card
-              Card(
-                child: ListTile(
-                  title: const Text('Einkaufsliste'),
-                  onTap: () {
-                    // Navigiere zur ShoppingListScreen
-                    AutoRouter.of(context).push(
-                        ShoppingListRoute(householdId: widget.householdId));
-                  },
-                ),
-              ),
-              // TaskList Card
-              Card(
-                child: ListTile(
-                  title: const Text('Aufgabenliste'),
-                  onTap: () {
-                    // Navigiere zur TaskListScreen
-                    AutoRouter.of(context).push(
-                        TaskListRoute(householdId: widget.householdId));
-                  },
-                ),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+        body: isLoading
+            ? const Center(
+                child: CircularProgressIndicator(), // Ladekreis anzeigen
+              )
+            : Consumer<HouseholdProvider>(
+                builder: (context, houseHoldProvider, child) {
+                  // Ansonsten baue die Hauptansicht
+                  return Scaffold(
+                    appBar: const CustomAppBar(),
+                    endDrawer: const AppDrawer(),
+                    body: Center(
+                      child: Column(
+                        children: [
+                          H1(text: houseHoldProvider.household.title),
+                          Text(houseHoldProvider.household.description),
+                          // Anzeige der Personen-Kreise
+                          if (houseHoldProvider.household.members.isNotEmpty)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 16.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: houseHoldProvider.household.members
+                                    .map((member) => _buildMemberCircle(member))
+                                    .toList(),
+                              ),
+                            ),
+                          // ShoppingList Card
+                          Card(
+                            child: ListTile(
+                              title: const Text('Einkaufsliste'),
+                              onTap: () {
+                                // Navigiere zur ShoppingListScreen
+                                AutoRouter.of(context).push(ShoppingListRoute(
+                                    householdId: widget.householdId));
+                              },
+                            ),
+                          ),
+                          // TaskList Card
+                          Card(
+                            child: ListTile(
+                              title: const Text('Aufgabenliste'),
+                              onTap: () {
+                                // Navigiere zur TaskListScreen
+                                AutoRouter.of(context).push(TaskListRoute(
+                                    householdId: widget.householdId));
+                              },
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          ElevatedButton(
+                            onPressed: () {
+                              AutoRouter.of(context)
+                                  .pop(); // Zurück zum HomeScreen
+                            },
+                            child: const Text('Zurück'),
+                          ),
+                        ],
+                      ),
+                    ),
+                    floatingActionButton: FloatingActionButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) => HouseHoldEditScreen(
+                              householdId: widget.householdId),
+                        );
+                      },
+                      child: const Icon(Icons.edit),
+                    ),
+                  );
                 },
-                child: const Text('Zurück'),
-              ),
-            ],
-          ),
-        ),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            showModalBottomSheet(
-              context: context,
-              builder: (context) =>
-                  HouseHoldEditScreen(householdId: widget.householdId),
-            );
-          },
-          child: const Icon(Icons.edit),
-        ),
-      );
-    });
+              ));
   }
 }
 
@@ -122,8 +176,6 @@ Color _getRandomColor() {
   int r = random.nextInt(256); // Zufälliger Rot-Wert (0-255)
   int g = random.nextInt(256); // Zufälliger Grün-Wert (0-255)
   int b = random.nextInt(256); // Zufälliger Blau-Wert (0-255)
-  return Color.fromARGB(255, r, g, b); // ARGB-Format, Alpha auf 255 gesetzt (vollständig sichtbar)
+  return Color.fromARGB(255, r, g,
+      b); // ARGB-Format, Alpha auf 255 gesetzt (vollständig sichtbar)
 }
-
-
-
