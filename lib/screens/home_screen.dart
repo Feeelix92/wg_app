@@ -25,8 +25,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HouseholdProvider>(builder: (context, householdData, child) {
-      householdData.loadAllAccessibleHouseholds();
+    return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
+      householdProvider.loadAllAccessibleHouseholds();
       return Scaffold(
         appBar: const CustomAppBar(),
         endDrawer: const AppDrawer(),
@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: householdData.accessibleHouseholds.length,
+                  itemCount: householdProvider.accessibleHouseholds.length,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
@@ -50,8 +50,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              H2(text: householdData.accessibleHouseholds[index].title), // Verwende die Liste von houseHoldData
-                              H3(text: householdData.accessibleHouseholds[index].description), // Verwende die Liste von houseHoldData
+                              H2(text: householdProvider.accessibleHouseholds[index].title), // Verwende die Liste von houseHoldData
+                              H3(text: householdProvider.accessibleHouseholds[index].description), // Verwende die Liste von houseHoldData
                             ],
                           ),
                         ),

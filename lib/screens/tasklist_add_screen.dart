@@ -19,30 +19,7 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   DateTime _selectedDate = DateTime.now();
-  final String _selectedPerson = '';
-
-
-  void addTask() {
-    String title = _titleController.text;
-    String description = _descriptionController.text;
-    DateTime date = _selectedDate;
-    String assignedTo = _selectedPerson;
-
-    if (title.isNotEmpty && description.isNotEmpty) {
-      setState(() {
-        Household currentHousehold = TestData.houseHoldData[widget.householdId];
-        currentHousehold.taskList.add(
-          TaskItem(
-            title: title,
-            description: description,
-            date: date,
-            assignedTo: assignedTo,
-          ),
-        );
-       });
-    }
-    AutoRouter.of(context).push(TaskListRoute(householdId: widget.householdId));
-  }
+  String selectedPerson = '';
 
   @override
   Widget build(BuildContext context) {
@@ -104,7 +81,8 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton(
-                onPressed: addTask,
+                // onPressed: addTask,
+                onPressed: () {},
                 child: const Text('Hinzufügen'),
               ),
               ElevatedButton(
