@@ -13,6 +13,9 @@ class HouseholdProvider extends ChangeNotifier {
   late Household _household;
   Household get household => _household;
 
+  late List<Household> _accessibleHouseholds;
+  List<Household> get accessibleHouseholds => _accessibleHouseholds;
+
 
   // Funktion die den aktuellen Haushalt updatet
   Future updateHouseholdInformation() async {
@@ -135,9 +138,9 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
   // Funktion die alle Haushalte eines Users lädt
-  Future<List<Household>> loadAllAccessibleHouseholds(String userId) async {
+  Future<void> loadAllAccessibleHouseholds() async {
     try {
-      final querySnapshot = await db.collection("households").where("members", arrayContains: userId).get();
+      final querySnapshot = await db.collection("households").where("members", arrayContains: auth.currentUser!.uid).get();
       final households = <Household>[];
 
       for (final docSnapshot in querySnapshot.docs) {
@@ -154,14 +157,12 @@ class HouseholdProvider extends ChangeNotifier {
         );
         households.add(household);
       }
-
-      return households;
+      _accessibleHouseholds = households;
+      notifyListeners();
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      // Hier kannst du Fehlerhandhabung hinzufügen, je nach Bedarf.
-      return [];
     }
   }
 

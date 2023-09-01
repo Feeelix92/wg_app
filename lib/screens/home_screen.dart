@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/providers/household_provider.dart';
+import '../model/household.dart';
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
@@ -22,7 +23,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {});
   }
 
   @override
@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Expanded(
                 child: ListView.builder(
                   scrollDirection: Axis.vertical,
-                  itemCount: houseHoldData.,
+                  itemCount: houseHoldData.households.length,
                   itemBuilder: (BuildContext context, int index) {
                     return InkWell(
                       onTap: () {
@@ -51,8 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              H2(text: houseHoldData[index].title),
-                              H3(text: houseHoldData[index].description),
+                              H2(text: houseHoldData.households[index].title), // Verwende die Liste von houseHoldData
+                              H3(text: houseHoldData.households[index].description), // Verwende die Liste von houseHoldData
                             ],
                           ),
                         ),
