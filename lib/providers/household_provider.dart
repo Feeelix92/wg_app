@@ -100,6 +100,35 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
+  Future<bool> deleteHousehold(String householdId) async {
+    try {
+      // LÖschen der Shopping- und Task-Liste des Haushalts
+      await Future.wait([
+        db.collection("households").doc(householdId).collection("shoppingList").get().then((querySnapshot) {
+          for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+            doc.reference.delete();
+          }
+        }),
+        db.collection("households").doc(householdId).collection("taskList").get().then((querySnapshot) {
+          for (QueryDocumentSnapshot doc in querySnapshot.docs) {
+            doc.reference.delete();
+          }
+        }),
+      ]);
+
+      // Löschen des Haushalts
+      await db.collection("households").doc(householdId).delete();
+
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return false;
+    }
+  }
+
+
   Future<List<String>> getHouseholdMembersNames(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(householdId).get();

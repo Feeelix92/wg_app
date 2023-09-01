@@ -55,16 +55,16 @@ class _AppDrawerState extends State<AppDrawer> {
                     actions: [
                       TextButton(
                           onPressed: () {
-                            AutoRouter.of(context).pop();
-                          },
-                          child: const Text('Abbrechen')),
-                      TextButton(
-                          onPressed: () {
                             FirebaseAuth.instance.signOut();
                             AutoRouter.of(context).popUntilRoot();
                             AutoRouter.of(context).replace(const LoginRoute());
                           },
                           child: const Text('Abmelden')),
+                      TextButton(
+                          onPressed: () {
+                            AutoRouter.of(context).pop();
+                          },
+                          child: const Text('Abbrechen')),
                     ],
                   );
                 },

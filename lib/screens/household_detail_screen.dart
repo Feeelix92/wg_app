@@ -117,11 +117,36 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      ElevatedButton(
+                      ElevatedButton.icon(
                         onPressed: () {
-                          AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: const Text('Löschen'),
+                                content: const Text('Möchten Sie diesen Haushalt wirklich löschen?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        AutoRouter.of(context).popUntilRoot();
+                                        AutoRouter.of(context).replace(const HomeRoute());
+                                      },
+                                      child: const Text('Löschen')),
+                                  TextButton(
+                                      onPressed: () {
+                                        AutoRouter.of(context).pop();
+                                      },
+                                      child: const Text('Abbrechen')),
+                                ],
+                              );
+                            },
+                          );
                         },
-                        child: const Text('Zurück'),
+                        style: ElevatedButton.styleFrom(
+                          foregroundColor: Colors.red[900],
+                        ),
+                        icon: const Icon(Icons.delete),
+                        label: const Text("Haushalt Löschen"),
                       ),
                     ],
                   ),
