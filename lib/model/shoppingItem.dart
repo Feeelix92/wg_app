@@ -2,13 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ShoppingItem {
   final String id;
-  final String name;
+  String name;
   String? description;
-  final int amount;
-  final double price;
+  int amount;
+  double price;
   Timestamp? dateDue;
   String? assignedTo; // UUID des Users
-  final bool done;
+  bool done;
   String? doneBy; // UUID des Users
   Timestamp? doneOn;
   int? points;

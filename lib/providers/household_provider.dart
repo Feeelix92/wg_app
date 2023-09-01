@@ -77,6 +77,30 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
+  // Funktion die die Daten eines Haushalts in der Datenbank aktualisiert
+  Future<bool> updateHouseholdInfo(String title, String description) async {
+    try {
+      await db.collection("households").doc(_household.id).update({
+        'title': title,
+        'description': description,
+      });
+
+      // Nach dem Aktualisieren der Daten in Firebase die lokale Kopie aktualisieren
+      _household.title = title;
+      _household.description = description;
+
+      notifyListeners();
+
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return false;
+    }
+  }
+
+
 // Suche nach User in der Datenbank anhand der Email und füge ihn dem Haushalt hinzu
   Future<bool> addUserToHousehold(String email) async {
     try {

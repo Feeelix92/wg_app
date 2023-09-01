@@ -4,9 +4,9 @@ import 'package:wg_app/model/user_model.dart';
 
 class Household {
   final String id;
-  final String title;
-  final String description;
-  final String admin; // UUID des Users
+  String title;
+  String description;
+  String admin; // UUID des Users
   List<String> members; // Liste der Personen, die dem Haushalt angehören
   List<ShoppingItem> shoppingList; // Liste von Einkäufen
   List<TaskItem> taskList; // Liste von Aufgaben

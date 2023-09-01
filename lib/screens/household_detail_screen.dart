@@ -25,24 +25,23 @@ class HouseHoldDetailScreen extends StatefulWidget {
 class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
   @override
   Widget build(BuildContext context) {
-    return Consumer<HouseholdProvider>(builder: (context, houseHoldData, child){
-      houseHoldData.loadHousehold(widget.householdId);
-      Household currentHousehold = houseHoldData.household;
+    return Consumer<HouseholdProvider>(builder: (context, houseHoldProvider, child){
+      houseHoldProvider.loadHousehold(widget.householdId);
       return Scaffold(
         appBar: const CustomAppBar(),
         endDrawer: const AppDrawer(),
         body: Center(
           child: Column(
             children: [
-              H1(text: currentHousehold.title),
-              Text(currentHousehold.description),
+              H1(text: houseHoldProvider.household.title),
+              Text(houseHoldProvider.household.description),
               // Anzeige der Personen-Kreise
-              if (currentHousehold.members.isNotEmpty)
+              if (houseHoldProvider.household.members.isNotEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: currentHousehold.members
+                    children: houseHoldProvider.household.members
                         .map((member) => _buildMemberCircle(member))
                         .toList(),
                   ),
@@ -90,7 +89,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
           child: const Icon(Icons.edit),
         ),
       );
-    }
+    });
   }
 }
 

@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TaskItem {
   final String id;
-  final String name;
+  String name;
   String? description;
   Timestamp? dateDue;
   String? assignedTo; // UUID des Users
-  final bool done;
+  bool done;
   String? doneBy; // UUID des Users
   Timestamp? doneOn;
   int? points;
