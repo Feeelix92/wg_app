@@ -25,7 +25,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(builder: (context, houseHoldData, child) {
-      List<ShoppingItem> shoppingList = houseHoldData.household.shoppingList;
+      List<dynamic> shoppingList = houseHoldData.household.shoppingList;
       return Scaffold(
         appBar: const CustomAppBar(),
         endDrawer: const AppDrawer(),

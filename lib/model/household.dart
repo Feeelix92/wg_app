@@ -8,8 +8,8 @@ class Household {
   String description;
   String admin; // UUID des Users
   List<String> members; // Liste der Personen, die dem Haushalt angehören
-  List<ShoppingItem> shoppingList; // Liste von Einkäufen
-  List<TaskItem> taskList; // Liste von Aufgaben
+  List<dynamic> shoppingList; // Liste von Einkäufen
+  List<dynamic> taskList; // Liste von Aufgaben
 
   Household({
     required this.admin,
@@ -17,8 +17,8 @@ class Household {
     required this.title,
     required this.description,
     required this.members,
-    List<ShoppingItem>? shoppingList, // Standardmäßig leere Listen
-    List<TaskItem>? taskList, // Standardmäßig leere Listen
+    List<dynamic>? shoppingList, // Standardmäßig leere Listen
+    List<dynamic>? taskList, // Standardmäßig leere Listen
   }) : shoppingList = shoppingList ?? [],
         taskList = taskList ?? [];
 }

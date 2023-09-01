@@ -207,8 +207,8 @@ class HouseholdProvider extends ChangeNotifier {
           title: householdDetailData['title'],
           description: householdDetailData['description'],
           members: householdDetailData['members'].cast<String>(),
-          // shoppingList: householdDetailData['shoppingList'],
-          // taskList: householdDetailData['taskList'],
+          shoppingList: householdDetailData['shoppingList'],
+          taskList: householdDetailData['taskList'],
         );
         households.add(household);
       }
@@ -229,17 +229,19 @@ class HouseholdProvider extends ChangeNotifier {
     try {
       final docRefHousehold = await db.collection("households").doc(id).get();
       final householdDetailData = docRefHousehold.data();
-      print(docRefHousehold.data());
 
       _household = Household(
         admin: householdDetailData?['admin'],
         id: docRefHousehold.id,
         title: householdDetailData?['title'],
         description: householdDetailData?['description'],
-        members: householdDetailData?['members'] as List<String>,
-        // shoppingList: householdDetailData?['shoppingList'].cast<String>(),
-        // taskList: householdDetailData?['taskList'].cast<String>(),
+        members: householdDetailData?['members'].cast<String>(),
+        shoppingList: householdDetailData?['shoppingList'],
+        taskList: householdDetailData?['taskList'],
+
       );
+
+      print(household);
 
       notifyListeners();
 
