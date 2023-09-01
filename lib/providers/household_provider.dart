@@ -228,18 +228,20 @@ class HouseholdProvider extends ChangeNotifier {
   Future<bool> loadHousehold(String id) async {
     print("1");
     try {
-      final docRefHousehold = await db.collection("households").doc(id.toString()).get();
+      final docRefHousehold = await db.collection("households").doc(id).get();
       print("2");
 
       final householdDetailData = docRefHousehold.data();
       print("3");
+
+      print(docRefHousehold.data());
 
       _household = Household(
         admin: householdDetailData?['admin'],
         id: docRefHousehold.id,
         title: householdDetailData?['title'],
         description: householdDetailData?['description'],
-        members: householdDetailData?['members'].cast<String>(),
+        members: householdDetailData?['members'] as List<String>,
         // shoppingList: householdDetailData?['shoppingList'].cast<String>(),
         // taskList: householdDetailData?['taskList'].cast<String>(),
       );

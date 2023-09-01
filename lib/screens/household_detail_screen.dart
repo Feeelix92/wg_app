@@ -54,7 +54,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
         );
         // Fehler beim Laden der Daten
         setState(() {
-          isLoading = false;
+          isLoading = true;
         });
       }
     } catch (e) {
