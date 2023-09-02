@@ -155,8 +155,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                       if (deleted) {
                                         // Lade die Daten neu
                                         _loadData();
-                                        AutoRouter.of(context).popUntilRoot();
-                                        AutoRouter.of(context).replace(const HomeRoute());
+                                        AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
                                       } else {
                                         customErrorDialog(context, "Fehler","Haushalt konnte nicht gelöscht werden!");
                                       }

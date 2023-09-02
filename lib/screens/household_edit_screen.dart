@@ -87,8 +87,7 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
                       final success = await householdProvider.updateHouseholdInfo(title, description);
                       if (success) {
                         // Die Daten wurden erfolgreich aktualisiert
-                        AutoRouter.of(context).push(HouseHoldDetailRoute(
-                            householdId: widget.householdId)); // Zurück zur Detailseite
+                        AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
                       } else {
                         // Zeige eine Fehlermeldung an, wenn das Aktualisieren fehlschlägt.
                         customErrorDialog(context, 'Fehler', 'Fehler beim Aktualisieren der Haushaltsinformationen.');

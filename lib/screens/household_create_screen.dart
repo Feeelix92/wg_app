@@ -116,8 +116,7 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
                     String description = _houseHoldDescriptionController.text;
                     householdProvider.createHousehold(title, description);
                     _loadData();
-                    AutoRouter.of(context).pop(); // Pop Up schließen
-                    AutoRouter.of(context).replace(const HomeRoute()); // Zurück zum HomeScreen
+                    AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
                   },
                   child: const Text('Hinzufügen'),
                 ),
