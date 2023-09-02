@@ -1,10 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import '../providers/household_provider.dart';
 import '../routes/app_router.gr.dart';
-import '../widgets/customErrorDialog.dart';
 
 class HouseHoldCreateScreen extends StatefulWidget {
   const HouseHoldCreateScreen({super.key});
@@ -17,6 +15,20 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
   final TextEditingController _houseHoldNameController = TextEditingController();
   final TextEditingController _houseHoldDescriptionController = TextEditingController();
   final TextEditingController _personNameController = TextEditingController();
+
+  Future<void> _loadData() async {
+    try {
+        // Laden der Daten
+        final householdProvider =
+        Provider.of<HouseholdProvider>(context, listen: false);
+        await householdProvider.loadAllAccessibleHouseholds();
+
+    } catch (e) {
+      // Handle andere Fehler hier
+      print(e);
+    }
+  }
+
 
   @override
   void initState() {
@@ -103,6 +115,7 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
                     String title = _houseHoldNameController.text;
                     String description = _houseHoldDescriptionController.text;
                     householdProvider.createHousehold(title, description);
+                    _loadData();
                     AutoRouter.of(context).pop(); // Pop Up schließen
                     AutoRouter.of(context).replace(const HomeRoute()); // Zurück zum HomeScreen
                   },

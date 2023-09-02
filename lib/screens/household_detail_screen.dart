@@ -7,7 +7,6 @@ import 'package:wg_app/screens/household_edit_screen.dart';
 import 'package:wg_app/widgets/customErrorDialog.dart';
 
 import '../data/constants.dart';
-import '../model/household.dart';
 import '../providers/household_provider.dart';
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
@@ -39,9 +38,10 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       // Lade deine Daten hier, z.B. mit deinem Provider
       final householdProvider =
           Provider.of<HouseholdProvider>(context, listen: false);
-      final success = await householdProvider.loadHousehold(widget.householdId);
+      final loadHousehold = await householdProvider.loadHousehold(widget.householdId);
+      final loadAllAccessibleHouseholds = await householdProvider.loadAllAccessibleHouseholds();
 
-      if (success) {
+      if (loadHousehold && loadAllAccessibleHouseholds) {
         // Ladevorgang erfolgreich abgeschlossen
         setState(() {
           isLoading = false;
@@ -65,6 +65,11 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
         isLoading = false;
       });
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
@@ -148,6 +153,8 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                       bool deleted = await houseHoldProvider.deleteHousehold(widget.householdId);
 
                                       if (deleted) {
+                                        // Lade die Daten neu
+                                        _loadData();
                                         AutoRouter.of(context).popUntilRoot();
                                         AutoRouter.of(context).replace(const HomeRoute());
                                       } else {
@@ -197,7 +204,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
 }
 
 Widget _buildMemberCircle(String name) {
-  Color circleColor = _getMemberColor(name);
+  Color circleColor = convertToColor(name);
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
@@ -220,11 +227,3 @@ Widget _buildMemberCircle(String name) {
   );
 }
 
-Color _getMemberColor(String name) {
-  // Name in einen Hash-Wert konvertieren
-  final int hashCode = name.hashCode;
-  final int r = (hashCode & 0xFF0000) >> 16;
-  final int g = (hashCode & 0x00FF00) >> 8;
-  final int b = (hashCode & 0x0000FF);
-  return Color.fromARGB(255, r, g, b);
-}

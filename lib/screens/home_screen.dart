@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/providers/household_provider.dart';
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
@@ -18,6 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   bool isLoading = true; // Starte mit dem Ladezustand
+  DateTime? lastLoadTime; // Zeitpunkt des letzten erfolgreichen Datenladens
 
   @override
   void initState() {
@@ -27,27 +29,31 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<void> _loadData() async {
     try {
-      // Laden der Daten
-      final householdProvider =
-          Provider.of<HouseholdProvider>(context, listen: false);
-      final success = await householdProvider.loadAllAccessibleHouseholds();
+      // Prüfen, ob genügend Zeit seit dem letzten Laden vergangen ist
+      if (lastLoadTime == null || DateTime.now().difference(lastLoadTime!) > const Duration(minutes: 5)) {
+        // Laden der Daten
+        final householdProvider =
+        Provider.of<HouseholdProvider>(context, listen: false);
+        final success = await householdProvider.loadAllAccessibleHouseholds();
 
-      if (success) {
-        // Ladevorgang erfolgreich abgeschlossen
-        setState(() {
-          isLoading = false;
-        });
-      } else {
-        // Fehler beim Laden der Daten
-        setState(() {
-          isLoading = false;
-        });
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Fehler beim Laden der Haushalte.'),
-            duration: Duration(seconds: 3),
-          ),
-        );
+        if (success) {
+          // Zeitpunkt des letzten erfolgreichen Datenladens aktualisieren
+          setState(() {
+            lastLoadTime = DateTime.now();
+            isLoading = false;
+          });
+        } else {
+          // Fehler beim Laden der Daten
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Fehler beim Laden der Haushalte.'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
       }
     } catch (e) {
       // Handle andere Fehler hier
@@ -59,7 +65,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    // Rufe _loadData nur auf, wenn genügend Zeit seit dem letzten Laden vergangen ist
+    _loadData();
     return Scaffold(
       appBar: const CustomAppBar(),
       endDrawer: const AppDrawer(),
@@ -69,7 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
             )
           : Consumer<HouseholdProvider>(
               builder: (context, householdProvider, child) {
-                _loadData(); // Lade die Daten erneut, wenn der Screen neu aufgebaut wird
                 // Ansonsten baue die Hauptansicht
                 return Center(
                   child: Column(
@@ -83,24 +95,18 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () async {
-                                AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: householdProvider.accessibleHouseholds[index].id),
-                                );
+                                AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: householdProvider.accessibleHouseholds[index].id),);
                               },
                               child: SizedBox(
-                                height: 200,
+                                height: 150,
                                 width: 300,
                                 child: Card(
+                                  color: increaseBrightness(convertToColor(householdProvider.accessibleHouseholds[index].title), 0.7),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      H2(
-                                          text: householdProvider
-                                              .accessibleHouseholds[index]
-                                              .title),
-                                      H3(
-                                          text: householdProvider
-                                              .accessibleHouseholds[index]
-                                              .description),
+                                      H2(text: householdProvider.accessibleHouseholds[index].title),
+                                      H3(text: householdProvider.accessibleHouseholds[index].description),
                                     ],
                                   ),
                                 ),
