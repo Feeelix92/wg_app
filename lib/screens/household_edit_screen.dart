@@ -46,7 +46,7 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
+    return Consumer<HouseholdProvider>(builder: (context, houseHoldProvider, child) {
       return Container(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
@@ -84,8 +84,9 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
                     onPressed: () async {
                       final title = _houseHoldNameController.text;
                       final description = _houseHoldDescriptionController.text;
-                      final success = await householdProvider.updateHouseholdInfo(title, description);
-                      if (success) {
+                      final success = await houseHoldProvider.updateHouseholdInfo(title, description);
+                      final loadAllAccessibleHouseholds = await houseHoldProvider.loadAllAccessibleHouseholds();
+                      if (success && loadAllAccessibleHouseholds) {
                         // Die Daten wurden erfolgreich aktualisiert
                         AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
                       } else {

@@ -39,9 +39,8 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       final householdProvider =
           Provider.of<HouseholdProvider>(context, listen: false);
       final loadHousehold = await householdProvider.loadHousehold(widget.householdId);
-      final loadAllAccessibleHouseholds = await householdProvider.loadAllAccessibleHouseholds();
 
-      if (loadHousehold && loadAllAccessibleHouseholds) {
+      if (loadHousehold) {
         // Ladevorgang erfolgreich abgeschlossen
         setState(() {
           isLoading = false;
@@ -150,11 +149,9 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                       setState(() {
                                         isLoading = true;
                                       });
-                                      bool deleted = await houseHoldProvider.deleteHousehold(widget.householdId);
-
-                                      if (deleted) {
-                                        // Lade die Daten neu
-                                        _loadData();
+                                      final deleted = await houseHoldProvider.deleteHousehold(widget.householdId);
+                                      final loadAllAccessibleHouseholds = await houseHoldProvider.loadAllAccessibleHouseholds();
+                                      if (deleted && loadAllAccessibleHouseholds) {
                                         AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
                                       } else {
                                         customErrorDialog(context, "Fehler","Haushalt konnte nicht gelöscht werden!");
