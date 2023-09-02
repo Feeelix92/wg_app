@@ -1,10 +1,10 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wg_app/screens/tasklist_add_screen.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
-import '../data/constants.dart';
-import '../model/household.dart';
 import '../model/taskItem.dart';
+import '../providers/household_provider.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
 
@@ -13,7 +13,7 @@ class TaskListScreen extends StatefulWidget {
   const TaskListScreen(
       {super.key, @PathParam('householdId') required this.householdId});
 
-  final int householdId;
+  final String householdId;
 
   @override
   State<TaskListScreen> createState() => _TaskListScreenState();
@@ -22,11 +22,12 @@ class TaskListScreen extends StatefulWidget {
 class _TaskListScreenState extends State<TaskListScreen> {
   @override
   Widget build(BuildContext context) {
-    Household currentHousehold = TestData.houseHoldData[widget.householdId];
-    List<TaskItem> taskList = currentHousehold.taskList;
-    return Scaffold(
-      appBar: const CustomAppBar(),
-      endDrawer: const AppDrawer(),
+    return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
+      householdProvider.loadHousehold(widget.householdId); // Lade den aktuellen Haushalt
+      List<dynamic> taskList = householdProvider.household.taskList;
+      return Scaffold(
+        appBar: const CustomAppBar(),
+        endDrawer: const AppDrawer(),
         body: Column(
           children: [
             const Padding(
@@ -39,16 +40,15 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 itemBuilder: (context, index) {
                   final taskItem = taskList[index];
                   return ListTile(
-                    title: Text(taskItem.title),
-                    subtitle: Text(taskItem.description),
+                    title: Text(taskItem.name),
+                    subtitle: Text(taskItem.description??""), // ??"" = wenn null, dann ""
                     trailing: Switch(
                       onChanged: (bool? value) {
-                        // This is called when the user toggles the switch.
                         setState(() {
-                          taskItem.isDone = value!;
+                          taskItem.done = value!;
                         });
                       },
-                      value: taskItem.isDone,
+                      value: taskItem.done,
                     ),
                   );
                 },
@@ -63,17 +63,17 @@ class _TaskListScreenState extends State<TaskListScreen> {
             const SizedBox(height: 20.0)
           ],
         ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            builder: (context) => SingleChildScrollView(
-                child: TaskListAddScreen(householdId: widget.householdId)
-            ),
-          );
-        },
-        child: const Icon(Icons.add),
-      ),
-    );
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (context) => SingleChildScrollView(
+                  child: TaskListAddScreen(householdId: widget.householdId)),
+            );
+          },
+          child: const Icon(Icons.add),
+        ),
+      );
+    });
   }
 }

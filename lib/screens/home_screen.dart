@@ -1,10 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wg_app/data/constants.dart';
+import 'package:wg_app/providers/household_provider.dart';
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/fonts.dart';
-import '../data/constants.dart';
 import 'household_create_screen.dart';
 
 @RoutePage()
@@ -16,57 +18,114 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  bool isLoading = true; // Starte mit dem Ladezustand
+  DateTime? lastLoadTime; // Zeitpunkt des letzten erfolgreichen Datenladens
 
   @override
   void initState() {
     super.initState();
-    setState(() {});
+    _loadData(); // Starte den Ladevorgang beim Initialisieren des Widgets
+  }
+
+  Future<void> _loadData() async {
+    try {
+      // Prüfen, ob genügend Zeit seit dem letzten Laden vergangen ist
+      if (lastLoadTime == null || DateTime.now().difference(lastLoadTime!) > const Duration(minutes: 5)) {
+        // Laden der Daten
+        final householdProvider =
+        Provider.of<HouseholdProvider>(context, listen: false);
+        final success = await householdProvider.loadAllAccessibleHouseholds();
+
+        if (success) {
+          // Zeitpunkt des letzten erfolgreichen Datenladens aktualisieren
+          setState(() {
+            lastLoadTime = DateTime.now();
+            isLoading = false;
+          });
+        } else {
+          // Fehler beim Laden der Daten
+          setState(() {
+            isLoading = false;
+          });
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Fehler beim Laden der Haushalte.'),
+              duration: Duration(seconds: 3),
+            ),
+          );
+        }
+      }
+    } catch (e) {
+      // Handle andere Fehler hier
+      print(e);
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    // Rufe _loadData nur auf, wenn genügend Zeit seit dem letzten Laden vergangen ist
+    _loadData();
     return Scaffold(
       appBar: const CustomAppBar(),
       endDrawer: const AppDrawer(),
-      body: Center(
-        child: Column(
-          children: [
-            const H1(text: 'Haushalt'),
-            Expanded(
-              child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                itemCount: TestData.houseHoldData.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return InkWell(
-                    onTap: () {
-                      AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: index));
-                    },
-                    child: SizedBox(
-                      height: 200,
-                      width: 300,
-                      child: Card(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            H2(text: TestData.houseHoldData[index].title),
-                            H3(text: TestData.houseHoldData[index].description),
-                          ],
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(), // Ladekreis anzeigen
+            )
+          : Consumer<HouseholdProvider>(
+              builder: (context, householdProvider, child) {
+                // Ansonsten baue die Hauptansicht
+                return Center(
+                  child: Column(
+                    children: [
+                      const H1(text: 'Haushalt'),
+                      Expanded(
+                        child: ListView.builder(
+                          scrollDirection: Axis.vertical,
+                          itemCount:
+                              householdProvider.accessibleHouseholds.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return InkWell(
+                              onTap: () async {
+                                AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: householdProvider.accessibleHouseholds[index].id),);
+                              },
+                              child: SizedBox(
+                                height: 150,
+                                width: 300,
+                                child: Card(
+                                  color: increaseBrightness(convertToColor(householdProvider.accessibleHouseholds[index].title), 0.7),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      H2(text: householdProvider.accessibleHouseholds[index].title),
+                                      H3(text: householdProvider.accessibleHouseholds[index].description),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    ),
-                  );
-                },
-              ),
+                    ],
+                  ),
+                );
+              },
             ),
-          ],
-        ),
-      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
             context: context,
             builder: (context) => const SingleChildScrollView(
-                child: HouseHoldCreateScreen()
+              child: HouseHoldCreateScreen(),
             ),
           );
         },

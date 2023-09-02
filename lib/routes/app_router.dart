@@ -19,5 +19,6 @@ class AppRouter extends $AppRouter {
     AutoRoute(page: HouseHoldDetailRoute.page, path: '/haushalt/:id', guards: [AuthGuard()]),
     AutoRoute(page: ShoppingListRoute.page, path: '/haushalt/:id/shoppinglist', guards: [AuthGuard()]),
     AutoRoute(page: TaskListRoute.page, path: '/haushalt/:id/tasklist', guards: [AuthGuard()]),
+    AutoRoute(page: ProfileRoute.page, path: '/profil'),
   ];
 }
