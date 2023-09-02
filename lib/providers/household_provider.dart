@@ -227,6 +227,7 @@ class HouseholdProvider extends ChangeNotifier {
 
   // Funktion die alle Haushalte eines Users lädt
   Future<bool> loadAllAccessibleHouseholds() async {
+    print("loadAllAccessibleHouseholds from Firebase");
     try {
       final querySnapshot = await db.collection("households").where("members", arrayContains: auth.currentUser!.uid).get();
       final households = <Household>[];
@@ -259,6 +260,7 @@ class HouseholdProvider extends ChangeNotifier {
 
   // Funktion die einen Haushalt anhand der ID lädt
   Future<bool> loadHousehold(String id) async {
+    print("loadHousehold from Firebase");
     try {
       final docRefHousehold = await db.collection("households").doc(id).get();
       final householdDetailData = docRefHousehold.data();
