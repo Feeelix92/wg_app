@@ -161,9 +161,11 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                         customErrorDialog(context, "Fehler","Haushalt konnte nicht gelöscht werden!");
                                       }
                                       // Nach dem Löschen des Haushalts
-                                      setState(() {
-                                        isLoading = false; // Setzen Sie isLoading auf false, um die Ladeanzeige auszublenden
-                                      });
+                                      if (mounted) {
+                                        setState(() {
+                                          isLoading = false; // Setzen Sie isLoading auf false, um die Ladeanzeige auszublenden
+                                        });
+                                      }
                                     },
                                     child: const Text('Löschen'),
                                   ),
