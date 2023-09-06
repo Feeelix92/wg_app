@@ -71,8 +71,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Rufe _loadData nur auf, wenn genügend Zeit seit dem letzten Laden vergangen ist
-    _loadData();
     return Scaffold(
       appBar: const CustomAppBar(),
       endDrawer: const AppDrawer(),

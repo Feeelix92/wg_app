@@ -16,19 +16,6 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
   final TextEditingController _houseHoldDescriptionController = TextEditingController();
   final TextEditingController _personNameController = TextEditingController();
 
-  Future<void> _loadData() async {
-    try {
-        // Laden der Daten
-        final householdProvider =
-        Provider.of<HouseholdProvider>(context, listen: false);
-        await householdProvider.loadAllAccessibleHouseholds();
-
-    } catch (e) {
-      // Handle andere Fehler hier
-      print(e);
-    }
-  }
-
 
   @override
   void initState() {
@@ -115,7 +102,7 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
                     String title = _houseHoldNameController.text;
                     String description = _houseHoldDescriptionController.text;
                     householdProvider.createHousehold(title, description);
-                    _loadData();
+                    householdProvider.loadAllAccessibleHouseholds();
                     AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
                   },
                   child: const Text('Hinzufügen'),
