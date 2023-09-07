@@ -123,6 +123,4 @@ class ShoppingItem {
       points: map['points'] as int,
     );
   }
-
-//</editor-fold>
 }

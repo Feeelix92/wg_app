@@ -164,7 +164,6 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
 
-
 // Suche nach User in der Datenbank anhand der Email und füge ihn dem Haushalt hinzu
   Future<bool> addUserToHousehold(String email) async {
     try {
@@ -415,6 +414,46 @@ class HouseholdProvider extends ChangeNotifier {
     return false;
   }
 
+  // Funktion die die Ausgaben eines Haushalts berechnet
+  Future<Map<String, double>> calculateMemberExpenses(String householdId) async {
+    try {
+      final docRefHousehold = await db.collection("households").doc(householdId).get();
+
+      if (docRefHousehold.exists) {
+        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
+        final memberIds = householdDetailData['members'].cast<String>();
+        final shoppingList = householdDetailData['shoppingList'].cast<Map<String, dynamic>>();
+
+        final memberExpenses = <String, double>{};
+
+        for (final memberId in memberIds) {
+          double memberExpense = 0.0;
+
+          for (final shoppingItem in shoppingList) {
+            final assignedTo = shoppingItem['assignedTo'] as String?;
+            final price = shoppingItem['price'] as double;
+
+            if (assignedTo == memberId) {
+              memberExpense += price;
+            }
+          }
+
+          memberExpenses[memberId] = memberExpense;
+        }
+
+        return memberExpenses;
+      }
+
+      return {};
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return {};
+    }
+  }
+
+
   // Funktion die ein TaskItem zu einem Haushalt hinzufügt
   Future<bool> addTaskItem(TaskItem item) async {
     try {
@@ -514,6 +553,48 @@ class HouseholdProvider extends ChangeNotifier {
       }
     }
     return false;
+  }
+
+  // Funktion die die Punkte der Mitglieder eines Haushalts berechnet
+  Future<Map<String, int>> getMemberPointsOverview(String householdId) async {
+    try {
+      final docRefHousehold = await db.collection("households").doc(householdId).get();
+
+      if (docRefHousehold.exists) {
+        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
+        final members = householdDetailData['members'].cast<String>();
+
+        final memberPoints = <String, int>{};
+
+        // Iteration für alle Mitglieder
+        for (final member in members) {
+          int points = 0;
+
+          // Iteration für alle ShoppingItems
+          final shoppingList = householdDetailData['shoppingList'].cast<Map<String, dynamic>>();
+          for (final shoppingItem in shoppingList) {
+            final assignedTo = shoppingItem['assignedTo'] as String?;
+            final pointsEarned = shoppingItem['points'] as int;
+
+            if (assignedTo == member) {
+              points += pointsEarned;
+            }
+          }
+
+          // Punkte für die Mitglieder im Haushalt speichern
+          memberPoints[member] = points;
+        }
+
+        return memberPoints;
+      }
+
+      return {};
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return {};
+    }
   }
 
 }
