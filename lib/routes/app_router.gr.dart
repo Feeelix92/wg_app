@@ -13,12 +13,12 @@ import 'package:flutter/material.dart' as _i11;
 import 'package:wg_app/screens/home_screen.dart' as _i1;
 import 'package:wg_app/screens/household_detail_screen.dart' as _i2;
 import 'package:wg_app/screens/login_screen.dart' as _i3;
-import 'package:wg_app/screens/myForgotPassword_screen.dart' as _i4;
+import 'package:wg_app/screens/my_forgot_password_screen.dart' as _i4;
 import 'package:wg_app/screens/profile_screen.dart' as _i5;
 import 'package:wg_app/screens/registration_screen.dart' as _i6;
 import 'package:wg_app/screens/shoppinglist_screen.dart' as _i7;
 import 'package:wg_app/screens/tasklist_screen.dart' as _i8;
-import 'package:wg_app/screens/verifyEmail_screen.dart' as _i9;
+import 'package:wg_app/screens/verify_email_screen.dart' as _i9;
 
 abstract class $AppRouter extends _i10.RootStackRouter {
   $AppRouter({super.navigatorKey});

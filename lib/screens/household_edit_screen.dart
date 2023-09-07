@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wg_app/widgets/customErrorDialog.dart';
+import 'package:wg_app/widgets/custom_error_dialog.dart';
 import '../providers/household_provider.dart';
 
 class HouseHoldEditScreen extends StatefulWidget {

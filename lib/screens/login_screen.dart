@@ -7,7 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
-import '../widgets/my_snackbars.dart';
+import '../widgets/custom_snackbars.dart';
 
 
 @RoutePage()
