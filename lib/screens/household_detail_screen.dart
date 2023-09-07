@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -59,7 +57,6 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       }
     } catch (e) {
       // Handle andere Fehler hier
-      print(e);
       setState(() {
         isLoading = false;
       });
@@ -115,6 +112,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                       Card(
                         child: ListTile(
                           title: const Text('Einkaufsliste'),
+                          leading: const Icon(Icons.shopping_basket),
                           onTap: () {
                             // Navigiere zur ShoppingListScreen
                             AutoRouter.of(context).push(ShoppingListRoute(
@@ -126,8 +124,31 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                       Card(
                         child: ListTile(
                           title: const Text('Aufgabenliste'),
+                          leading: const Icon(Icons.work),
                           onTap: () {
                             // Navigiere zur TaskListScreen
+                            AutoRouter.of(context).push(
+                                TaskListRoute(householdId: widget.householdId));
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: const Text('Finanzen'),
+                          leading: const Icon(Icons.euro),
+                          onTap: () {
+                            // Navigiere zur FinanzScreen
+                            AutoRouter.of(context).push(
+                                TaskListRoute(householdId: widget.householdId));
+                          },
+                        ),
+                      ),
+                      Card(
+                        child: ListTile(
+                          title: const Text('Ranking'),
+                          leading: const Icon(Icons.star),
+                          onTap: () {
+                            // Navigiere zur RankingScreen
                             AutoRouter.of(context).push(
                                 TaskListRoute(householdId: widget.householdId));
                           },

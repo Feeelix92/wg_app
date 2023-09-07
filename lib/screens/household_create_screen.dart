@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/household_provider.dart';
-import '../routes/app_router.gr.dart';
 
 class HouseHoldCreateScreen extends StatefulWidget {
   const HouseHoldCreateScreen({super.key});

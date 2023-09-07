@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/screens/tasklist_add_screen.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
-import '../model/taskItem.dart';
 import '../providers/household_provider.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
