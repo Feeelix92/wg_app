@@ -139,7 +139,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                           onTap: () {
                             // Navigiere zur FinanzScreen
                             AutoRouter.of(context).push(
-                                TaskListRoute(householdId: widget.householdId));
+                                FinanceRoute(householdId: widget.householdId));
                           },
                         ),
                       ),
@@ -150,7 +150,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                           onTap: () {
                             // Navigiere zur RankingScreen
                             AutoRouter.of(context).push(
-                                TaskListRoute(householdId: widget.householdId));
+                                RankingRoute(householdId: widget.householdId));
                           },
                         ),
                       ),

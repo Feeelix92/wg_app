@@ -45,13 +45,6 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
-              },
-              child: const Text('Zurück'),
-            ),
-            const SizedBox(height: 20.0)
           ],
         ),
         floatingActionButton: FloatingActionButton(

@@ -53,13 +53,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
-              },
-              child: const Text('Zurück'),
-            ),
-            const SizedBox(height: 20.0)
           ],
         ),
         floatingActionButton: FloatingActionButton(
