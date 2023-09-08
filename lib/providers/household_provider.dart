@@ -163,6 +163,78 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
+  // Funktion gibt eine Liste aller User die nciht in einem bestimtmen Haushalt Mitglied sind zurück
+  Future<Map<String, String>> getUsersNotInHousehold(String householdId) async {
+    try {
+      final usersCollection = db.collection("users");
+      final querySnapshot = await usersCollection.get();
+
+      final usersMap = <String, String>{};
+
+      for (final doc in querySnapshot.docs) {
+        final userData = doc.data();
+        final email = userData['email'] as String;
+        final username = userData['username'] as String;
+
+        final userInHousehold = await isUserInHousehold(householdId, doc.id);
+
+        if (!userInHousehold) {
+          usersMap[email] = username;
+        }
+      }
+
+      return usersMap;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return {}; // Wenn ein Fehler auftritt oder keine Benutzer vorhanden sind.
+    }
+  }
+
+  // Funktion prüft ob ein User Mitglied in einem bestimmten Haushalt ist
+  Future<bool> isUserInHousehold(String householdId, String userId) async {
+    try {
+      final docRefHousehold = await db.collection("households").doc(householdId).get();
+
+      if (docRefHousehold.exists) {
+        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
+        final memberIds = householdDetailData['members'].cast<String>();
+
+        return memberIds.contains(userId);
+      }
+
+      return false;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return false; // Wenn ein Fehler auftritt oder der Haushalt nicht gefunden wird.
+    }
+  }
+
+  // Funktion die den Username mithilfe der Email herausfindet
+  Future<String?> getUsernameFromEmail(String email) async {
+    try {
+      final usersCollection = db.collection("users");
+      final querySnapshot = await usersCollection.where('email', isEqualTo: email).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final userData = querySnapshot.docs.first.data();
+        final username = userData['username'] as String?;
+        return username;
+      } else {
+        return null; // Wenn die E-Mail-Adresse nicht gefunden wurde.
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null; // Wenn ein Fehler auftritt.
+    }
+  }
+
+
 
 // Suche nach User in der Datenbank anhand der Email und füge ihn dem Haushalt hinzu
   Future<bool> addUserToHousehold(String email) async {
