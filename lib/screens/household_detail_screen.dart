@@ -126,6 +126,8 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                       buildCard(context, 'Ranking', Icons.emoji_events,
                           RankingRoute(householdId: widget.householdId)),
                       const SizedBox(height: 20),
+                      if (houseHoldProvider.household.admin ==
+                          houseHoldProvider.auth.currentUser!.uid)
                       ElevatedButton.icon(
                         onPressed: () {
                           showDialog(
