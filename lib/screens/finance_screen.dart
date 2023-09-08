@@ -42,6 +42,45 @@ class _FinanceScreenState extends State<FinanceScreen> {
                   aspectRatio: 20,
                   child: AspectRatio(
                     aspectRatio: 10,
+                    // child: FutureBuilder(
+                    //   future: householdProvider.calculateMemberExpenses(widget.householdId),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState == ConnectionState.waiting) {
+                    //       return const CircularProgressIndicator();
+                    //     } else if (snapshot.hasError) {
+                    //       return Text('Error: ${snapshot.error}');
+                    //     } else if (!snapshot.hasData || (snapshot.data as Map<String, double>).isEmpty) {
+                    //       return const Text('Keine Daten verfügbar');
+                    //     } else {
+                    //       final memberExpenses = snapshot.data as Map<String, double>;
+                    //       return PieChart(
+                    //         PieChartData(
+                    //           pieTouchData: PieTouchData(
+                    //             touchCallback:
+                    //                 (FlTouchEvent event, pieTouchResponse) {
+                    //               setState(() {
+                    //                 if (!event.isInterestedForInteractions ||
+                    //                     pieTouchResponse == null ||
+                    //                     pieTouchResponse.touchedSection == null) {
+                    //                   touchedIndex = -1;
+                    //                   return;
+                    //                 }
+                    //                 touchedIndex = pieTouchResponse
+                    //                     .touchedSection!.touchedSectionIndex;
+                    //               });
+                    //             },
+                    //           ),
+                    //           borderData: FlBorderData(
+                    //             show: false,
+                    //           ),
+                    //           sectionsSpace: 0,
+                    //           centerSpaceRadius: 0,
+                    //           sections: showingSections(),
+                    //         ),
+                    //       );
+                    //     }
+                    //   },
+                    // ),
                     child: PieChart(
                       PieChartData(
                         pieTouchData: PieTouchData(
@@ -77,7 +116,26 @@ class _FinanceScreenState extends State<FinanceScreen> {
     });
   }
 
-  PieChartSectionData buildPieChartSectionData(isTouched, String personName, double personValue) {
+  List<PieChartSectionData> showingSections() {
+    return List.generate(4, (i) {
+      final isTouched = i == touchedIndex;
+      switch (i) {
+        case 0:
+          return buildPieChartSectionData(isTouched, "Person 1", 20.0);
+        case 1:
+          return buildPieChartSectionData(isTouched, "Person 2", 30.0);
+        case 2:
+          return buildPieChartSectionData(isTouched, "Person 3", 40.0);
+        case 3:
+          return buildPieChartSectionData(isTouched, "Person 4", 10.0);
+        default:
+          throw Exception('Oh no');
+      }
+    });
+  }
+
+  PieChartSectionData buildPieChartSectionData(
+      isTouched, String personName, double personValue) {
     final fontSize = isTouched ? 30.0 : 20.0;
     final radius = isTouched ? 200.0 : 160.0;
     final widgetSize = isTouched ? 55.0 : 40.0;
@@ -101,22 +159,4 @@ class _FinanceScreenState extends State<FinanceScreen> {
   }
 
 
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      switch (i) {
-        case 0:
-          return buildPieChartSectionData(isTouched, "Person 1", 20.0);
-        case 1:
-          return buildPieChartSectionData(isTouched, "Person 2", 30.0);
-        case 2:
-          return buildPieChartSectionData(isTouched, "Person 3", 40.0);
-        case 3:
-          return buildPieChartSectionData(isTouched, "Person 4", 10.0);
-        default:
-          throw Exception('Oh no');
-      }
-    });
-  }
 }
-
