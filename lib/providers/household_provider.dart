@@ -415,7 +415,7 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
   // Funktion die die Ausgaben eines Haushalts berechnet
-  Future<Map<String, double>> calculateMemberExpenses(String householdId) async {
+  Future<Map<String, dynamic>> calculateMemberExpenses(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(householdId).get();
 
@@ -424,7 +424,14 @@ class HouseholdProvider extends ChangeNotifier {
         final memberIds = householdDetailData['members'].cast<String>();
         final shoppingList = householdDetailData['shoppingList'].cast<Map<String, dynamic>>();
 
-        final memberExpenses = <String, double>{};
+        final memberExpenses = <String, Map<String, dynamic>>{};
+        double totalExpenses = 0.0;
+
+        // Berechnung der Gesamtsumme aller  Ausgaben
+        for (final shoppingItem in shoppingList) {
+          final price = shoppingItem['price'] as double;
+          totalExpenses += price;
+        }
 
         for (final memberId in memberIds) {
           double memberExpense = 0.0;
@@ -438,7 +445,17 @@ class HouseholdProvider extends ChangeNotifier {
             }
           }
 
-          memberExpenses[memberId] = memberExpense;
+          // Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
+          double percentageOfTotal = 0.0;
+          if(totalExpenses != 0.0){
+            percentageOfTotal = (memberExpense / totalExpenses) * 100;
+          }
+
+          // ToDo change member Id to member username
+          memberExpenses[memberId] = {
+            'expense': memberExpense,
+            'percentageOfTotal': percentageOfTotal,
+          };
         }
 
         return memberExpenses;
