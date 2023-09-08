@@ -89,7 +89,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
         case 0:
           return PieChartSectionData(
             color: increaseBrightness(convertToColor('Person 1'), 0.3),
-            value: 40,
+            value: 20,
             title: '40%',
             radius: radius,
             titleStyle: TextStyle(
@@ -104,7 +104,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
         case 1:
           return PieChartSectionData(
             color: increaseBrightness(convertToColor('Person 2'), 0.2),
-            value: 40,
+            value: 30,
             title: '40%',
             radius: radius,
             titleStyle: TextStyle(
@@ -119,7 +119,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
         case 2:
           return PieChartSectionData(
             color: increaseBrightness(convertToColor('Person 3'), 0.2),
-            value: 40,
+            value: 10,
             title: '40%',
             radius: radius,
             titleStyle: TextStyle(
