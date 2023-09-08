@@ -37,7 +37,8 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       // Lade deine Daten hier, z.B. mit deinem Provider
       final householdProvider =
           Provider.of<HouseholdProvider>(context, listen: false);
-      final loadHousehold = await householdProvider.loadHousehold(widget.householdId);
+      final loadHousehold =
+          await householdProvider.loadHousehold(widget.householdId);
 
       if (loadHousehold) {
         // Ladevorgang erfolgreich abgeschlossen
@@ -91,110 +92,46 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                         Padding(
                           padding: const EdgeInsets.symmetric(vertical: 16.0),
                           child: FutureBuilder<List<String>>(
-                            future: houseHoldProvider.getHouseholdMembersNames(houseHoldProvider.household.id),
+                            future: houseHoldProvider.getHouseholdMembersNames(
+                                houseHoldProvider.household.id),
                             builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
                                 return const CircularProgressIndicator(); // Zeige einen Ladekreis während des Ladens an
                               } else if (snapshot.hasError) {
                                 return Text('Fehler: ${snapshot.error}');
-                              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                              } else if (!snapshot.hasData ||
+                                  snapshot.data!.isEmpty) {
                                 return const Text('Keine Mitglieder gefunden');
                               } else {
                                 final members = snapshot.data;
                                 return Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: members!.map((member) => buildMemberCircle(member, 40.0, 40.0, 0.1)).toList(),
+                                  children: members!
+                                      .map((member) => buildMemberCircle(
+                                          member, 40.0, 40.0, 0.1))
+                                      .toList(),
                                 );
                               }
                             },
                           ),
                         ),
-                      // ShoppingList Card
-                      Card(
-                        child: ListTile(
-                          title: const Text('Einkaufsliste'),
-                          leading: const Icon(Icons.shopping_basket),
-                          onTap: () {
-                            // Navigiere zur ShoppingListScreen
-                            AutoRouter.of(context).push(ShoppingListRoute(
-                                householdId: widget.householdId));
-                          },
-                        ),
-                      ),
-                      // TaskList Card
-                      Card(
-                        child: ListTile(
-                          title: const Text('Aufgabenliste'),
-                          leading: const Icon(Icons.work),
-                          onTap: () {
-                            // Navigiere zur TaskListScreen
-                            AutoRouter.of(context).push(
-                                TaskListRoute(householdId: widget.householdId));
-                          },
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: const Text('Finanzen'),
-                          leading: const Icon(Icons.euro),
-                          onTap: () {
-                            // Navigiere zur FinanzScreen
-                            AutoRouter.of(context).push(
-                                FinanceRoute(householdId: widget.householdId));
-                          },
-                        ),
-                      ),
-                      Card(
-                        child: ListTile(
-                          title: const Text('Ranking'),
-                          leading: const Icon(Icons.star),
-                          onTap: () {
-                            // Navigiere zur RankingScreen
-                            AutoRouter.of(context).push(
-                                RankingRoute(householdId: widget.householdId));
-                          },
-                        ),
-                      ),
+                      // Anzeige der Karten
+                      buildCard(context, 'Einkaufsliste', Icons.shopping_basket,
+                          ShoppingListRoute(householdId: widget.householdId)),
+                      buildCard(context, 'Aufgabenliste', Icons.work,
+                          TaskListRoute(householdId: widget.householdId)),
+                      buildCard(context, 'Finanzen', Icons.euro,
+                          FinanceRoute(householdId: widget.householdId)),
+                      buildCard(context, 'Ranking', Icons.emoji_events,
+                          RankingRoute(householdId: widget.householdId)),
                       const SizedBox(height: 20),
                       ElevatedButton.icon(
                         onPressed: () {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: const Text('Löschen'),
-                                content: const Text('Möchten Sie diesen Haushalt wirklich löschen?'),
-                                actions: [
-                                  TextButton(
-                                    onPressed: () async {
-                                      // Setzen Sie isLoading auf true, um die Ladeanzeige anzuzeigen
-                                      setState(() {
-                                        isLoading = true;
-                                      });
-                                      final deleted = await houseHoldProvider.deleteHousehold(widget.householdId);
-                                      final loadAllAccessibleHouseholds = await houseHoldProvider.loadAllAccessibleHouseholds();
-                                      if (deleted && loadAllAccessibleHouseholds) {
-                                        AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
-                                      } else {
-                                        customErrorDialog(context, "Fehler","Haushalt konnte nicht gelöscht werden!");
-                                      }
-                                      // Nach dem Löschen des Haushalts
-                                      if (mounted) {
-                                        setState(() {
-                                          isLoading = false; // Setzen Sie isLoading auf false, um die Ladeanzeige auszublenden
-                                        });
-                                      }
-                                    },
-                                    child: const Text('Löschen'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () {
-                                      AutoRouter.of(context).pop();
-                                    },
-                                    child: const Text('Abbrechen'),
-                                  ),
-                                ],
-                              );
+                              return deleteHouseholdDialog(houseHoldProvider, context);
                             },
                           );
                         },
@@ -218,6 +155,60 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
           );
         },
         child: const Icon(Icons.edit),
+      ),
+    );
+  }
+
+  AlertDialog deleteHouseholdDialog(
+      HouseholdProvider houseHoldProvider, BuildContext context) {
+    return AlertDialog(
+      title: const Text('Löschen'),
+      content: const Text('Möchten Sie diesen Haushalt wirklich löschen?'),
+      actions: [
+        TextButton(
+          onPressed: () async {
+            // Setzen Sie isLoading auf true, um die Ladeanzeige anzuzeigen
+            setState(() {
+              isLoading = true;
+            });
+            final deleted =
+                await houseHoldProvider.deleteHousehold(widget.householdId);
+            final loadAllAccessibleHouseholds =
+                await houseHoldProvider.loadAllAccessibleHouseholds();
+            if (deleted && loadAllAccessibleHouseholds) {
+              AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
+            } else {
+              customErrorDialog(
+                  context, "Fehler", "Haushalt konnte nicht gelöscht werden!");
+            }
+            // Nach dem Löschen des Haushalts
+            if (mounted) {
+              setState(() {
+                isLoading =
+                    false; // Setzen Sie isLoading auf false, um die Ladeanzeige auszublenden
+              });
+            }
+          },
+          child: const Text('Löschen'),
+        ),
+        TextButton(
+          onPressed: () {
+            AutoRouter.of(context).pop();
+          },
+          child: const Text('Abbrechen'),
+        ),
+      ],
+    );
+  }
+
+  Card buildCard(BuildContext context, String title, IconData icon, route) {
+    return Card(
+      child: ListTile(
+        title: Text(title),
+        leading: Icon(icon),
+        onTap: () {
+          AutoRouter.of(context).push(route);
+        },
       ),
     );
   }
