@@ -77,75 +77,42 @@ class _FinanceScreenState extends State<FinanceScreen> {
     });
   }
 
+  PieChartSectionData buildPieChartSectionData(isTouched, personName, personValue) {
+    final fontSize = isTouched ? 30.0 : 20.0;
+    final radius = isTouched ? 170.0 : 140.0;
+    final widgetSize = isTouched ? 55.0 : 40.0;
+    const shadows = [Shadow(color: Colors.black, blurRadius: 10)];
+    return PieChartSectionData(
+      color: increaseBrightness(convertToColor(personName), 0.3),
+      value: personValue,
+      title: '$personValue %',
+      radius: radius,
+      titlePositionPercentageOffset: .60,
+      showTitle: true,
+      titleStyle: TextStyle(
+        fontSize: fontSize,
+        fontWeight: FontWeight.bold,
+        color: const Color(0xffffffff),
+        shadows: shadows,
+      ),
+      badgeWidget: buildMemberCircle(personName),
+      badgePositionPercentageOffset: .99,
+    );
+  }
+
+
   List<PieChartSectionData> showingSections() {
     return List.generate(4, (i) {
       final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 20.0 : 16.0;
-      final radius = isTouched ? 110.0 : 100.0;
-      final widgetSize = isTouched ? 55.0 : 40.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
       switch (i) {
         case 0:
-          return PieChartSectionData(
-            color: increaseBrightness(convertToColor('Person 1'), 0.3),
-            value: 20,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: buildMemberCircle('Person 1'),
-            badgePositionPercentageOffset: .98,
-          );
+          return buildPieChartSectionData(isTouched, "Person 1", 20.0);
         case 1:
-          return PieChartSectionData(
-            color: increaseBrightness(convertToColor('Person 2'), 0.2),
-            value: 30,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: buildMemberCircle('Person 2'),
-            badgePositionPercentageOffset: .98,
-          );
+          return buildPieChartSectionData(isTouched, "Person 2", 30.0);
         case 2:
-          return PieChartSectionData(
-            color: increaseBrightness(convertToColor('Person 3'), 0.2),
-            value: 10,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: buildMemberCircle('Person 3'),
-            badgePositionPercentageOffset: .98,
-          );
+          return buildPieChartSectionData(isTouched, "Person 3", 40.0);
         case 3:
-          return PieChartSectionData(
-            color: increaseBrightness(convertToColor('Person 4'), 0.2),
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: buildMemberCircle('Person 4'),
-            badgePositionPercentageOffset: .98,
-          );
+          return buildPieChartSectionData(isTouched, "Person 4", 10.0);
         default:
           throw Exception('Oh no');
       }
