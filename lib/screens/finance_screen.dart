@@ -77,9 +77,9 @@ class _FinanceScreenState extends State<FinanceScreen> {
     });
   }
 
-  PieChartSectionData buildPieChartSectionData(isTouched, personName, personValue) {
+  PieChartSectionData buildPieChartSectionData(isTouched, String personName, double personValue) {
     final fontSize = isTouched ? 30.0 : 20.0;
-    final radius = isTouched ? 170.0 : 140.0;
+    final radius = isTouched ? 200.0 : 160.0;
     final widgetSize = isTouched ? 55.0 : 40.0;
     const shadows = [Shadow(color: Colors.black, blurRadius: 10)];
     return PieChartSectionData(
@@ -95,7 +95,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
         color: const Color(0xffffffff),
         shadows: shadows,
       ),
-      badgeWidget: buildMemberCircle(personName),
+      badgeWidget: buildMemberCircle(personName, 50.0, 50.0, 0.1),
       badgePositionPercentageOffset: .99,
     );
   }

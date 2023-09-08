@@ -103,7 +103,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                 final members = snapshot.data;
                                 return Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: members!.map((member) => buildMemberCircle(member)).toList(),
+                                  children: members!.map((member) => buildMemberCircle(member, 40.0, 40.0, 0.1)).toList(),
                                 );
                               }
                             },
