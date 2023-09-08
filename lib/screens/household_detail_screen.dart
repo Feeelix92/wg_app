@@ -7,6 +7,7 @@ import 'package:wg_app/widgets/custom_error_dialog.dart';
 import '../data/constants.dart';
 import '../providers/household_provider.dart';
 import '../routes/app_router.gr.dart';
+import '../widgets/build_member_circle.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/fonts.dart';
@@ -102,7 +103,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                 final members = snapshot.data;
                                 return Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: members!.map((member) => _buildMemberCircle(member)).toList(),
+                                  children: members!.map((member) => buildMemberCircle(member)).toList(),
                                 );
                               }
                             },
@@ -221,28 +222,3 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
     );
   }
 }
-
-Widget _buildMemberCircle(String name) {
-  Color circleColor = convertToColor(name);
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Container(
-      width: 40,
-      height: 40,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: circleColor,
-      ),
-      child: Center(
-        child: Text(
-          name[0],
-          style: const TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    ),
-  );
-}
-
