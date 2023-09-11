@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:wg_app/model/shoppingItem.dart';
@@ -22,6 +23,7 @@ class ShoppingListScreen extends StatefulWidget {
 }
 
 class _ShoppingListScreenState extends State<ShoppingListScreen> {
+  bool isChecked = false;
   @override
   Widget build(BuildContext context) {
     Household currentHousehold = TestData.houseHoldData[widget.householdId];
@@ -44,6 +46,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               itemCount: shoppingList.length,
               itemBuilder: (context, index) {
                 final shoppingItem = shoppingList[index];
+                var priceDisplay = shoppingItem.price == 0.0 ? "          " : '${shoppingItem.price.toStringAsFixed(2)} €';
                 return Dismissible(
                   key: UniqueKey(),
                   onDismissed: (direction) {
@@ -59,7 +62,22 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                   child: ListTile(
                   title: Text(shoppingItem.title),
                   subtitle: Text(shoppingItem.description),
-                  trailing: Text('${shoppingItem.price.toStringAsFixed(2)} €'),
+                  trailing: Wrap(
+                    spacing: 12,
+                    children: <Widget>[
+                      _buildMemberCircle("Joey"),
+                      Text('${shoppingItem.quantity.toStringAsFixed(0)} x', style: const TextStyle(height: 4.5),),
+                      Text(priceDisplay, style: const TextStyle(height: 4.5),),
+                      Checkbox(
+                        value: isChecked, //shoppingItem.erledigt eigentlich
+                        onChanged: (value) {
+                          setState(() {
+                            isChecked = !isChecked;
+                          });
+                        },
+                      )
+                    ]
+                  ),
                   onLongPress: () {
                     showDialog(
                       context: context,
@@ -126,5 +144,37 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
         child: const Icon(Icons.add),
       ),
     );
+  }
+
+  Widget _buildMemberCircle(String name) {
+    Color circleColor = _getRandomColor();
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Container(
+        width: 40,
+        height: 40,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: circleColor,
+        ),
+        child: Center(
+          child: Text(
+            name[0],
+            style: const TextStyle(
+              fontSize: 20,
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Color _getRandomColor() {
+    Random random = Random();
+    int r = random.nextInt(256); // Zufälliger Rot-Wert (0-255)
+    int g = random.nextInt(256); // Zufälliger Grün-Wert (0-255)
+    int b = random.nextInt(256); // Zufälliger Blau-Wert (0-255)
+    return Color.fromARGB(255, r, g, b); // ARGB-Format, Alpha auf 255 gesetzt (vollständig sichtbar)
   }
 }
