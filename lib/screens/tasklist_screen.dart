@@ -22,7 +22,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
-      householdProvider.loadHousehold(widget.householdId); // Lade den aktuellen Haushalt
       List<dynamic> taskList = householdProvider.household.taskList;
       return Scaffold(
         appBar: const CustomAppBar(),
