@@ -735,11 +735,15 @@ class HouseholdProvider extends ChangeNotifier {
           }
           // Punkte für die Mitglieder im Haushalt speichern
           memberPoints[member] = points;
-          print(member);
-          print(memberPoints[member]);
         }
 
-        return memberPoints;
+        // Jetzt die Punkte absteigend sortieren
+        final sortedMemberPoints = Map<String, int>.fromEntries(
+            memberPoints.entries.toList()
+              ..sort((a, b) => b.value.compareTo(a.value))
+        );
+
+        return sortedMemberPoints;
       }
 
       return {};

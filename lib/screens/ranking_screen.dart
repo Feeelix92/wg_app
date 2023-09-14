@@ -83,6 +83,14 @@ class _RankingScreenState extends State<RankingScreen> {
                               return _BarData(
                                   entry.key, entry.value.toDouble());
                             }).toList();
+                            double maxY;
+                            if (memberPointsOverview.values.first <= 10){
+                              maxY = (memberPointsOverview.values.first + 20).toDouble();
+                            } else if(memberPointsOverview.values.first <= 20){
+                              maxY = (memberPointsOverview.values.first + 10).toDouble();
+                            } else{
+                              maxY = memberPointsOverview.values.first.toDouble();
+                            }
 
                             return BarChart(
                               BarChartData(
@@ -120,7 +128,6 @@ class _RankingScreenState extends State<RankingScreen> {
                                           axisSide: meta.axisSide,
                                           child: _IconWidget(
                                             color: dataList[index].color,
-                                            // color: widget.dataList[index].color,
                                             isSelected:
                                                 touchedGroupIndex == index,
                                           ),
@@ -148,7 +155,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                     data.value,
                                   );
                                 }).toList(),
-                                maxY: dataList.length-1.toDouble()+20,
+                                maxY: memberPointsOverview.values.first.toDouble(),
                                 barTouchData: BarTouchData(
                                   enabled: true,
                                   handleBuiltInTouches: false,
