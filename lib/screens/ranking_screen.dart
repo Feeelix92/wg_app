@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 import '../providers/household_provider.dart';
 import '../widgets/navigation/app_drawer.dart';
@@ -17,12 +18,12 @@ class RankingScreen extends StatefulWidget {
 
   final shadowColor = const Color(0xFFCCCCCC);
   final dataList = [
-    const _BarData(Colors.green, 18, 18),
-    const _BarData(Colors.red, 17, 8),
-    const _BarData(Colors.orange, 10, 15),
-    const _BarData(Colors.pink, 2.5, 5),
-    const _BarData(Colors.blue, 2, 2.5),
-    const _BarData(Colors.purple, 2, 2),
+    const _BarData('Person 1', 20),
+    const _BarData('Person 2', 17),
+    const _BarData('Person 3', 13),
+    const _BarData('Person 4', 12),
+    const _BarData('Person 5', 11),
+    const _BarData('Person 6', 6),
   ];
 
   @override
@@ -34,7 +35,6 @@ class _RankingScreenState extends State<RankingScreen> {
       int x,
       Color color,
       double value,
-      double shadowValue,
       ) {
     return BarChartGroupData(
       x: x,
@@ -42,12 +42,7 @@ class _RankingScreenState extends State<RankingScreen> {
         BarChartRodData(
           toY: value,
           color: color,
-          width: 6,
-        ),
-        BarChartRodData(
-          toY: shadowValue,
-          color: widget.shadowColor,
-          width: 6,
+          width: 20,
         ),
       ],
       showingTooltipIndicators: touchedGroupIndex == x ? [0] : [],
@@ -71,7 +66,8 @@ class _RankingScreenState extends State<RankingScreen> {
                 padding: EdgeInsets.all(16.0),
                 child: H1(text: 'Ranking'),
               ),
-              Expanded(child: AspectRatio(
+              Expanded(
+                child: AspectRatio(
                 aspectRatio: 1.4,
                 child: Padding(
                   padding: const EdgeInsets.all(20.0),
@@ -135,7 +131,6 @@ class _RankingScreenState extends State<RankingScreen> {
                           index,
                           data.color,
                           data.value,
-                          data.shadowValue,
                         );
                       }).toList(),
                       maxY: 20,
@@ -195,10 +190,10 @@ class _RankingScreenState extends State<RankingScreen> {
 }
 
 class _BarData {
-  const _BarData(this.color, this.value, this.shadowValue);
-  final Color color;
+  const _BarData(this.name, this.value);
+  final String name;
   final double value;
-  final double shadowValue;
+  Color get color => increaseBrightness(convertToColor(name), 0.3);
 }
 
 class _IconWidget extends ImplicitlyAnimatedWidget {
