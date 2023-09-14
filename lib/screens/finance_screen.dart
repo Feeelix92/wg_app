@@ -111,7 +111,6 @@ class _FinanceScreenState extends State<FinanceScreen> {
     final List<PieChartSectionData> sections = [];
 
     memberExpenses.forEach((memberName, memberData) {
-      print(memberName);
       final isTouched =
           memberExpenses.keys.toList().indexOf(memberName) == touchedIndex;
       sections.add(buildPieChartSectionData(
@@ -120,7 +119,6 @@ class _FinanceScreenState extends State<FinanceScreen> {
         memberData['expense'],
         memberData['percentageOfTotal'],
       ));
-      print(memberData['percentageOfTotal']);
     });
 
     return sections;
