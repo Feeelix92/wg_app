@@ -1,30 +1,22 @@
+import 'dart:math' as math;
+
 import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
+
 import '../providers/household_provider.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
-import 'dart:math' as math;
 
 @RoutePage()
 class RankingScreen extends StatefulWidget {
-  RankingScreen(
+  const RankingScreen(
       {super.key, @PathParam('householdId') required this.householdId});
 
   final String householdId;
-
-  final shadowColor = const Color(0xFFCCCCCC);
-  final dataList = [
-    const _BarData('Person 1', 20),
-    const _BarData('Person 2', 17),
-    const _BarData('Person 3', 13),
-    const _BarData('Person 4', 12),
-    const _BarData('Person 5', 11),
-    const _BarData('Person 6', 6),
-  ];
 
   @override
   State<RankingScreen> createState() => _RankingScreenState();
@@ -32,10 +24,10 @@ class RankingScreen extends StatefulWidget {
 
 class _RankingScreenState extends State<RankingScreen> {
   BarChartGroupData generateBarGroup(
-      int x,
-      Color color,
-      double value,
-      ) {
+    int x,
+    Color color,
+    double value,
+  ) {
     return BarChartGroupData(
       x: x,
       barRods: [
@@ -51,149 +43,179 @@ class _RankingScreenState extends State<RankingScreen> {
 
   int touchedGroupIndex = -1;
 
-
-
   @override
   Widget build(BuildContext context) {
-    return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
-      return Scaffold(
-        appBar: const CustomAppBar(),
-        endDrawer: const AppDrawer(),
-        body: Center(
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: H1(text: 'Ranking'),
-              ),
-              Expanded(
-                child: AspectRatio(
-                aspectRatio: 1.4,
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: BarChart(
-                    BarChartData(
-                      alignment: BarChartAlignment.spaceBetween,
-                      borderData: FlBorderData(
-                        show: true,
-                        border: Border.symmetric(
-                          horizontal: BorderSide(
-                            color: Colors.grey.shade300,
-                          ),
-                        ),
-                      ),
-                      titlesData: FlTitlesData(
-                        show: true,
-                        leftTitles: AxisTitles(
-                          drawBelowEverything: true,
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 30,
-                            getTitlesWidget: (value, meta) {
-                              return Text(
-                                value.toInt().toString(),
-                                textAlign: TextAlign.left,
-                              );
-                            },
-                          ),
-                        ),
-                        bottomTitles: AxisTitles(
-                          sideTitles: SideTitles(
-                            showTitles: true,
-                            reservedSize: 36,
-                            getTitlesWidget: (value, meta) {
-                              final index = value.toInt();
-                              return SideTitleWidget(
-                                axisSide: meta.axisSide,
-                                child: _IconWidget(
-                                  color: widget.dataList[index].color,
-                                  isSelected: touchedGroupIndex == index,
+    return Consumer<HouseholdProvider>(
+      builder: (context, householdProvider, child) {
+        return Scaffold(
+          appBar: const CustomAppBar(),
+          endDrawer: const AppDrawer(),
+          body: Center(
+            child: Column(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: H1(text: 'Ranking'),
+                ),
+                Expanded(
+                  child: AspectRatio(
+                    aspectRatio: 1.4,
+                    child: Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: FutureBuilder<Map<String, int>>(
+                        future: householdProvider
+                            .getMemberPointsOverview(widget.householdId),
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.waiting) {
+                            return const Center(
+                                child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(
+                                child: Text('Fehler: ${snapshot.error}'));
+                          } else if (!snapshot.hasData) {
+                            return const Center(
+                                child: Text('Keine Daten verfügbar'));
+                          } else {
+                            var memberPointsOverview = snapshot.data!;
+                            var dataList =
+                                memberPointsOverview.entries.map((entry) {
+                              return _BarData(
+                                  entry.key, entry.value.toDouble());
+                            }).toList();
+
+                            return BarChart(
+                              BarChartData(
+                                alignment: BarChartAlignment.spaceBetween,
+                                borderData: FlBorderData(
+                                  show: true,
+                                  border: Border.symmetric(
+                                    horizontal: BorderSide(
+                                      color: Colors.grey.shade300,
+                                    ),
+                                  ),
                                 ),
-                              );
-                            },
-                          ),
-                        ),
-                        rightTitles: const AxisTitles(),
-                        topTitles: const AxisTitles(),
-                      ),
-                      gridData: FlGridData(
-                        show: true,
-                        drawVerticalLine: false,
-                        getDrawingHorizontalLine: (value) => FlLine(
-                          color: Colors.grey.shade300,
-                          strokeWidth: 1,
-                        ),
-                      ),
-                      barGroups: widget.dataList.asMap().entries.map((e) {
-                        final index = e.key;
-                        final data = e.value;
-                        return generateBarGroup(
-                          index,
-                          data.color,
-                          data.value,
-                        );
-                      }).toList(),
-                      maxY: 20,
-                      barTouchData: BarTouchData(
-                        enabled: true,
-                        handleBuiltInTouches: false,
-                        touchTooltipData: BarTouchTooltipData(
-                          tooltipBgColor: Colors.transparent,
-                          tooltipMargin: 0,
-                          getTooltipItem: (
-                              BarChartGroupData group,
-                              int groupIndex,
-                              BarChartRodData rod,
-                              int rodIndex,
-                              ) {
-                            return BarTooltipItem(
-                              rod.toY.toString(),
-                              TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: rod.color,
-                                fontSize: 18,
-                                shadows: const [
-                                  Shadow(
-                                    color: Colors.black26,
-                                    blurRadius: 12,
-                                  )
-                                ],
+                                titlesData: FlTitlesData(
+                                  show: true,
+                                  leftTitles: AxisTitles(
+                                    drawBelowEverything: true,
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      reservedSize: 30,
+                                      getTitlesWidget: (value, meta) {
+                                        return Text(
+                                          value.toInt().toString(),
+                                          textAlign: TextAlign.left,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  bottomTitles: AxisTitles(
+                                    sideTitles: SideTitles(
+                                      showTitles: true,
+                                      reservedSize: 36,
+                                      getTitlesWidget: (value, meta) {
+                                        final index = value.toInt();
+                                        return SideTitleWidget(
+                                          axisSide: meta.axisSide,
+                                          child: _IconWidget(
+                                            color: dataList[index].color,
+                                            // color: widget.dataList[index].color,
+                                            isSelected:
+                                                touchedGroupIndex == index,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  rightTitles: const AxisTitles(),
+                                  topTitles: const AxisTitles(),
+                                ),
+                                gridData: FlGridData(
+                                  show: true,
+                                  drawVerticalLine: false,
+                                  getDrawingHorizontalLine: (value) => FlLine(
+                                    color: Colors.grey.shade300,
+                                    strokeWidth: 1,
+                                  ),
+                                ),
+                                barGroups: dataList.asMap().entries.map((e) {
+                                  final index = e.key;
+                                  final data = e.value;
+                                  return generateBarGroup(
+                                    index,
+                                    data.color,
+                                    data.value,
+                                  );
+                                }).toList(),
+                                maxY: 20,
+                                barTouchData: BarTouchData(
+                                  enabled: true,
+                                  handleBuiltInTouches: false,
+                                  touchTooltipData: BarTouchTooltipData(
+                                    tooltipBgColor: Colors.transparent,
+                                    tooltipMargin: 0,
+                                    getTooltipItem: (
+                                      BarChartGroupData group,
+                                      int groupIndex,
+                                      BarChartRodData rod,
+                                      int rodIndex,
+                                    ) {
+                                      return BarTooltipItem(
+                                        rod.toY.toString(),
+                                        TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: rod.color,
+                                          fontSize: 18,
+                                          shadows: const [
+                                            Shadow(
+                                              color: Colors.black26,
+                                              blurRadius: 12,
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                  touchCallback: (event, response) {
+                                    if (event.isInterestedForInteractions &&
+                                        response != null &&
+                                        response.spot != null) {
+                                      setState(() {
+                                        touchedGroupIndex =
+                                            response.spot!.touchedBarGroupIndex;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        touchedGroupIndex = -1;
+                                      });
+                                    }
+                                  },
+                                ),
                               ),
                             );
-                          },
-                        ),
-                        touchCallback: (event, response) {
-                          if (event.isInterestedForInteractions &&
-                              response != null &&
-                              response.spot != null) {
-                            setState(() {
-                              touchedGroupIndex = response.spot!.touchedBarGroupIndex;
-                            });
-                          } else {
-                            setState(() {
-                              touchedGroupIndex = -1;
-                            });
                           }
                         },
                       ),
                     ),
                   ),
                 ),
-              ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 }
 
 class _BarData {
   const _BarData(this.name, this.value);
+
   final String name;
   final double value;
-  Color get color => increaseBrightness(convertToColor(name), 0.3);
+
+  Color get color => increaseBrightness(convertToColor(name), 0.1);
 }
 
 class _IconWidget extends ImplicitlyAnimatedWidget {
@@ -232,7 +254,7 @@ class _IconWidgetState extends AnimatedWidgetBaseState<_IconWidget> {
     _rotationTween = visitor(
       _rotationTween,
       widget.isSelected ? 1.0 : 0.0,
-          (dynamic value) => Tween<double>(
+      (dynamic value) => Tween<double>(
         begin: value as double,
         end: widget.isSelected ? 1.0 : 0.0,
       ),

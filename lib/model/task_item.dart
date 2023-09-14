@@ -107,6 +107,4 @@ class TaskItem {
       points: map['points'] as int,
     );
   }
-
-//</editor-fold>
 }
