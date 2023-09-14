@@ -148,7 +148,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                     data.value,
                                   );
                                 }).toList(),
-                                maxY: 20,
+                                maxY: dataList.length-1.toDouble()+20,
                                 barTouchData: BarTouchData(
                                   enabled: true,
                                   handleBuiltInTouches: false,
