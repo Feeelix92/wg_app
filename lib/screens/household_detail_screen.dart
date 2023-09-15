@@ -82,68 +82,86 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
           : Consumer<HouseholdProvider>(
               builder: (context, houseHoldProvider, child) {
                 // Ansonsten baue die Hauptansicht
-                return Center(
-                  child: Column(
-                    children: [
-                      H1(text: houseHoldProvider.household.title),
-                      Text(houseHoldProvider.household.description),
-                      // Anzeige der Personen-Kreise
-                      if (houseHoldProvider.household.members.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 16.0),
-                          child: FutureBuilder<List<String>>(
-                            future: houseHoldProvider.getHouseholdMembersNames(
-                                houseHoldProvider.household.id),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const CircularProgressIndicator(); // Zeige einen Ladekreis während des Ladens an
-                              } else if (snapshot.hasError) {
-                                return Text('Fehler: ${snapshot.error}');
-                              } else if (!snapshot.hasData ||
-                                  snapshot.data!.isEmpty) {
-                                return const Text('Keine Mitglieder gefunden');
-                              } else {
-                                final members = snapshot.data;
-                                return Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: members!
-                                      .map((member) => buildMemberCircle(
-                                          member, 40.0, 0.1))
-                                      .toList(),
-                                );
-                              }
-                            },
+                return SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      children: [
+                        H1(text: houseHoldProvider.household.title),
+                        Text(houseHoldProvider.household.description),
+                        // Anzeige der Personen-Kreise
+                        if (houseHoldProvider.household.members.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: FutureBuilder<List<String>>(
+                              future: houseHoldProvider.getHouseholdMembersNames(
+                                  houseHoldProvider.household.id),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState ==
+                                    ConnectionState.waiting) {
+                                  return const CircularProgressIndicator(); // Zeige einen Ladekreis während des Ladens an
+                                } else if (snapshot.hasError) {
+                                  return Text('Fehler: ${snapshot.error}');
+                                } else if (!snapshot.hasData ||
+                                    snapshot.data!.isEmpty) {
+                                  return const Text('Keine Mitglieder gefunden');
+                                } else {
+                                  final members = snapshot.data;
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: members!.map((member) => buildMemberCircle(member, 40.0, 0.1)).toList(),
+                                      ),
+                                      if (houseHoldProvider.household.admin ==
+                                          houseHoldProvider.auth.currentUser!.uid)
+                                      ElevatedButton.icon(
+                                        onPressed: () {
+                                          // Öffne das Dialogfeld zum Hinzufügen von Mitgliedern per E-Mail
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return inviteMembersDialog();
+                                            },
+                                          );
+                                        },
+                                        icon: const Icon(Icons.add),
+                                        label: const Text('Mitglieder hinzufügen'),
+                                      ),
+                                    ],
+                                  );
+                                }
+                              },
+                            ),
                           ),
+                        // Anzeige der Karten
+                        buildCard(context, 'Einkaufsliste', Icons.shopping_basket,
+                            ShoppingListRoute(householdId: widget.householdId)),
+                        buildCard(context, 'Aufgabenliste', Icons.work,
+                            TaskListRoute(householdId: widget.householdId)),
+                        buildCard(context, 'Ausgaben', Icons.euro,
+                            FinanceRoute(householdId: widget.householdId)),
+                        buildCard(context, 'Ranking', Icons.emoji_events,
+                            RankingRoute(householdId: widget.householdId)),
+                        const SizedBox(height: 20),
+                        if (houseHoldProvider.household.admin ==
+                            houseHoldProvider.auth.currentUser!.uid)
+                        ElevatedButton.icon(
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return deleteHouseholdDialog(houseHoldProvider, context);
+                              },
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.red[900],
+                          ),
+                          icon: const Icon(Icons.delete),
+                          label: const Text("Haushalt Löschen"),
                         ),
-                      // Anzeige der Karten
-                      buildCard(context, 'Einkaufsliste', Icons.shopping_basket,
-                          ShoppingListRoute(householdId: widget.householdId)),
-                      buildCard(context, 'Aufgabenliste', Icons.work,
-                          TaskListRoute(householdId: widget.householdId)),
-                      buildCard(context, 'Ausgaben', Icons.euro,
-                          FinanceRoute(householdId: widget.householdId)),
-                      buildCard(context, 'Ranking', Icons.emoji_events,
-                          RankingRoute(householdId: widget.householdId)),
-                      const SizedBox(height: 20),
-                      if (houseHoldProvider.household.admin ==
-                          houseHoldProvider.auth.currentUser!.uid)
-                      ElevatedButton.icon(
-                        onPressed: () {
-                          showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return deleteHouseholdDialog(houseHoldProvider, context);
-                            },
-                          );
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.red[900],
-                        ),
-                        icon: const Icon(Icons.delete),
-                        label: const Text("Haushalt Löschen"),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
@@ -160,6 +178,38 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       ),
     );
   }
+
+  AlertDialog inviteMembersDialog() {
+    return AlertDialog(
+      title: const Text('Mitglieder hinzufügen'),
+      content: const Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Hier Eingabefelder für E-Mail-Adressen hinzufügen
+          TextField(
+            decoration: InputDecoration(labelText: 'E-Mail-Adresse'),
+          ),
+          // Hier weitere Eingabefelder hinzufügen, falls erforderlich
+        ],
+      ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            // Hier die Logik zum Senden der Einladungen implementieren
+            // Du kannst eine Funktion aufrufen, die die Einladungen verschickt
+          },
+          child: const Text('Einladen'),
+        ),
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop(); // Schließe das Dialogfeld
+          },
+          child: const Text('Abbrechen'),
+        ),
+      ],
+    );
+  }
+
 
   AlertDialog deleteHouseholdDialog(
       HouseholdProvider houseHoldProvider, BuildContext context) {
@@ -180,8 +230,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
             if (deleted && loadAllAccessibleHouseholds) {
               AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
             } else {
-              customErrorDialog(
-                  context, "Fehler", "Haushalt konnte nicht gelöscht werden!");
+              customErrorDialog(context, "Fehler", "Haushalt konnte nicht gelöscht werden!");
             }
             // Nach dem Löschen des Haushalts
             if (mounted) {
