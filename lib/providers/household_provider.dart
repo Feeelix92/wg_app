@@ -551,12 +551,9 @@ class HouseholdProvider extends ChangeNotifier {
           .get();
 
       if (docRefHousehold.exists) {
-        final householdDetailData = docRefHousehold.data() as Map<
-            String,
-            dynamic>;
+        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
         final memberIds = householdDetailData['members'].cast<String>();
-        final shoppingList = householdDetailData['shoppingList'].cast<
-            Map<String, dynamic>>();
+        final shoppingList = householdDetailData['shoppingList'].cast<Map<String, dynamic>>();
 
         final memberExpenses = <String, Map<String, dynamic>>{};
         double totalExpenses = 0.0;
@@ -593,7 +590,6 @@ class HouseholdProvider extends ChangeNotifier {
           final username = await getUsernameForUserId(memberId);
           memberExpenses[memberId] = {
             'username': username,
-            // 'expense': 20.0,
             'expense': memberExpense,
             'percentageOfTotal': percentageOfTotal,
           };

@@ -121,7 +121,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                           ShoppingListRoute(householdId: widget.householdId)),
                       buildCard(context, 'Aufgabenliste', Icons.work,
                           TaskListRoute(householdId: widget.householdId)),
-                      buildCard(context, 'Finanzen', Icons.euro,
+                      buildCard(context, 'Ausgaben', Icons.euro,
                           FinanceRoute(householdId: widget.householdId)),
                       buildCard(context, 'Ranking', Icons.emoji_events,
                           RankingRoute(householdId: widget.householdId)),

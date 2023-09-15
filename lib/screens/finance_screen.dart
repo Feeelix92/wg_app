@@ -21,7 +21,6 @@ class FinanceScreen extends StatefulWidget {
 }
 
 class _FinanceScreenState extends State<FinanceScreen> {
-  int touchedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +32,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
         body: Center(
           child: Column(
             children: [
-              const H1(text: 'Finanzen'),
+              const H1(text: 'Ausgaben'),
               Expanded(
                 child: AspectRatio(
                   aspectRatio: 20,
@@ -66,27 +65,12 @@ class _FinanceScreenState extends State<FinanceScreen> {
                               snapshot.data as Map<String, dynamic>;
                           return PieChart(
                             PieChartData(
-                              pieTouchData: PieTouchData(
-                                touchCallback:
-                                    (FlTouchEvent event, pieTouchResponse) {
-                                  setState(() {
-                                    if (!event.isInterestedForInteractions ||
-                                        pieTouchResponse == null ||
-                                        pieTouchResponse.touchedSection ==
-                                            null) {
-                                      touchedIndex = -1;
-                                      return;
-                                    }
-                                    touchedIndex = pieTouchResponse
-                                        .touchedSection!.touchedSectionIndex;
-                                  });
-                                },
-                              ),
                               borderData: FlBorderData(
                                 show: false,
                               ),
                               sectionsSpace: 0,
-                              centerSpaceRadius: 0,
+                              centerSpaceRadius: 10,
+                              centerSpaceColor: Colors.white,
                               sections: showingSections(memberExpenses),
                             ),
                           );
@@ -108,10 +92,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
     final List<PieChartSectionData> sections = [];
 
     memberExpenses.forEach((memberId, memberData) {
-      final isTouched =
-          memberExpenses.keys.toList().indexOf(memberId) == touchedIndex;
       sections.add(buildPieChartSectionData(
-        isTouched,
         memberData['username'],
         memberData['expense'],
         memberData['percentageOfTotal'],
@@ -121,10 +102,9 @@ class _FinanceScreenState extends State<FinanceScreen> {
     return sections;
   }
 
-  PieChartSectionData buildPieChartSectionData(isTouched, String personName, double personValue, double percentageOfTotal) {
-    final fontSize = isTouched ? 30.0 : 20.0;
-    final radius = isTouched ? 180.0 : 160.0;
-    final widgetSize = isTouched ? 55.0 : 40.0;
+  PieChartSectionData buildPieChartSectionData(String personName, double personValue, double percentageOfTotal) {
+    const fontSize = 20.0;
+    const radius = 160.0;
     const shadows = [Shadow(color: Colors.black, blurRadius: 10)];
     return PieChartSectionData(
       color: increaseBrightness(convertToColor(personName), 0.3),
@@ -133,7 +113,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
       radius: radius,
       titlePositionPercentageOffset: .60,
       showTitle: true,
-      titleStyle: TextStyle(
+      titleStyle: const TextStyle(
         fontSize: fontSize,
         fontWeight: FontWeight.bold,
         color: Colors.white,
