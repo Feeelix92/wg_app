@@ -130,6 +130,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                           color: dataList[index].color,
                                           isSelected:
                                               touchedGroupIndex == index,
+                                          name: dataList[index].name,
                                         ),
                                       );
                                     },

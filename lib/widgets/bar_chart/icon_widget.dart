@@ -6,9 +6,11 @@ class IconWidget extends ImplicitlyAnimatedWidget {
   const IconWidget({super.key,
     required this.color,
     required this.isSelected,
+    required this.name,
   }) : super(duration: const Duration(milliseconds: 300));
   final Color color;
   final bool isSelected;
+  final String name;
 
   @override
   ImplicitlyAnimatedWidgetState<ImplicitlyAnimatedWidget> createState() =>
@@ -25,10 +27,15 @@ class _IconWidgetState extends AnimatedWidgetBaseState<IconWidget> {
     return Transform(
       transform: Matrix4.rotationZ(rotation).scaled(scale, scale),
       origin: const Offset(14, 14),
-      child: Icon(
-        widget.isSelected ? Icons.face_retouching_natural : Icons.face,
-        color: widget.color,
-        size: 28,
+      child: Column(
+        children: [
+          Icon(
+            widget.isSelected ? Icons.face_retouching_natural : Icons.face,
+            color: widget.color,
+            size: 28,
+          ),
+          // Text(widget.name, style: const TextStyle(fontSize: 10)),
+        ],
       ),
     );
   }
