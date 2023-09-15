@@ -750,6 +750,7 @@ class HouseholdProvider extends ChangeNotifier {
                 points += pointsEarned;
               }
             }
+            // @ToDo remove this later
             points = 20;
             // Punkte für die Mitglieder im Haushalt speichern
             memberPoints[username] = points;
