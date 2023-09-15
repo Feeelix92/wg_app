@@ -33,10 +33,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
         body: Center(
           child: Column(
             children: [
-              const Padding(
-                padding: EdgeInsets.all(16.0),
-                child: H1(text: 'Finanzen'),
-              ),
+              const H1(text: 'Finanzen'),
               Expanded(
                 child: AspectRatio(
                   aspectRatio: 20,

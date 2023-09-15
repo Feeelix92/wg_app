@@ -53,157 +53,148 @@ class _RankingScreenState extends State<RankingScreen> {
           body: Center(
             child: Column(
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(16.0),
-                  child: H1(text: 'Ranking'),
-                ),
+                const H1(text: 'Ranking'),
                 Expanded(
-                  child: AspectRatio(
-                    aspectRatio: 1.4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: FutureBuilder<Map<String, int>>(
-                        future: householdProvider
-                            .getMemberPointsOverview(widget.householdId),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (snapshot.hasError) {
-                            return Center(
-                                child: Text('Fehler: ${snapshot.error}'));
-                          } else if (!snapshot.hasData) {
-                            return const Center(
-                                child: Text('Keine Daten verfügbar'));
-                          } else {
-                            var memberPointsOverview = snapshot.data!;
-                            var dataList =
-                                memberPointsOverview.entries.map((entry) {
-                              return _BarData(
-                                  entry.key, entry.value.toDouble());
-                            }).toList();
-                            double maxY;
-                            if (memberPointsOverview.values.first <= 10){
-                              maxY = (memberPointsOverview.values.first + 20).toDouble();
-                            } else if(memberPointsOverview.values.first <= 20){
-                              maxY = (memberPointsOverview.values.first + 10).toDouble();
-                            } else{
-                              maxY = memberPointsOverview.values.first.toDouble();
-                            }
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
+                    child: FutureBuilder<Map<String, int>>(
+                      future: householdProvider
+                          .getMemberPointsOverview(widget.householdId),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (snapshot.hasError) {
+                          return Center(
+                              child: Text('Fehler: ${snapshot.error}'));
+                        } else if (!snapshot.hasData) {
+                          return const Center(
+                              child: Text('Keine Daten verfügbar'));
+                        } else {
+                          var memberPointsOverview = snapshot.data!;
+                          var dataList =
+                              memberPointsOverview.entries.map((entry) {
+                            return _BarData(
+                                entry.key, entry.value.toDouble());
+                          }).toList();
+                          // Bestimmen der maaximalen Y-Achsen-Höhe bzw. Beschriftung
+                          double maxY;
+                          if (memberPointsOverview.values.first <= 10){
+                            maxY = (memberPointsOverview.values.first + 20).toDouble();
+                          } else if(memberPointsOverview.values.first <= 20){
+                            maxY = (memberPointsOverview.values.first + 10).toDouble();
+                          } else{
+                            maxY = memberPointsOverview.values.first.toDouble();
+                          }
 
-                            return BarChart(
-                              BarChartData(
-                                alignment: BarChartAlignment.spaceBetween,
-                                borderData: FlBorderData(
-                                  show: true,
-                                  border: Border.symmetric(
-                                    horizontal: BorderSide(
-                                      color: Colors.grey.shade300,
-                                    ),
-                                  ),
-                                ),
-                                titlesData: FlTitlesData(
-                                  show: true,
-                                  leftTitles: AxisTitles(
-                                    drawBelowEverything: true,
-                                    sideTitles: SideTitles(
-                                      showTitles: true,
-                                      reservedSize: 30,
-                                      getTitlesWidget: (value, meta) {
-                                        return Text(
-                                          value.toInt().toString(),
-                                          textAlign: TextAlign.left,
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  bottomTitles: AxisTitles(
-                                    sideTitles: SideTitles(
-                                      showTitles: true,
-                                      reservedSize: 36,
-                                      getTitlesWidget: (value, meta) {
-                                        final index = value.toInt();
-                                        return SideTitleWidget(
-                                          axisSide: meta.axisSide,
-                                          child: _IconWidget(
-                                            color: dataList[index].color,
-                                            isSelected:
-                                                touchedGroupIndex == index,
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  rightTitles: const AxisTitles(),
-                                  topTitles: const AxisTitles(),
-                                ),
-                                gridData: FlGridData(
-                                  show: true,
-                                  drawVerticalLine: false,
-                                  getDrawingHorizontalLine: (value) => FlLine(
+                          return BarChart(
+                            BarChartData(
+                              alignment: BarChartAlignment.spaceBetween,
+                              borderData: FlBorderData(
+                                show: true,
+                                border: Border.symmetric(
+                                  horizontal: BorderSide(
                                     color: Colors.grey.shade300,
-                                    strokeWidth: 1,
                                   ),
                                 ),
-                                barGroups: dataList.asMap().entries.map((e) {
-                                  final index = e.key;
-                                  final data = e.value;
-                                  return generateBarGroup(
-                                    index,
-                                    data.color,
-                                    data.value,
-                                  );
-                                }).toList(),
-                                maxY: memberPointsOverview.values.first.toDouble(),
-                                barTouchData: BarTouchData(
-                                  enabled: true,
-                                  handleBuiltInTouches: false,
-                                  touchTooltipData: BarTouchTooltipData(
-                                    tooltipBgColor: Colors.transparent,
-                                    tooltipMargin: 0,
-                                    getTooltipItem: (
-                                      BarChartGroupData group,
-                                      int groupIndex,
-                                      BarChartRodData rod,
-                                      int rodIndex,
-                                    ) {
-                                      return BarTooltipItem(
-                                        rod.toY.toString(),
-                                        TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: rod.color,
-                                          fontSize: 18,
-                                          shadows: const [
-                                            Shadow(
-                                              color: Colors.black26,
-                                              blurRadius: 12,
-                                            )
-                                          ],
+                              ),
+                              titlesData: FlTitlesData(
+                                show: true,
+                                leftTitles: AxisTitles(
+                                  drawBelowEverything: true,
+                                  sideTitles: SideTitles(
+                                    showTitles: true,
+                                    reservedSize: 30,
+                                    getTitlesWidget: (value, meta) {
+                                      return Text(
+                                        value.toInt().toString(),
+                                        textAlign: TextAlign.left,
+                                      );
+                                    },
+                                  ),
+                                ),
+                                bottomTitles: AxisTitles(
+                                  sideTitles: SideTitles(
+                                    showTitles: true,
+                                    reservedSize: 36,
+                                    getTitlesWidget: (value, meta) {
+                                      final index = value.toInt();
+                                      return SideTitleWidget(
+                                        axisSide: meta.axisSide,
+                                        child: _IconWidget(
+                                          color: dataList[index].color,
+                                          isSelected:
+                                              touchedGroupIndex == index,
                                         ),
                                       );
                                     },
                                   ),
-                                  touchCallback: (event, response) {
-                                    if (event.isInterestedForInteractions &&
-                                        response != null &&
-                                        response.spot != null) {
-                                      setState(() {
-                                        touchedGroupIndex =
-                                            response.spot!.touchedBarGroupIndex;
-                                      });
-                                    } else {
-                                      setState(() {
-                                        touchedGroupIndex = -1;
-                                      });
-                                    }
-                                  },
+                                ),
+                                rightTitles: const AxisTitles(),
+                                topTitles: const AxisTitles(),
+                              ),
+                              gridData: FlGridData(
+                                show: true,
+                                drawVerticalLine: false,
+                                getDrawingHorizontalLine: (value) => FlLine(
+                                  color: Colors.grey.shade300,
+                                  strokeWidth: 1,
                                 ),
                               ),
-                            );
-                          }
-                        },
-                      ),
+                              barGroups: dataList.asMap().entries.map((e) {
+                                final index = e.key;
+                                final data = e.value;
+                                return generateBarGroup(
+                                  index,
+                                  data.color,
+                                  data.value,
+                                );
+                              }).toList(),
+                              maxY: maxY,
+                              barTouchData: BarTouchData(
+                                enabled: true,
+                                handleBuiltInTouches: false,
+                                touchTooltipData: BarTouchTooltipData(
+                                  tooltipBgColor: Colors.red,
+                                  tooltipRoundedRadius: 40,
+                                  tooltipMargin: 10,
+                                  getTooltipItem: (
+                                    BarChartGroupData group,
+                                    int groupIndex,
+                                    BarChartRodData rod,
+                                    int rodIndex,
+                                  ) {
+                                    final name = dataList[groupIndex].name;
+                                    return BarTooltipItem(
+                                      '$name: ${rod.toY.toStringAsFixed(2)}', // Hier wird der Name und der Wert angezeigt
+                                      TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: rod.color,
+                                        fontSize: 12,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                touchCallback: (event, response) {
+                                  if (event.isInterestedForInteractions &&
+                                      response != null &&
+                                      response.spot != null) {
+                                    setState(() {
+                                      touchedGroupIndex =
+                                          response.spot!.touchedBarGroupIndex;
+                                    });
+                                  } else {
+                                    setState(() {
+                                      touchedGroupIndex = -1;
+                                    });
+                                  }
+                                },
+                              ),
+                            ),
+                          );
+                        }
+                      },
                     ),
                   ),
                 ),
@@ -255,6 +246,8 @@ class _IconWidgetState extends AnimatedWidgetBaseState<_IconWidget> {
       ),
     );
   }
+
+
 
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {

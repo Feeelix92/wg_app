@@ -733,6 +733,7 @@ class HouseholdProvider extends ChangeNotifier {
               points += pointsEarned;
             }
           }
+          points = 20;
           // Punkte für die Mitglieder im Haushalt speichern
           memberPoints[member] = points;
         }
