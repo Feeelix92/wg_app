@@ -43,6 +43,7 @@ class _RankingScreenState extends State<RankingScreen> {
 
   int touchedGroupIndex = -1;
 
+
   @override
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(
@@ -107,10 +108,14 @@ class _RankingScreenState extends State<RankingScreen> {
                                     showTitles: true,
                                     reservedSize: 30,
                                     getTitlesWidget: (value, meta) {
-                                      return Text(
-                                        value.toInt().toString(),
-                                        textAlign: TextAlign.left,
-                                      );
+                                      if (value.isFinite) { // Überprüfen, ob der Wert endlich ist
+                                        return Text(
+                                          value.toInt().toString(),
+                                          textAlign: TextAlign.left,
+                                        );
+                                      } else {
+                                        return const Text('');
+                                      }
                                     },
                                   ),
                                 ),
@@ -154,11 +159,17 @@ class _RankingScreenState extends State<RankingScreen> {
                               maxY: maxY,
                               barTouchData: BarTouchData(
                                 enabled: true,
-                                handleBuiltInTouches: false,
+                                handleBuiltInTouches: true,
                                 touchTooltipData: BarTouchTooltipData(
-                                  tooltipBgColor: Colors.red,
+                                  tooltipBgColor: Colors.white,
+                                  tooltipBorder: BorderSide(
+                                    color: Colors.grey.shade300,
+                                  ),
                                   tooltipRoundedRadius: 40,
-                                  tooltipMargin: 10,
+                                  tooltipMargin: 0,
+                                  tooltipHorizontalAlignment: FLHorizontalAlignment.center,
+                                  tooltipPadding: const EdgeInsets.all(8),
+                                  tooltipHorizontalOffset: 20,
                                   getTooltipItem: (
                                     BarChartGroupData group,
                                     int groupIndex,
@@ -171,25 +182,11 @@ class _RankingScreenState extends State<RankingScreen> {
                                       TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: rod.color,
-                                        fontSize: 12,
+                                        fontSize: 10,
                                       ),
                                     );
                                   },
                                 ),
-                                touchCallback: (event, response) {
-                                  if (event.isInterestedForInteractions &&
-                                      response != null &&
-                                      response.spot != null) {
-                                    setState(() {
-                                      touchedGroupIndex =
-                                          response.spot!.touchedBarGroupIndex;
-                                    });
-                                  } else {
-                                    setState(() {
-                                      touchedGroupIndex = -1;
-                                    });
-                                  }
-                                },
                               ),
                             ),
                           );
@@ -249,6 +246,7 @@ class _IconWidgetState extends AnimatedWidgetBaseState<_IconWidget> {
 
 
 
+
   @override
   void forEachTween(TweenVisitor<dynamic> visitor) {
     _rotationTween = visitor(
@@ -259,5 +257,46 @@ class _IconWidgetState extends AnimatedWidgetBaseState<_IconWidget> {
         end: widget.isSelected ? 1.0 : 0.0,
       ),
     ) as Tween<double>?;
+  }
+}
+
+class LegendItem {
+  final Color color;
+  final String name;
+  final double value;
+
+  LegendItem(this.color, this.name, this.value);
+}
+
+class LegendTile extends StatelessWidget {
+  final LegendItem legendItem;
+
+  const LegendTile({super.key, required this.legendItem});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(8),
+      child: Row(
+        children: [
+          Container(
+            width: 20,
+            height: 20,
+            color: legendItem.color,
+          ),
+          const SizedBox(width: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                legendItem.name,
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              Text(legendItem.value.toStringAsFixed(2)),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
