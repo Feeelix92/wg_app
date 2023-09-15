@@ -31,7 +31,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore db = FirebaseFirestore.instance;
 
-  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _usernameController = TextEditingController();
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _passwordRepeatController = TextEditingController();
@@ -66,7 +69,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Future sendUserDetails(String uid) async {
     final credentials = db.collection("users").doc(uid).set({
-      'name': _nameController.text.trim(),
+      'firstName': _firstNameController.text.trim(),
+      'lastName': _lastNameController.text.trim(),
+      'username': _usernameController.text.trim(),
       'birthdate': _selectedDate.toString().trim(),
       'isAdmin': false,
     }).then((value) {
@@ -84,9 +89,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     });
   }
 
+
   void clearForm() {
     setState(() {
-      _nameController.clear();
+      _firstNameController.clear();
+      _lastNameController.clear();
+      _usernameController.clear();
       _emailController.clear();
       _passwordController.clear();
       _passwordRepeatController.clear();
@@ -101,7 +109,9 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   void dispose() {
-    _nameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _usernameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _passwordRepeatController.dispose();
@@ -123,18 +133,59 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 child: Column(
                   children: [
                     TextFormField(
+                      // First Name
                       autofocus: true,
-                      controller: _nameController,
+                      controller: _firstNameController,
                       decoration: InputDecoration(
-                        labelText: 'Name',
-                        helperText: 'Kompletten Name eingeben',
+                        labelText: 'Vorname',
+                        // helperText: 'Vorname eingeben',
                         prefixIcon: const Icon(Icons.account_circle),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      validator: (name) {
-                        if (name!.isEmpty) return 'Gib dein Passwort ein';
+                      validator: (firstName) {
+                        if (firstName!.isEmpty) return 'Bitte gib deinen Vornamen ein';
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    TextFormField(
+                      // Last Name
+                      autofocus: true,
+                      controller: _lastNameController,
+                      decoration: InputDecoration(
+                        labelText: 'Nachname',
+                        // helperText: 'Nachname eingeben',
+                        prefixIcon: const Icon(Icons.account_circle),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      validator: (lastName) {
+                        if (lastName!.isEmpty) return 'Bitte gib deinen Nachnamen ein';
+                        return null;
+                      },
+                    ),
+                    const SizedBox(
+                      height: 14,
+                    ),
+                    TextFormField(
+                      // Username
+                      autofocus: true,
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        labelText: 'Benutzername',
+                        // helperText: 'Benutzername eingeben',
+                        prefixIcon: const Icon(Icons.account_circle),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      validator: (username) {
+                        if (username!.isEmpty) return 'Bitte gib deinen Benutzernamen ein';
                         return null;
                       },
                     ),
@@ -148,7 +199,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                           text: DateFormat('dd.MM.yyyy').format(_selectedDate)),
                       decoration: InputDecoration(
                         labelText: 'Geburtsdatum',
-                        helperText: 'Geburtsdatum auswählen',
+                        // helperText: 'Geburtsdatum auswählen',
                         prefixIcon: const Icon(Icons.date_range),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -171,6 +222,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                     const SizedBox(
                       height: 14,
                     ),
+                    const Divider(
+                      height: 1,
+                      thickness: 1,
+                    ),
                     const SizedBox(
                       height: 14,
                     ),
@@ -180,7 +235,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         labelText: 'E-Mail',
-                        helperText: 'E-Mail Adresse eingeben',
+                        // helperText: 'E-Mail Adresse eingeben',
                         prefixIcon: const Icon(Icons.email_outlined),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30),
@@ -197,7 +252,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       obscureText: _isObscure,
                       decoration: InputDecoration(
                         labelText: 'Passwort',
-                        helperText: 'Passwort eingeben',
+                        // helperText: 'Passwort eingeben',
                         prefixIcon: const Icon(Icons.password_outlined),
                         suffixIcon: IconButton(
                           icon: Icon(_isObscure ? Icons.visibility_off : Icons.visibility),
@@ -224,7 +279,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       obscureText: _isObscure,
                       decoration: InputDecoration(
                         labelText: 'Passwort bestätigen',
-                        helperText: 'Passwort eingeben',
+                        // helperText: 'Passwort eingeben',
                         prefixIcon: const Icon(Icons.password_outlined),
                         suffixIcon: IconButton(
                           icon: Icon(_isObscure ? Icons.visibility_off : Icons.visibility),
