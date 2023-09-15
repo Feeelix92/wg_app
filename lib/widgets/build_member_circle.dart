@@ -1,15 +1,14 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:wg_app/data/constants.dart';
 
-Widget buildMemberCircle(String name, double width, double height, double brightness) {
+Widget buildMemberCircle(String name, double size, double brightness) {
   Color circleColor = increaseBrightness(convertToColor(name), brightness);
+  double fontSize = size / 2;
   return Padding(
     padding: const EdgeInsets.all(8.0),
     child: Container(
-      width: width,
-      height: height,
+      width: size,
+      height: size,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: circleColor,
@@ -17,8 +16,8 @@ Widget buildMemberCircle(String name, double width, double height, double bright
       child: Center(
         child: Text(
           name[0],
-          style: const TextStyle(
-            fontSize: 20,
+          style: TextStyle(
+            fontSize: fontSize,
             fontWeight: FontWeight.bold,
             color: Colors.white,
           ),

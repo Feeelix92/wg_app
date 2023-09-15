@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,7 @@ import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
 import '../providers/household_provider.dart';
+import '../widgets/bar_chart/icon_widget.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
 
@@ -127,7 +126,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                       final index = value.toInt();
                                       return SideTitleWidget(
                                         axisSide: meta.axisSide,
-                                        child: _IconWidget(
+                                        child: IconWidget(
                                           color: dataList[index].color,
                                           isSelected:
                                               touchedGroupIndex == index,
@@ -179,9 +178,9 @@ class _RankingScreenState extends State<RankingScreen> {
                                     final name = dataList[groupIndex].name;
                                     return BarTooltipItem(
                                       '$name: ${rod.toY.toStringAsFixed(2)}', // Hier wird der Name und der Wert angezeigt
-                                      TextStyle(
+                                      const TextStyle(
                                         fontWeight: FontWeight.bold,
-                                        color: rod.color,
+                                        color: Colors.black,
                                         fontSize: 10,
                                       ),
                                     );
@@ -213,90 +212,3 @@ class _BarData {
   Color get color => increaseBrightness(convertToColor(name), 0.1);
 }
 
-class _IconWidget extends ImplicitlyAnimatedWidget {
-  const _IconWidget({
-    required this.color,
-    required this.isSelected,
-  }) : super(duration: const Duration(milliseconds: 300));
-  final Color color;
-  final bool isSelected;
-
-  @override
-  ImplicitlyAnimatedWidgetState<ImplicitlyAnimatedWidget> createState() =>
-      _IconWidgetState();
-}
-
-class _IconWidgetState extends AnimatedWidgetBaseState<_IconWidget> {
-  Tween<double>? _rotationTween;
-
-  @override
-  Widget build(BuildContext context) {
-    final rotation = math.pi * 4 * _rotationTween!.evaluate(animation);
-    final scale = 1 + _rotationTween!.evaluate(animation) * 0.5;
-    return Transform(
-      transform: Matrix4.rotationZ(rotation).scaled(scale, scale),
-      origin: const Offset(14, 14),
-      child: Icon(
-        widget.isSelected ? Icons.face_retouching_natural : Icons.face,
-        color: widget.color,
-        size: 28,
-      ),
-    );
-  }
-
-
-
-
-  @override
-  void forEachTween(TweenVisitor<dynamic> visitor) {
-    _rotationTween = visitor(
-      _rotationTween,
-      widget.isSelected ? 1.0 : 0.0,
-      (dynamic value) => Tween<double>(
-        begin: value as double,
-        end: widget.isSelected ? 1.0 : 0.0,
-      ),
-    ) as Tween<double>?;
-  }
-}
-
-class LegendItem {
-  final Color color;
-  final String name;
-  final double value;
-
-  LegendItem(this.color, this.name, this.value);
-}
-
-class LegendTile extends StatelessWidget {
-  final LegendItem legendItem;
-
-  const LegendTile({super.key, required this.legendItem});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Row(
-        children: [
-          Container(
-            width: 20,
-            height: 20,
-            color: legendItem.color,
-          ),
-          const SizedBox(width: 8),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                legendItem.name,
-                style: const TextStyle(fontWeight: FontWeight.bold),
-              ),
-              Text(legendItem.value.toStringAsFixed(2)),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-}

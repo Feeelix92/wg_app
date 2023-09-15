@@ -109,7 +109,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: members!
                                       .map((member) => buildMemberCircle(
-                                          member, 40.0, 40.0, 0.1))
+                                          member, 40.0, 0.1))
                                       .toList(),
                                 );
                               }
