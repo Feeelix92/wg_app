@@ -93,10 +93,10 @@ packages:
     dependency: transitive
     description:
       name: build_resolvers
-      sha256: a7417cc44d9edb3f2c8760000270c99dba8c72ff66d0146772b8326565780745
+      sha256: d912852cce27c9e80a93603db721c267716894462e7033165178b91138587972
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.1"
+    version: "2.3.2"
   build_runner:
     dependency: "direct dev"
     description:
@@ -221,10 +221,10 @@ packages:
     dependency: transitive
     description:
       name: dart_style
-      sha256: "1efa911ca7086affd35f463ca2fc1799584fb6aa89883cf0af8e3664d6a02d55"
+      sha256: abd7625e16f51f554ea244d090292945ec4d4be7bfbaf2ec8cccea568919d334
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.3"
   desktop_webview_auth:
     dependency: transitive
     description:
@@ -333,26 +333,26 @@ packages:
     dependency: "direct main"
     description:
       name: firebase_ui_auth
-      sha256: d8d739e2116aacdd7a8863ecb00a54336dfd2643d16c59b1393ff38916436a9e
+      sha256: "655f4d57799d989bacc223bef820d1dabfb2c0654adeb352b7c15171fbe7eadf"
       url: "https://pub.dev"
     source: hosted
-    version: "1.7.0"
+    version: "1.8.0"
   firebase_ui_localizations:
     dependency: transitive
     description:
       name: firebase_ui_localizations
-      sha256: "96d58534a4964cc609776af02bdcc74864cc3669af8f04f44e0afbdda55af232"
+      sha256: "44a31e8dd846d56d744630836cce79a0463ed6f6442e53de48d54cbc5e860fe1"
       url: "https://pub.dev"
     source: hosted
-    version: "1.6.0"
+    version: "1.6.1"
   firebase_ui_oauth:
     dependency: transitive
     description:
       name: firebase_ui_oauth
-      sha256: ea25f17517641d0933fb74749682814391863a618a3c67d03ceb6e780f70b09d
+      sha256: dc443817d3f76de02e375348248224d6245461efb7f78aec57a8438a527069ee
       url: "https://pub.dev"
     source: hosted
-    version: "1.4.10"
+    version: "1.4.11"
   firebase_ui_shared:
     dependency: transitive
     description:
