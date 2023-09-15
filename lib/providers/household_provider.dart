@@ -564,17 +564,22 @@ class HouseholdProvider extends ChangeNotifier {
         // Berechnung der Gesamtsumme aller  Ausgaben
         for (final shoppingItem in shoppingList) {
           final price = shoppingItem['price'] as double;
-          totalExpenses += price;
+          final done = shoppingItem['done'] as bool;
+
+          if (done) {
+            totalExpenses += price;
+          }
         }
 
         for (final memberId in memberIds) {
           double memberExpense = 0.0;
 
           for (final shoppingItem in shoppingList) {
-            final assignedTo = shoppingItem['assignedTo'] as String?;
+            final doneBy = shoppingItem['doneBy'] as String?;
             final price = shoppingItem['price'] as double;
+            final done = shoppingItem['done'] as bool;
 
-            if (assignedTo == memberId) {
+            if (done && doneBy == memberId) {
               memberExpense += price;
             }
           }
@@ -588,6 +593,7 @@ class HouseholdProvider extends ChangeNotifier {
           final username = await getUsernameForUserId(memberId);
           memberExpenses[memberId] = {
             'username': username,
+            // 'expense': 20.0,
             'expense': memberExpense,
             'percentageOfTotal': percentageOfTotal,
           };

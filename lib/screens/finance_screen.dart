@@ -107,12 +107,12 @@ class _FinanceScreenState extends State<FinanceScreen> {
       Map<String, dynamic> memberExpenses) {
     final List<PieChartSectionData> sections = [];
 
-    memberExpenses.forEach((memberName, memberData) {
+    memberExpenses.forEach((memberId, memberData) {
       final isTouched =
-          memberExpenses.keys.toList().indexOf(memberName) == touchedIndex;
+          memberExpenses.keys.toList().indexOf(memberId) == touchedIndex;
       sections.add(buildPieChartSectionData(
         isTouched,
-        memberName,
+        memberData['username'],
         memberData['expense'],
         memberData['percentageOfTotal'],
       ));
@@ -121,10 +121,9 @@ class _FinanceScreenState extends State<FinanceScreen> {
     return sections;
   }
 
-  PieChartSectionData buildPieChartSectionData(isTouched, String personName,
-      double personValue, double percentageOfTotal) {
+  PieChartSectionData buildPieChartSectionData(isTouched, String personName, double personValue, double percentageOfTotal) {
     final fontSize = isTouched ? 30.0 : 20.0;
-    final radius = isTouched ? 200.0 : 160.0;
+    final radius = isTouched ? 180.0 : 160.0;
     final widgetSize = isTouched ? 55.0 : 40.0;
     const shadows = [Shadow(color: Colors.black, blurRadius: 10)];
     return PieChartSectionData(
@@ -137,10 +136,11 @@ class _FinanceScreenState extends State<FinanceScreen> {
       titleStyle: TextStyle(
         fontSize: fontSize,
         fontWeight: FontWeight.bold,
-        color: const Color(0xffffffff),
+        color: Colors.white,
         shadows: shadows,
       ),
-      badgeWidget: buildMemberCircle(personName, 50.0, 0.3),
+      badgeWidget: buildMemberCircle(personName, 50.0, 0.5),
+      borderSide: const BorderSide(color: Colors.grey, width: 1),
       badgePositionPercentageOffset: .99,
     );
   }
