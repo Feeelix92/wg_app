@@ -230,6 +230,24 @@ class HouseholdProvider extends ChangeNotifier {
       return false; // Wenn ein Fehler auftritt oder der Haushalt nicht gefunden wird.
     }
   }
+ // Funktion die den Username mithilfe der UserId herausfindet
+  Future<String?> getUsernameForUserId(String userId) async {
+    try {
+      final docRefUser = await db.collection("users").doc(userId).get();
+
+      if (docRefUser.exists) {
+        final userData = docRefUser.data() as Map<String, dynamic>;
+        return userData['username'] as String?;
+      }
+      return null; // Benutzer nicht gefunden
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null; // Fehler beim Abrufen der Benutzerdaten
+    }
+  }
+
 
   // Funktion die den Username mithilfe der Email herausfindet
   Future<String?> getUsernameFromEmail(String email) async {
@@ -391,10 +409,6 @@ class HouseholdProvider extends ChangeNotifier {
           'email', isEqualTo: email).get();
 
       if (docRefUser.docs.isEmpty) return false;
-
-      final docRefHousehold = await db.collection("households").doc(
-          _household.id.toString()).get();
-
       final userDetailData = docRefUser.docs.first.data();
 
       await db.collection("households").doc(_household.id.toString()).update({
@@ -571,8 +585,9 @@ class HouseholdProvider extends ChangeNotifier {
             percentageOfTotal = (memberExpense / totalExpenses) * 100;
           }
 
-          // ToDo change member Id to member username
+          final username = await getUsernameForUserId(memberId);
           memberExpenses[memberId] = {
+            'username': username,
             'expense': memberExpense,
             'percentageOfTotal': percentageOfTotal,
           };
@@ -716,26 +731,29 @@ class HouseholdProvider extends ChangeNotifier {
         final memberPoints = <String, int>{};
 
         // Iteration für alle Mitglieder
-        for (final member in members) {
-          int points = 0;
+        for (final memberUserId in members) {
+          final username = await getUsernameForUserId(memberUserId);
+          if (username != null) {
+            int points = 0;
 
-          // Iteration für alle ShoppingItems und TaskItems
-          final items = [
-            ...householdDetailData['shoppingList'],
-            ...householdDetailData['taskList']
-          ];
-          for (final itemData in items) {
-            final doneBy = itemData['doneBy'] as String?;
-            final isDone = itemData['done'] as bool? ?? false;
-            final pointsEarned = itemData['points'] as int? ?? 0;
+            // Iteration für alle ShoppingItems und TaskItems
+            final items = [
+              ...householdDetailData['shoppingList'],
+              ...householdDetailData['taskList']
+            ];
+            for (final itemData in items) {
+              final doneBy = itemData['doneBy'] as String?;
+              final isDone = itemData['done'] as bool? ?? false;
+              final pointsEarned = itemData['points'] as int? ?? 0;
 
-            if (doneBy == member && isDone) {
-              points += pointsEarned;
+              if (doneBy == memberUserId && isDone) {
+                points += pointsEarned;
+              }
             }
+            points = 20;
+            // Punkte für die Mitglieder im Haushalt speichern
+            memberPoints[username] = points;
           }
-          points = 20;
-          // Punkte für die Mitglieder im Haushalt speichern
-          memberPoints[member] = points;
         }
 
         // Jetzt die Punkte absteigend sortieren
