@@ -78,7 +78,7 @@ class _RankingScreenState extends State<RankingScreen> {
                             return _BarData(
                                 entry.key, entry.value.toDouble());
                           }).toList();
-                          // Bestimmen der maaximalen Y-Achsen-Höhe bzw. Beschriftung
+                          // Bestimmen der maximalen Y-Achsen-Höhe bzw. Beschriftung
                           double maxY;
                           if (memberPointsOverview.values.first <= 10){
                             maxY = (memberPointsOverview.values.first + 20).toDouble();
