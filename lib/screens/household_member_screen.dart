@@ -83,6 +83,10 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                                                 shape: const RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
                                                 ),
+                                                side: const BorderSide(
+                                                  color: Colors.white,
+                                                  width: 1.0,
+                                                ),
                                                 deleteIconColor: Colors.white,
                                                 backgroundColor: increaseBrightness(convertToColor(members[index]), 0.2),
                                                 selectedColor: increaseBrightness(convertToColor(members[index]), 0.5),
