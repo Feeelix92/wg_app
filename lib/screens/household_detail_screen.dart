@@ -109,143 +109,13 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                       'Keine Mitglieder gefunden');
                                 } else {
                                   final members = snapshot.data;
-                                  return Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: members!
-                                            .map((member) => buildMemberCircle(
-                                                member, 40.0, 0.1))
-                                            .toList(),
-                                      ),
-                                      if (houseHoldProvider.household.admin ==
-                                          houseHoldProvider
-                                              .auth.currentUser!.uid)
-                                        ElevatedButton.icon(
-                                          onPressed: () {
-                                            AutoRouter.of(context).push(
-                                                HouseholdMemberRoute(
-                                                    householdId: widget
-                                                        .householdId));
-                                          },
-                                          icon: const Icon(Icons.edit),
-                                          label: const Text(
-                                              'Mitglieder verwalten'),
-                                        ),
-                                        // Column(
-                                        //   children: [
-                                        //     ElevatedButton.icon(
-                                        //       onPressed: () {
-                                        //         setState(() {
-                                        //           showInviteField =
-                                        //               !showInviteField; // Zeige oder verberge das Eingabefeld
-                                        //         });
-                                        //       },
-                                        //       icon: const Icon(Icons.add),
-                                        //       label: const Text(
-                                        //           'Mitglieder hinzufügen'),
-                                        //     ),
-                                        //     if (showInviteField)
-                                        //       Column(
-                                        //         children: [
-                                        //           // Eingabefeld für E-Mail-Adresse
-                                        //           Padding(
-                                        //             padding:
-                                        //                 const EdgeInsets.all(
-                                        //                     16.0),
-                                        //             child: TextField(
-                                        //               controller:
-                                        //                   emailController,
-                                        //               decoration:
-                                        //                   InputDecoration(
-                                        //                 labelText:
-                                        //                     'Email-Adresse',
-                                        //                 prefixIcon: const Icon(
-                                        //                     Icons.mail),
-                                        //                 border:
-                                        //                     OutlineInputBorder(
-                                        //                   borderRadius:
-                                        //                       BorderRadius
-                                        //                           .circular(30),
-                                        //                 ),
-                                        //               ),
-                                        //             ),
-                                        //           ),
-                                        //           Row(
-                                        //             mainAxisAlignment:
-                                        //                 MainAxisAlignment
-                                        //                     .center,
-                                        //             children: [
-                                        //               ElevatedButton(
-                                        //                 onPressed: () async {
-                                        //                   String email =
-                                        //                       emailController
-                                        //                           .text; // eingegebene E-Mail-Adresse
-                                        //                   if (email ==
-                                        //                       houseHoldProvider
-                                        //                           .auth
-                                        //                           .currentUser!
-                                        //                           .email) {
-                                        //                     customErrorDialog(
-                                        //                         context,
-                                        //                         "Fehler",
-                                        //                         "Du kannst dich nicht selbst einladen!");
-                                        //                   }
-                                        //                   if (email == "") {
-                                        //                     customErrorDialog(
-                                        //                         context,
-                                        //                         "Fehler",
-                                        //                         "Bitte gib eine E-Mail-Adresse ein!");
-                                        //                   }
-                                        //                   if (!email
-                                        //                       .contains("@")) {
-                                        //                     customErrorDialog(
-                                        //                         context,
-                                        //                         "Fehler",
-                                        //                         "Bitte gib eine gültige E-Mail-Adresse ein!");
-                                        //                   }
-                                        //
-                                        //                   if (await houseHoldProvider
-                                        //                       .addUserToHousehold(
-                                        //                           email)) {
-                                        //                     setState(() {
-                                        //                       showInviteField =
-                                        //                           false; // Schließe das Eingabefeld
-                                        //                     });
-                                        //                   } else {
-                                        //                     customErrorDialog(
-                                        //                         context,
-                                        //                         "Fehler",
-                                        //                         "Mitglied konnte nicht hinzugefügt werden");
-                                        //                   }
-                                        //                 },
-                                        //                 child: const Text(
-                                        //                     'Einladen'),
-                                        //               ),
-                                        //               const SizedBox(width: 20),
-                                        //               ElevatedButton(
-                                        //                 onPressed: () {
-                                        //                   setState(() {
-                                        //                     showInviteField =
-                                        //                         false; // Schließe das Eingabefeld
-                                        //                   });
-                                        //                 },
-                                        //                 style: ElevatedButton
-                                        //                     .styleFrom(
-                                        //                   foregroundColor:
-                                        //                       Colors.red[900],
-                                        //                 ),
-                                        //                 child: const Text(
-                                        //                     'Abbrechen'),
-                                        //               ),
-                                        //             ],
-                                        //           ),
-                                        //         ],
-                                        //       ),
-                                        //   ],
-                                        // ),
-                                    ],
+                                  return Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.center,
+                                    children: members!
+                                        .map((member) => buildMemberCircle(
+                                            member, 40.0, 0.2))
+                                        .toList(),
                                   );
                                 }
                               },
@@ -266,21 +136,36 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                         const SizedBox(height: 20),
                         if (houseHoldProvider.household.admin ==
                             houseHoldProvider.auth.currentUser!.uid)
-                          ElevatedButton.icon(
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return deleteHouseholdDialog(
-                                      houseHoldProvider, context);
+                          Column(
+                            children: [
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  AutoRouter.of(context).push(
+                                      HouseholdMemberRoute(
+                                          householdId: widget
+                                              .householdId));
                                 },
-                              );
-                            },
-                            style: ElevatedButton.styleFrom(
-                              foregroundColor: Colors.red[900],
-                            ),
-                            icon: const Icon(Icons.delete),
-                            label: const Text("Haushalt Löschen"),
+                                icon: const Icon(Icons.edit),
+                                label: const Text(
+                                    'Mitglieder verwalten'),
+                              ),
+                              ElevatedButton.icon(
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return deleteHouseholdDialog(
+                                          houseHoldProvider, context);
+                                    },
+                                  );
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: Colors.red[900],
+                                ),
+                                icon: const Icon(Icons.delete),
+                                label: const Text("Haushalt Löschen"),
+                              ),
+                            ],
                           ),
                       ],
                     ),
