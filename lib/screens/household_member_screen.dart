@@ -5,7 +5,6 @@ import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/widgets/navigation/app_drawer.dart';
 
 import '../providers/household_provider.dart';
-import '../widgets/custom_error_dialog.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/h1.dart';
 import '../widgets/text/h2.dart';
@@ -28,6 +27,7 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController newMemberController = TextEditingController();
     TextEditingController emailController = TextEditingController();
     return Scaffold(
         appBar: const CustomAppBar(),
@@ -51,7 +51,8 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                                   const EdgeInsets.symmetric(vertical: 16.0),
                               child: FutureBuilder<List<String>>(
                                 future:
-                                    houseHoldProvider.getHouseholdMembersNames(houseHoldProvider.household.id),
+                                    houseHoldProvider.getHouseholdMembersNames(
+                                        houseHoldProvider.household.id),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
                                       ConnectionState.waiting) {
@@ -66,45 +67,80 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                                     final members = snapshot.data;
                                     return Column(
                                       children: [
-                                        Wrap(
-                                          alignment: WrapAlignment.center,
-                                          spacing: 5.0,
-                                          children: List<Widget>.generate(
-                                            members!.length,
-                                            (int index) {
-                                              return InputChip(
-                                                label: Text(
-                                                    members[index],
-                                                  style: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white,
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Wrap(
+                                            alignment: WrapAlignment.center,
+                                            spacing: 5.0,
+                                            children: [
+                                              InputChip(
+                                                label: TextField(
+                                                  controller: newMemberController,
+                                                  decoration: const InputDecoration(
+                                                    hintText: 'Neues Mitglied hinzufügen',
+                                                    border: InputBorder.none,
                                                   ),
+                                                  onSubmitted: (newMember) {
+                                                    if (newMember.isNotEmpty) {
+                                                      setState(() {
+                                                        members?.add(newMember); // Füge das neue Mitglied zur Liste hinzu
+                                                        newMemberController.clear(); // Lösche den Text im Textfeld
+                                                      });
+                                                    }
+                                                  },
                                                 ),
                                                 shape: const RoundedRectangleBorder(
                                                   borderRadius: BorderRadius.all(Radius.circular(20.0)),
                                                 ),
-                                                side: const BorderSide(
-                                                  color: Colors.white,
-                                                  width: 1.0,
-                                                ),
-                                                deleteIconColor: Colors.white,
-                                                backgroundColor: increaseBrightness(convertToColor(members[index]), 0.2),
-                                                selectedColor: increaseBrightness(convertToColor(members[index]), 0.5),
-                                                onDeleted: () async {
-                                                  String? member =
-                                                      await houseHoldProvider
-                                                          .getEmailFromUsername(
-                                                              members[index]);
-                                                  print(member);
-                                                  // houseHoldProvider
-                                                  //     .removeUserFromHousehold(
-                                                  //         members[index]);
+                                              ),
+                                              ...?members?.map((member) {
+                                                  return InputChip(
+                                                    label: Text(
+                                                      member,
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20.0)),
+                                                    ),
+                                                    side: const BorderSide(
+                                                      color: Colors.white,
+                                                      width: 1.0,
+                                                    ),
+                                                    deleteIconColor: Colors.white,
+                                                    backgroundColor:
+                                                        increaseBrightness(
+                                                            convertToColor(
+                                                                member),
+                                                            0.2),
+                                                    selectedColor:
+                                                        increaseBrightness(
+                                                            convertToColor(
+                                                                member),
+                                                            0.5),
+                                                    onDeleted: () async {
+                                                      String? email =
+                                                          await houseHoldProvider
+                                                              .getEmailFromUsername(
+                                                              member);
+                                                      print(email);
+                                                      // houseHoldProvider
+                                                      //     .removeUserFromHousehold(
+                                                      //         member!);
+                                                    },
+                                                  );
                                                 },
-                                              );
-                                            },
-                                          ).toList(),
+                                              ).toList(),
+                                            ],
+                                          ),
                                         ),
-
                                       ],
                                     );
                                   }
