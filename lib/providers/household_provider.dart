@@ -278,18 +278,18 @@ class HouseholdProvider extends ChangeNotifier {
       final docRefUser = await db.collection("users").where(
           'email', isEqualTo: email).get();
 
-      if (docRefUser.docs.isEmpty) return false;
+      if (docRefUser.docs.isEmpty){
+        return false;
+      }
 
-      final docRefHousehold = await db.collection("households").doc(
-          _household.id.toString()).get();
+      final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
 
-      final userDetailData = docRefUser.docs.first.data();
-      final householdDetailData = docRefHousehold.data() as Map<String,
-          dynamic>;
+      final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
-      final List<String> members = householdDetailData['members'].cast<
-          String>();
-      members.add(userDetailData['uid']);
+      final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
+
+      final List<String> members = householdDetailData['members'].cast<String>();
+      members.add(userId);
 
       await db.collection("households").doc(_household.id.toString()).update({
         'members': members,
@@ -300,6 +300,7 @@ class HouseholdProvider extends ChangeNotifier {
       return true;
     } catch (e) {
       if (kDebugMode) {
+        print("test");
         print(e);
       }
       return false;

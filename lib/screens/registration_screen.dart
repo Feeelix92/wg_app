@@ -72,6 +72,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       'firstName': _firstNameController.text.trim(),
       'lastName': _lastNameController.text.trim(),
       'username': _usernameController.text.trim(),
+      'email': _emailController.text.trim(),
       'birthdate': _selectedDate.toString().trim(),
       'isAdmin': false,
     }).then((value) {
