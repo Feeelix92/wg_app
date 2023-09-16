@@ -122,118 +122,129 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                       if (houseHoldProvider.household.admin ==
                                           houseHoldProvider
                                               .auth.currentUser!.uid)
-                                        Column(
-                                          children: [
-                                            ElevatedButton.icon(
-                                              onPressed: () {
-                                                setState(() {
-                                                  showInviteField =
-                                                      !showInviteField; // Zeige oder verberge das Eingabefeld
-                                                });
-                                              },
-                                              icon: const Icon(Icons.add),
-                                              label: const Text(
-                                                  'Mitglieder hinzufügen'),
-                                            ),
-                                            if (showInviteField)
-                                              Column(
-                                                children: [
-                                                  // Eingabefeld für E-Mail-Adresse
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            16.0),
-                                                    child: TextField(
-                                                      controller:
-                                                          emailController,
-                                                      decoration:
-                                                          InputDecoration(
-                                                        labelText:
-                                                            'Email-Adresse',
-                                                        prefixIcon: const Icon(
-                                                            Icons.mail),
-                                                        border:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(30),
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      ElevatedButton(
-                                                        onPressed: () async {
-                                                          String email =
-                                                              emailController
-                                                                  .text; // eingegebene E-Mail-Adresse
-                                                          if (email ==
-                                                              houseHoldProvider
-                                                                  .auth
-                                                                  .currentUser!
-                                                                  .email) {
-                                                            customErrorDialog(
-                                                                context,
-                                                                "Fehler",
-                                                                "Du kannst dich nicht selbst einladen!");
-                                                          }
-                                                          if (email == "") {
-                                                            customErrorDialog(
-                                                                context,
-                                                                "Fehler",
-                                                                "Bitte gib eine E-Mail-Adresse ein!");
-                                                          }
-                                                          if (!email
-                                                              .contains("@")) {
-                                                            customErrorDialog(
-                                                                context,
-                                                                "Fehler",
-                                                                "Bitte gib eine gültige E-Mail-Adresse ein!");
-                                                          }
-
-                                                          if (await houseHoldProvider
-                                                              .addUserToHousehold(
-                                                                  email)) {
-                                                            setState(() {
-                                                              showInviteField =
-                                                                  false; // Schließe das Eingabefeld
-                                                            });
-                                                          } else {
-                                                            customErrorDialog(
-                                                                context,
-                                                                "Fehler",
-                                                                "Mitglied konnte nicht hinzugefügt werden");
-                                                          }
-                                                        },
-                                                        child: const Text(
-                                                            'Einladen'),
-                                                      ),
-                                                      const SizedBox(width: 20),
-                                                      ElevatedButton(
-                                                        onPressed: () {
-                                                          setState(() {
-                                                            showInviteField =
-                                                                false; // Schließe das Eingabefeld
-                                                          });
-                                                        },
-                                                        style: ElevatedButton
-                                                            .styleFrom(
-                                                          foregroundColor:
-                                                              Colors.red[900],
-                                                        ),
-                                                        child: const Text(
-                                                            'Abbrechen'),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ],
-                                              ),
-                                          ],
+                                        ElevatedButton.icon(
+                                          onPressed: () {
+                                            AutoRouter.of(context).push(
+                                                HouseholdMemberRoute(
+                                                    householdId: widget
+                                                        .householdId));
+                                          },
+                                          icon: const Icon(Icons.edit),
+                                          label: const Text(
+                                              'Mitglieder verwalten'),
                                         ),
+                                        // Column(
+                                        //   children: [
+                                        //     ElevatedButton.icon(
+                                        //       onPressed: () {
+                                        //         setState(() {
+                                        //           showInviteField =
+                                        //               !showInviteField; // Zeige oder verberge das Eingabefeld
+                                        //         });
+                                        //       },
+                                        //       icon: const Icon(Icons.add),
+                                        //       label: const Text(
+                                        //           'Mitglieder hinzufügen'),
+                                        //     ),
+                                        //     if (showInviteField)
+                                        //       Column(
+                                        //         children: [
+                                        //           // Eingabefeld für E-Mail-Adresse
+                                        //           Padding(
+                                        //             padding:
+                                        //                 const EdgeInsets.all(
+                                        //                     16.0),
+                                        //             child: TextField(
+                                        //               controller:
+                                        //                   emailController,
+                                        //               decoration:
+                                        //                   InputDecoration(
+                                        //                 labelText:
+                                        //                     'Email-Adresse',
+                                        //                 prefixIcon: const Icon(
+                                        //                     Icons.mail),
+                                        //                 border:
+                                        //                     OutlineInputBorder(
+                                        //                   borderRadius:
+                                        //                       BorderRadius
+                                        //                           .circular(30),
+                                        //                 ),
+                                        //               ),
+                                        //             ),
+                                        //           ),
+                                        //           Row(
+                                        //             mainAxisAlignment:
+                                        //                 MainAxisAlignment
+                                        //                     .center,
+                                        //             children: [
+                                        //               ElevatedButton(
+                                        //                 onPressed: () async {
+                                        //                   String email =
+                                        //                       emailController
+                                        //                           .text; // eingegebene E-Mail-Adresse
+                                        //                   if (email ==
+                                        //                       houseHoldProvider
+                                        //                           .auth
+                                        //                           .currentUser!
+                                        //                           .email) {
+                                        //                     customErrorDialog(
+                                        //                         context,
+                                        //                         "Fehler",
+                                        //                         "Du kannst dich nicht selbst einladen!");
+                                        //                   }
+                                        //                   if (email == "") {
+                                        //                     customErrorDialog(
+                                        //                         context,
+                                        //                         "Fehler",
+                                        //                         "Bitte gib eine E-Mail-Adresse ein!");
+                                        //                   }
+                                        //                   if (!email
+                                        //                       .contains("@")) {
+                                        //                     customErrorDialog(
+                                        //                         context,
+                                        //                         "Fehler",
+                                        //                         "Bitte gib eine gültige E-Mail-Adresse ein!");
+                                        //                   }
+                                        //
+                                        //                   if (await houseHoldProvider
+                                        //                       .addUserToHousehold(
+                                        //                           email)) {
+                                        //                     setState(() {
+                                        //                       showInviteField =
+                                        //                           false; // Schließe das Eingabefeld
+                                        //                     });
+                                        //                   } else {
+                                        //                     customErrorDialog(
+                                        //                         context,
+                                        //                         "Fehler",
+                                        //                         "Mitglied konnte nicht hinzugefügt werden");
+                                        //                   }
+                                        //                 },
+                                        //                 child: const Text(
+                                        //                     'Einladen'),
+                                        //               ),
+                                        //               const SizedBox(width: 20),
+                                        //               ElevatedButton(
+                                        //                 onPressed: () {
+                                        //                   setState(() {
+                                        //                     showInviteField =
+                                        //                         false; // Schließe das Eingabefeld
+                                        //                   });
+                                        //                 },
+                                        //                 style: ElevatedButton
+                                        //                     .styleFrom(
+                                        //                   foregroundColor:
+                                        //                       Colors.red[900],
+                                        //                 ),
+                                        //                 child: const Text(
+                                        //                     'Abbrechen'),
+                                        //               ),
+                                        //             ],
+                                        //           ),
+                                        //         ],
+                                        //       ),
+                                        //   ],
+                                        // ),
                                     ],
                                   );
                                 }

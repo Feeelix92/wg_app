@@ -22,6 +22,7 @@ class AppRouter extends $AppRouter {
     AutoRoute(page: TaskListRoute.page, path: '/haushalt/:id/tasklist', guards: [AuthGuard()]),
     AutoRoute(page: FinanceRoute.page, path: '/haushalt/:id/finance', guards: [AuthGuard()]),
     AutoRoute(page: RankingRoute.page, path: '/haushalt/:id/ranking', guards: [AuthGuard()]),
+    AutoRoute(page: HouseholdMemberRoute.page, path: '/haushalt/:id/members', guards: [AuthGuard()]),
     AutoRoute(page: ProfileRoute.page, path: '/profil', guards: [AuthGuard()]),
   ];
 }

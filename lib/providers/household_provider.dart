@@ -271,6 +271,28 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
+  // Funktion die die Email mithilfe des Usernamen herausfindet
+  Future<String?> getEmailFromUsername(String username) async {
+    try {
+      final usersCollection = db.collection("users");
+      final querySnapshot = await usersCollection.where(
+          'username', isEqualTo: username).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        final userData = querySnapshot.docs.first.data();
+        final email = userData['email'] as String?;
+        return email;
+      } else {
+        return null; // Wenn der Username nicht gefunden wurde.
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return null; // Wenn ein Fehler auftritt.
+    }
+  }
+
 
 // Suche nach User in der Datenbank anhand der Email und füge ihn dem Haushalt hinzu
   Future<bool> addUserToHousehold(String email) async {
