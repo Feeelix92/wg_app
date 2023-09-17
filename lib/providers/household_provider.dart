@@ -140,6 +140,38 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
+  // Statische Mitgliederliste für Testzwecke
+  final Map<String, Map<String, dynamic>> staticMembers = {
+    'staticUserId1': {
+      'username': 'StaticUser1',
+      'email': 'staticuser1@example.com',
+    },
+    'staticUserId2': {
+      'username': 'StaticUser2',
+      'email': 'staticuser2@example.com',
+    },
+    'staticUserId3': {
+      'username': 'StaticUser3',
+      'email': 'staticuser3@example.com',
+    },
+    'staticUserId4': {
+      'username': 'StaticUser4',
+      'email': 'staticuser4@example.com',
+    },
+    'staticUserId5': {
+      'username': 'StaticUser5',
+      'email': 'staticuser5@example.com',
+    },
+    'staticUserId6': {
+      'username': 'StaticUser6',
+      'email': 'staticuser6@example.com',
+    },
+    'staticUserId7': {
+      'username': 'StaticUser7',
+      'email': 'staticuser7@example.com',
+    },
+  };
+
   // Funktion die die Daten aller Mitglieder eines Haushalts lädt
   Future<Map<String, Map<String, dynamic>>> getHouseholdMembersData(String householdId) async {
     try {
@@ -167,6 +199,7 @@ class HouseholdProvider extends ChangeNotifier {
             }
           }
         }
+        memberData.addAll(staticMembers);
         return memberData;
       }
 
@@ -309,6 +342,7 @@ class HouseholdProvider extends ChangeNotifier {
 
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
 
+
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
       final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
@@ -316,13 +350,20 @@ class HouseholdProvider extends ChangeNotifier {
       final List<String> members = householdDetailData['members'].cast<String>();
       members.add(userId);
 
-      await db.collection("households").doc(_household.id.toString()).update({
-        'members': members,
-      });
+      // Überprüfen, ob der Benutzer bereits im Haushalt ist
+      if (!members.contains(userId)) {
+        members.add(userId);
 
-      //@TODO: Ist User bereits in Household?
+        await db.collection("households").doc(_household.id.toString()).update({
+          'members': members,
+        });
 
-      await updateHouseholdInformation();
+        await updateHouseholdInformation();
+      } else {
+        // Benutzer ist bereits im Haushalt
+        print('Benutzer ist bereits im Haushalt');
+        return false;
+      }
 
       return true;
     } catch (e) {

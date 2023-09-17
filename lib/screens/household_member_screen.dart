@@ -29,6 +29,7 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
   GlobalKey<FormState> _formKeyMember = GlobalKey<FormState>();
   GlobalKey<FormState> _formKeyAdmin = GlobalKey<FormState>();
 
+
   void _initializeFormKey() {
     _formKeyMember = GlobalKey<FormState>();
     _formKeyAdmin = GlobalKey<FormState>();
@@ -43,6 +44,8 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
   }
 
   final TextEditingController _emailController = TextEditingController();
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -361,7 +364,7 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                                                                         title: const Text(
                                                                             'Admin ändern'),
                                                                         content:
-                                                                            Text('Möchtest du den Admin wirklich ändern? Du kannst diesen Haushalt dann nicht mehr verwalten.'),
+                                                                            const Text('Möchtest du den Admin wirklich ändern? Du kannst diesen Haushalt dann nicht mehr verwalten.'),
                                                                         actions: [
                                                                           TextButton(
                                                                               onPressed: () {
