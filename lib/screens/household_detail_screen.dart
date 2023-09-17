@@ -72,7 +72,6 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController emailController = TextEditingController();
     return Scaffold(
       appBar: const CustomAppBar(),
       endDrawer: const AppDrawer(),

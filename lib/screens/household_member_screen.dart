@@ -33,12 +33,16 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
     _formKeyMember = GlobalKey<FormState>();
   }
 
+  @override
+  void initState() {
+    final householdProvider = Provider.of<HouseholdProvider>(context, listen: false);
+    selectedUserId = householdProvider.auth.currentUser?.uid;
+    super.initState();
+  }
   final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController newMemberController = TextEditingController();
-    TextEditingController emailController = TextEditingController();
     return Scaffold(
         appBar: const CustomAppBar(),
         endDrawer: const AppDrawer(),
