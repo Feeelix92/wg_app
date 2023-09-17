@@ -344,7 +344,6 @@ class HouseholdProvider extends ChangeNotifier {
       final docRefHousehold = await db.collection("households").doc(
           _household.id.toString()).get();
 
-      final userDetailData = docRefUser.docs.first.data();
       final householdDetailData = docRefHousehold.data() as Map<String,
           dynamic>;
 
@@ -438,10 +437,11 @@ class HouseholdProvider extends ChangeNotifier {
           'email', isEqualTo: email).get();
 
       if (docRefUser.docs.isEmpty) return false;
-      final userDetailData = docRefUser.docs.first.data();
+
+      final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
 
       await db.collection("households").doc(_household.id.toString()).update({
-        'admin': userDetailData['uid'],
+        'admin': userId,
       });
 
       await updateHouseholdInformation();
