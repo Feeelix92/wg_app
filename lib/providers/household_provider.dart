@@ -317,12 +317,13 @@ class HouseholdProvider extends ChangeNotifier {
         'members': members,
       });
 
+      //@TODO: Ist User bereits in Household?
+
       await updateHouseholdInformation();
 
       return true;
     } catch (e) {
       if (kDebugMode) {
-        print("test");
         print(e);
       }
       return false;
@@ -344,9 +345,11 @@ class HouseholdProvider extends ChangeNotifier {
       final householdDetailData = docRefHousehold.data() as Map<String,
           dynamic>;
 
+      final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
+
       final List<String> members = householdDetailData['members'].cast<
           String>();
-      members.remove(userDetailData['uid']);
+      members.remove(userId);
 
       await db.collection("households").doc(_household.id.toString()).update({
         'members': members,
