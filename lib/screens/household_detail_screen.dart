@@ -93,9 +93,9 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                         if (houseHoldProvider.household.members.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
-                            child: FutureBuilder<List<String>>(
+                            child: FutureBuilder<Map<String, Map<String, dynamic>>>(
                               future:
-                                  houseHoldProvider.getHouseholdMembersNames(
+                                  houseHoldProvider.getHouseholdMembersData(
                                       houseHoldProvider.household.id),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
@@ -112,9 +112,8 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                   return Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.center,
-                                    children: members!
-                                        .map((member) => buildMemberCircle(
-                                            member, 40.0, 0.2))
+                                    children: members!.keys.map((userId) => buildMemberCircle(
+                                            members[userId]?['username'], 40.0, 0.2))
                                         .toList(),
                                   );
                                 }

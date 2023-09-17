@@ -140,8 +140,8 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die die Namen aller Mitglieder eines Haushalts lädt
-  Future<List<String>> getHouseholdMembersNames(String householdId) async {
+  // Funktion die die Daten aller Mitglieder eines Haushalts lädt
+  Future<Map<String, Map<String, dynamic>>> getHouseholdMembersData(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households")
           .doc(householdId)
@@ -153,29 +153,32 @@ class HouseholdProvider extends ChangeNotifier {
             dynamic>;
         final memberIds = householdDetailData['members'].cast<String>();
 
-        final memberNames = <String>[];
+        final memberData = <String, Map<String, dynamic>>{};
 
         for (final memberId in memberIds) {
           final docRefUser = await db.collection("users").doc(memberId).get();
           if (docRefUser.exists) {
             final userData = docRefUser.data() as Map<String, dynamic>;
             final memberName = userData['username'];
+            final memberEmail = userData['email'];
+
             if (memberName != null) {
-              memberNames.add(memberName);
+              memberData[memberId] = {'username': memberName, 'email': memberEmail};
             }
           }
         }
-        return memberNames;
+        return memberData;
       }
 
-      return [];
+      return {};
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return [];
+      return {};
     }
   }
+
 
   // Funktion gibt eine Liste aller User die nciht in einem bestimtmen Haushalt Mitglied sind zurück
   Future<Map<String, String>> getUsersNotInHousehold(String householdId) async {

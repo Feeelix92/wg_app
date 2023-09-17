@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/widgets/navigation/app_drawer.dart';
+import 'package:wg_app/widgets/text/fonts.dart';
 
 import '../providers/household_provider.dart';
 import '../widgets/custom_error_dialog.dart';
@@ -25,7 +26,7 @@ class HouseholdMemberScreen extends StatefulWidget {
 class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
   bool isLoading = false; // Starte mit dem Ladezustand
   bool showInviteField = false;
-  int? selectedIndex;
+  String? selectedUserId;
   GlobalKey<FormState> _formKeyMember = GlobalKey<FormState>();
 
   void _initializeFormKey() {
@@ -52,15 +53,19 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                     child: Center(
                       child: Column(
                         children: [
-                          H1(text: "Mitglieder verwalten"),
-                          H2(text: houseHoldProvider.household.title),
+                          const H1(text: "Mitglieder verwalten"),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: H2(text: houseHoldProvider.household.title),
+                          ),
                           if (houseHoldProvider.household.members.isNotEmpty)
                             Padding(
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 16.0),
-                              child: FutureBuilder<List<String>>(
+                                  const EdgeInsets.only(top: 8.0),
+                              child: FutureBuilder<
+                                  Map<String, Map<String, dynamic>>>(
                                 future:
-                                    houseHoldProvider.getHouseholdMembersNames(
+                                    houseHoldProvider.getHouseholdMembersData(
                                         houseHoldProvider.household.id),
                                 builder: (context, snapshot) {
                                   if (snapshot.connectionState ==
@@ -86,6 +91,12 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                                                 key: _formKeyMember,
                                                 child: Column(
                                                   children: [
+                                                    const Padding(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      child: H3(
+                                                          text:
+                                                              'Mitglied hinzufügen'),
+                                                    ),
                                                     TextFormField(
                                                       autofocus: false,
                                                       controller:
@@ -115,136 +126,184 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                                                               ? 'Bitte gib eine gültige E-Mail-Adresse ein!'
                                                               : null,
                                                     ),
-                                                    ElevatedButton(
-                                                      onPressed: () async {
-                                                        if (_formKeyMember
-                                                            .currentState!
-                                                            .validate()) {
-                                                          String? email =
-                                                              _emailController
-                                                                  .text;
-                                                          if (email ==
-                                                              houseHoldProvider
-                                                                  .auth
-                                                                  .currentUser!
-                                                                  .email) {
-                                                            customErrorDialog(
-                                                                context,
-                                                                "Fehler",
-                                                                "Du kannst dich nicht selbst einladen!");
-                                                          }
+                                                    Padding(
+                                                      padding: const EdgeInsets.all(8.0),
+                                                      child: ElevatedButton(
+                                                        onPressed: () async {
+                                                          if (_formKeyMember
+                                                              .currentState!
+                                                              .validate()) {
+                                                            String? email =
+                                                                _emailController
+                                                                    .text;
+                                                            if (email ==
+                                                                houseHoldProvider
+                                                                    .auth
+                                                                    .currentUser!
+                                                                    .email) {
+                                                              customErrorDialog(
+                                                                  context,
+                                                                  "Fehler",
+                                                                  "Du kannst dich nicht selbst einladen!");
+                                                            }
 
-                                                          if (await houseHoldProvider
-                                                              .addUserToHousehold(
-                                                                  email)) {
-                                                            _emailController
-                                                                .clear();
-                                                          } else {
-                                                            customErrorDialog(
-                                                                context,
-                                                                "Fehler",
-                                                                "Mitglied konnte nicht hinzugefügt werden");
+                                                            if (await houseHoldProvider
+                                                                .addUserToHousehold(
+                                                                    email)) {
+                                                              _emailController
+                                                                  .clear();
+                                                            } else {
+                                                              customErrorDialog(
+                                                                  context,
+                                                                  "Fehler",
+                                                                  "Mitglied konnte nicht hinzugefügt werden");
+                                                            }
                                                           }
-                                                        }
-                                                      },
-                                                      child: const Text(
-                                                          'Hinzufügen'),
+                                                        },
+                                                        child: const Text(
+                                                            'Hinzufügen'),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),
                                               ),
-                                              ...?members?.map(
-                                                (member) {
-                                                  return Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 10),
-                                                    child: InputChip(
-                                                      label: Text(
-                                                        member,
-                                                        style: const TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.white,
-                                                        ),
-                                                      ),
-                                                      shape:
-                                                          const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius.all(
-                                                                Radius.circular(
-                                                                    20.0)),
-                                                      ),
-                                                      side: const BorderSide(
+                                              ...?members?.keys.map(
+                                                (userId) {
+                                                  return InputChip(
+                                                    label: Text(
+                                                      members[userId]
+                                                          ?['username'],
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
                                                         color: Colors.white,
-                                                        width: 1.0,
                                                       ),
-                                                      deleteIconColor:
-                                                          Colors.white,
-                                                      backgroundColor:
-                                                          increaseBrightness(
-                                                              convertToColor(
-                                                                  member),
-                                                              0.2),
-                                                      selectedColor:
-                                                          increaseBrightness(
-                                                              convertToColor(
-                                                                  member),
-                                                              0.5),
-                                                      onDeleted: () async {
-                                                        String? email =
-                                                            await houseHoldProvider
-                                                                .getEmailFromUsername(
-                                                                    member);
-                                                        // cannot delete yourself
-                                                        if (email ==
-                                                            houseHoldProvider
-                                                                .auth
-                                                                .currentUser!
-                                                                .email) {
-                                                          customErrorDialog(
-                                                              context,
-                                                              "Fehler",
-                                                              "Du kannst dich nicht selbst entfernen!");
-                                                        } else {
-                                                          showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (BuildContext
-                                                                      context) {
-                                                                return AlertDialog(
-                                                                  title: const Text(
-                                                                      'Mitglied entfernen'),
-                                                                  content: Text(
-                                                                      'Möchten Sie $member wirklich entfernen?'),
-                                                                  actions: [
-                                                                    TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          houseHoldProvider
-                                                                              .removeUserFromHousehold(email!);
-                                                                          AutoRouter.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                        child: const Text(
-                                                                            'Entfernen')),
-                                                                    TextButton(
-                                                                        onPressed:
-                                                                            () {
-                                                                          AutoRouter.of(context)
-                                                                              .pop();
-                                                                        },
-                                                                        child: const Text(
-                                                                            'Abbrechen')),
-                                                                  ],
-                                                                );
-                                                              });
-                                                        }
-                                                      },
                                                     ),
+                                                    shape:
+                                                        const RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.all(
+                                                              Radius.circular(
+                                                                  20.0)),
+                                                    ),
+                                                    side: const BorderSide(
+                                                      color: Colors.white,
+                                                      width: 1.0,
+                                                    ),
+                                                    deleteIconColor:
+                                                        Colors.white,
+                                                    backgroundColor:
+                                                        increaseBrightness(
+                                                            convertToColor(
+                                                                members[userId]
+                                                                    ?[
+                                                                    'username']),
+                                                            0.2),
+                                                    selectedColor:
+                                                        increaseBrightness(
+                                                            convertToColor(
+                                                                members[userId]
+                                                                    ?[
+                                                                    'username']),
+                                                            0.5),
+                                                    onDeleted: () async {
+                                                      String? email =
+                                                          members[userId]
+                                                              ?['email'];
+                                                      // cannot delete yourself
+                                                      if (email ==
+                                                          houseHoldProvider
+                                                              .auth
+                                                              .currentUser!
+                                                              .email) {
+                                                        customErrorDialog(
+                                                            context,
+                                                            "Fehler",
+                                                            "Du kannst dich nicht selbst entfernen!");
+                                                      } else {
+                                                        showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (BuildContext
+                                                                    context) {
+                                                              return AlertDialog(
+                                                                title: const Text(
+                                                                    'Mitglied entfernen'),
+                                                                content: Text(
+                                                                    'Möchten Sie ${members[userId]?['username']} wirklich entfernen?'),
+                                                                actions: [
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        houseHoldProvider
+                                                                            .removeUserFromHousehold(email!);
+                                                                        AutoRouter.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child: const Text(
+                                                                          'Entfernen')),
+                                                                  TextButton(
+                                                                      onPressed:
+                                                                          () {
+                                                                        AutoRouter.of(context)
+                                                                            .pop();
+                                                                      },
+                                                                      child: const Text(
+                                                                          'Abbrechen')),
+                                                                ],
+                                                              );
+                                                            });
+                                                      }
+                                                    },
                                                   );
                                                 },
                                               ).toList(),
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10.0),
+                                                child: Column(
+                                                  children: [
+                                                    const Padding(
+                                                      padding: EdgeInsets.all(8.0),
+                                                      child: H3(text: 'Admin ändern'),
+                                                    ),
+                                                    Form(
+                                                      child:
+                                                          DropdownButtonFormField(
+                                                        decoration:
+                                                            const InputDecoration(
+                                                          hintText: 'Admin ändern',
+                                                          prefixIcon: Icon(Icons
+                                                              .admin_panel_settings),
+                                                          border:
+                                                              OutlineInputBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        30.0)),
+                                                          ),
+                                                        ),
+                                                        value: selectedUserId,
+                                                        items: members?.keys
+                                                            .map((userId) {
+                                                          return DropdownMenuItem(
+                                                            value: userId,
+                                                            child: Text(
+                                                                members[userId]![
+                                                                    'username']),
+                                                          );
+                                                        }).toList(),
+                                                        onChanged: (value) {
+                                                          setState(() {
+                                                            selectedUserId = value
+                                                                as String; // Annahme: selectedUserId ist ein String
+                                                          });
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
                                             ],
                                           ),
                                         ),
