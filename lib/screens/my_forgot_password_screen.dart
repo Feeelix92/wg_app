@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../widgets/my_snackbars.dart';
+import '../widgets/custom_snackbars.dart';
 
 final _formKeyForgotPassword = GlobalKey<FormState>();
 

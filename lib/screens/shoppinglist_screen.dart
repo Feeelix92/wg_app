@@ -1,10 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wg_app/model/shoppingItem.dart';
 import 'package:wg_app/screens/shoppinglist_add_screen.dart';
-import '../data/constants.dart';
-import '../model/household.dart';
 import '../providers/household_provider.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
@@ -48,13 +45,6 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
-              },
-              child: const Text('Zurück'),
-            ),
-            const SizedBox(height: 20.0)
           ],
         ),
         floatingActionButton: FloatingActionButton(

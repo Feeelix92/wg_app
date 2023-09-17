@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/screens/tasklist_add_screen.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
-import '../model/taskItem.dart';
 import '../providers/household_provider.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
@@ -23,7 +22,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
   @override
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
-      householdProvider.loadHousehold(widget.householdId); // Lade den aktuellen Haushalt
       List<dynamic> taskList = householdProvider.household.taskList;
       return Scaffold(
         appBar: const CustomAppBar(),
@@ -54,13 +52,6 @@ class _TaskListScreenState extends State<TaskListScreen> {
                 },
               ),
             ),
-            ElevatedButton(
-              onPressed: () {
-                AutoRouter.of(context).pop(); // Zurück zum HomeScreen
-              },
-              child: const Text('Zurück'),
-            ),
-            const SizedBox(height: 20.0)
           ],
         ),
         floatingActionButton: FloatingActionButton(

@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
@@ -10,7 +9,7 @@ import 'package:intl/intl.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
-import '../widgets/my_snackbars.dart';
+import '../widgets/custom_snackbars.dart';
 
 @RoutePage()
 class RegistrationScreen extends StatefulWidget {
@@ -73,6 +72,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       'firstName': _firstNameController.text.trim(),
       'lastName': _lastNameController.text.trim(),
       'username': _usernameController.text.trim(),
+      'email': _emailController.text.trim(),
       'birthdate': _selectedDate.toString().trim(),
       'isAdmin': false,
     }).then((value) {
