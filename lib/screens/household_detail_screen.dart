@@ -108,12 +108,18 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                                       'Keine Mitglieder gefunden');
                                 } else {
                                   final members = snapshot.data;
-                                  return Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.center,
-                                    children: members!.keys.map((userId) => buildMemberCircle(
-                                            members[userId]?['username'], 40.0, 0.2))
-                                        .toList(),
+                                  return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: members!.keys.map((userId) => Padding(
+                                        padding: const EdgeInsets.only(right: 2.0),
+                                        child: buildMemberCircle(
+                                                members[userId]?['username'], 40.0, 0.2),
+                                      ))
+                                          .toList(),
+                                    ),
                                   );
                                 }
                               },

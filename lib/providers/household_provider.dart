@@ -341,12 +341,8 @@ class HouseholdProvider extends ChangeNotifier {
       }
 
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
-
-
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
-
       final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
-
       final List<String> members = householdDetailData['members'].cast<String>();
       members.add(userId);
 
