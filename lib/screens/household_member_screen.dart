@@ -29,7 +29,6 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
   GlobalKey<FormState> _formKeyMember = GlobalKey<FormState>();
   GlobalKey<FormState> _formKeyAdmin = GlobalKey<FormState>();
 
-
   void _initializeFormKey() {
     _formKeyMember = GlobalKey<FormState>();
     _formKeyAdmin = GlobalKey<FormState>();
@@ -44,8 +43,6 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
   }
 
   final TextEditingController _emailController = TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -101,93 +98,134 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                                                 children: [
                                                   ...?members?.keys.map(
                                                     (userId) {
-                                                      return InputChip(
-                                                        label: Text(
-                                                          members[userId]
-                                                              ?['username'],
-                                                          style:
-                                                              const TextStyle(
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                            color: Colors.white,
+                                                      if (userId ==
+                                                          houseHoldProvider
+                                                              .household
+                                                              .admin) {
+                                                        return Chip(
+                                                          label: Text(
+                                                            members[userId]
+                                                                ?['username'],
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
                                                           ),
-                                                        ),
-                                                        shape:
-                                                            const RoundedRectangleBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          20.0)),
-                                                        ),
-                                                        side: const BorderSide(
-                                                          color: Colors.white,
-                                                          width: 1.0,
-                                                        ),
-                                                        deleteIconColor:
-                                                            Colors.white,
-                                                        backgroundColor:
-                                                            increaseBrightness(
-                                                                convertToColor(
-                                                                    members[userId]
-                                                                        ?[
-                                                                        'username']),
-                                                                0.2),
-                                                        selectedColor:
-                                                            increaseBrightness(
-                                                                convertToColor(
-                                                                    members[userId]
-                                                                        ?[
-                                                                        'username']),
-                                                                0.5),
-                                                        onDeleted: () async {
-                                                          String? email =
-                                                              members[userId]
-                                                                  ?['email'];
-                                                          // cannot delete yourself
-                                                          if (email ==
-                                                              houseHoldProvider
-                                                                  .auth
-                                                                  .currentUser!
-                                                                  .email) {
-                                                            customErrorDialog(
-                                                                context,
-                                                                "Fehler",
-                                                                "Du kannst dich nicht selbst entfernen!");
-                                                          } else {
-                                                            showDialog(
-                                                                context:
-                                                                    context,
-                                                                builder:
-                                                                    (BuildContext
-                                                                        context) {
-                                                                  return AlertDialog(
-                                                                    title: const Text(
-                                                                        'Mitglied entfernen'),
-                                                                    content: Text(
-                                                                        'Möchtest du ${members[userId]?['username']} wirklich entfernen?'),
-                                                                    actions: [
-                                                                      TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            houseHoldProvider.removeUserFromHousehold(email!);
-                                                                            AutoRouter.of(context).pop();
-                                                                          },
-                                                                          child:
-                                                                              const Text('Entfernen')),
-                                                                      TextButton(
-                                                                          onPressed:
-                                                                              () {
-                                                                            AutoRouter.of(context).pop();
-                                                                          },
-                                                                          child:
-                                                                              const Text('Abbrechen')),
-                                                                    ],
-                                                                  );
-                                                                });
-                                                          }
-                                                        },
-                                                      );
+                                                          shape:
+                                                              const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        20.0)),
+                                                          ),
+                                                          side:
+                                                              const BorderSide(
+                                                            color: Colors.white,
+                                                            width: 1.0,
+                                                          ),
+                                                          backgroundColor:
+                                                              increaseBrightness(
+                                                                  convertToColor(
+                                                                      members[userId]
+                                                                          ?[
+                                                                          'username']),
+                                                                  0.2),
+                                                        );
+                                                      } else {
+                                                        return InputChip(
+                                                          label: Text(
+                                                            members[userId]
+                                                                ?['username'],
+                                                            style:
+                                                                const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              color:
+                                                                  Colors.white,
+                                                            ),
+                                                          ),
+                                                          shape:
+                                                              const RoundedRectangleBorder(
+                                                            borderRadius:
+                                                                BorderRadius.all(
+                                                                    Radius.circular(
+                                                                        20.0)),
+                                                          ),
+                                                          side:
+                                                              const BorderSide(
+                                                            color: Colors.white,
+                                                            width: 1.0,
+                                                          ),
+                                                          deleteIconColor:
+                                                              Colors.white,
+                                                          backgroundColor:
+                                                              increaseBrightness(
+                                                                  convertToColor(
+                                                                      members[userId]
+                                                                          ?[
+                                                                          'username']),
+                                                                  0.2),
+                                                          selectedColor:
+                                                              increaseBrightness(
+                                                                  convertToColor(
+                                                                      members[userId]
+                                                                          ?[
+                                                                          'username']),
+                                                                  0.5),
+                                                          onDeleted: () async {
+                                                            String? email =
+                                                                members[userId]
+                                                                    ?['email'];
+                                                            // cannot delete yourself
+                                                            if (email ==
+                                                                houseHoldProvider
+                                                                    .auth
+                                                                    .currentUser!
+                                                                    .email) {
+                                                              customErrorDialog(
+                                                                  context,
+                                                                  "Fehler",
+                                                                  "Du kannst dich nicht selbst entfernen!");
+                                                            } else {
+                                                              showDialog(
+                                                                  context:
+                                                                      context,
+                                                                  builder:
+                                                                      (BuildContext
+                                                                          context) {
+                                                                    return AlertDialog(
+                                                                      title: const Text(
+                                                                          'Mitglied entfernen'),
+                                                                      content: Text(
+                                                                          'Möchtest du ${members[userId]?['username']} wirklich entfernen?'),
+                                                                      actions: [
+                                                                        TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              houseHoldProvider.removeUserFromHousehold(email!);
+                                                                              AutoRouter.of(context).pop();
+                                                                            },
+                                                                            child:
+                                                                                const Text('Entfernen')),
+                                                                        TextButton(
+                                                                            onPressed:
+                                                                                () {
+                                                                              AutoRouter.of(context).pop();
+                                                                            },
+                                                                            child:
+                                                                                const Text('Abbrechen')),
+                                                                      ],
+                                                                    );
+                                                                  });
+                                                            }
+                                                          },
+                                                        );
+                                                      }
                                                     },
                                                   ).toList(),
                                                   Form(

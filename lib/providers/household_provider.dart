@@ -199,7 +199,6 @@ class HouseholdProvider extends ChangeNotifier {
             }
           }
         }
-        memberData.addAll(staticMembers);
         return memberData;
       }
 
