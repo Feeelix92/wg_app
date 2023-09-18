@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/providers/household_provider.dart';
+
 import '../routes/app_router.gr.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
@@ -30,10 +31,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadData() async {
     try {
       // Prüfen, ob genügend Zeit seit dem letzten Laden vergangen ist
-      if (lastLoadTime == null || DateTime.now().difference(lastLoadTime!) > const Duration(minutes: 5)) {
+      if (lastLoadTime == null ||
+          DateTime.now().difference(lastLoadTime!) >
+              const Duration(minutes: 5)) {
         // Laden der Daten
         final householdProvider =
-        Provider.of<HouseholdProvider>(context, listen: false);
+            Provider.of<HouseholdProvider>(context, listen: false);
         final success = await householdProvider.loadAllAccessibleHouseholds();
 
         if (success) {
@@ -93,18 +96,42 @@ class _HomeScreenState extends State<HomeScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return InkWell(
                               onTap: () async {
-                                AutoRouter.of(context).push(HouseHoldDetailRoute(householdId: householdProvider.accessibleHouseholds[index].id),);
+                                AutoRouter.of(context).push(
+                                  HouseHoldDetailRoute(
+                                      householdId: householdProvider
+                                          .accessibleHouseholds[index].id),
+                                );
                               },
                               child: SizedBox(
                                 height: 150,
                                 width: 300,
                                 child: Card(
-                                  color: increaseBrightness(convertToColor(householdProvider.accessibleHouseholds[index].title), 0.7),
+                                  color: increaseBrightness(
+                                      convertToColor(householdProvider
+                                          .accessibleHouseholds[index].title),
+                                      0.3),
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      H2(text: householdProvider.accessibleHouseholds[index].title),
-                                      H3(text: householdProvider.accessibleHouseholds[index].description),
+                                      Text(
+                                        householdProvider
+                                            .accessibleHouseholds[index].title,
+                                        style: const TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text(
+                                        householdProvider
+                                            .accessibleHouseholds[index]
+                                            .description,
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ),
