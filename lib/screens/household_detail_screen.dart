@@ -180,9 +180,9 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
+            isScrollControlled: true,
             context: context,
-            builder: (context) =>
-                HouseHoldEditScreen(householdId: widget.householdId),
+            builder: (context) => HouseHoldEditScreen(householdId: widget.householdId),
           );
         },
         child: const Icon(Icons.edit),
