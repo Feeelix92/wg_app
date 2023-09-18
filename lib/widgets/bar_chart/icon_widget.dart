@@ -27,7 +27,7 @@ class _IconWidgetState extends AnimatedWidgetBaseState<IconWidget> {
     return Transform(
       transform: Matrix4.rotationZ(rotation).scaled(scale, scale),
       origin: const Offset(14, 14),
-      child: buildMemberCircle(widget.name, 30, 0),
+      child: buildMemberCircle(widget.name, 30, 0.2),
     );
   }
 
