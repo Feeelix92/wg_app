@@ -307,7 +307,7 @@ class _HouseholdMemberScreenState extends State<HouseholdMemberScreen> {
                                                                     customErrorDialog(
                                                                         context,
                                                                         "Fehler",
-                                                                        "Mitglied konnte nicht hinzugefügt werden");
+                                                                        "Mitglied konnte nicht hinzugefügt werden! Entweder ist dieser Benutzer bereits im Haushalt oder es existiert kein Benutzer für die E-Mail-Adresse.");
                                                                   }
                                                                 }
                                                               },
