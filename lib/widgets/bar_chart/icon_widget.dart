@@ -27,16 +27,7 @@ class _IconWidgetState extends AnimatedWidgetBaseState<IconWidget> {
     return Transform(
       transform: Matrix4.rotationZ(rotation).scaled(scale, scale),
       origin: const Offset(14, 14),
-      child: Column(
-        children: [
-          Icon(
-            widget.isSelected ? Icons.face_retouching_natural : Icons.face,
-            color: widget.color,
-            size: 28,
-          ),
-          // Text(widget.name, style: const TextStyle(fontSize: 10)),
-        ],
-      ),
+      child: buildMemberCircle(widget.name, 30, 0),
     );
   }
 
