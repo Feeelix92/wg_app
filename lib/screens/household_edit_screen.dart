@@ -44,7 +44,7 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(builder: (context, houseHoldProvider, child) {
       return Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: MediaQuery.of(context).viewInsets.bottom),
         child: SingleChildScrollView(
           child: Column(
             children: [
