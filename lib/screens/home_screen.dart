@@ -10,8 +10,8 @@ import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/fonts.dart';
 import 'household_create_screen.dart';
 
-/// Startseite der App
 /// {@category Screens}
+/// Startseite der App
 @RoutePage()
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

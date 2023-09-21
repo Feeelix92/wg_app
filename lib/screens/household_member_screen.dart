@@ -12,6 +12,8 @@ import '../color_functions.dart';
 import '../widgets/custom_error_dialog.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 
+/// {@category Screens}
+/// Ansicht um die Mitglieder eines Haushalts zu verwalten.
 @RoutePage()
 class HouseholdMemberScreen extends StatefulWidget {
   const HouseholdMemberScreen(

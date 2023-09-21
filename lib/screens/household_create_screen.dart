@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/household_provider.dart';
 
+
+/// {@category Screens}
+/// Screen zum Erstellen eines neuen Haushalts
 class HouseHoldCreateScreen extends StatefulWidget {
   const HouseHoldCreateScreen({super.key});
 
@@ -11,9 +14,10 @@ class HouseHoldCreateScreen extends StatefulWidget {
 }
 
 class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
+  /// Dieser Controller für liest den Namen des Haushalts aus dem Textfeld
   final TextEditingController _houseHoldNameController = TextEditingController();
+  /// Dieser Controller für liest die Beschreibung des Haushalts aus dem Textfeld
   final TextEditingController _houseHoldDescriptionController = TextEditingController();
-  final TextEditingController _personNameController = TextEditingController();
 
 
   @override
@@ -23,17 +27,19 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
 
   @override
   void dispose() {
+    /// Controller müssen manuell entsorgt werden, um Speicherlecks zu vermeiden
     _houseHoldNameController.dispose();
     _houseHoldDescriptionController.dispose();
-    _personNameController.dispose();
     super.dispose();
   }
 
   @override
+  /// Erstellt den Screen
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
       return Container(
         padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0,bottom: MediaQuery.of(context).viewInsets.bottom),
+        /// SingleChildScrollView ermöglicht das Scrollen der Seite
         child: SingleChildScrollView(
           child: Column(
             children: [

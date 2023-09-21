@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import '../../data/constants.dart';
 
-
+/// {@category Widgets}
+/// Widget für die App-Bar
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({
     super.key,

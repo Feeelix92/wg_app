@@ -9,6 +9,8 @@ import '../widgets/custom_snackbars.dart';
 
 final _formKeyForgotPassword = GlobalKey<FormState>();
 
+/// {@category Screens}
+/// Passwort vergessen Screen
 @RoutePage()
 class MyForgotPasswordScreen extends StatefulWidget {
   const MyForgotPasswordScreen({Key? key}) : super(key: key);

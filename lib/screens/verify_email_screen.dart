@@ -7,6 +7,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wg_app/main.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
 
+/// {@category Screens}
+/// Ansicht für die Verifizierung der Email-Adresse
 @RoutePage()
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({Key? key}) : super(key: key);

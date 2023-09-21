@@ -2,6 +2,8 @@ import 'package:auto_route/auto_route.dart';
 import 'route_guard.dart';
 import 'app_router.gr.dart';
 
+/// {@category Routes}
+/// Konfiguriert Routen der App.
 @AutoRouterConfig(replaceInRouteName: 'Screen,Route')
 class AppRouter extends $AppRouter {
   @override
@@ -9,13 +11,13 @@ class AppRouter extends $AppRouter {
 
   @override
   List<AutoRoute> get routes => [
-    /// Routes for Authentication
+    /// Routen für die Authentifizierung
     AutoRoute(page: RegistrationRoute.page, path: '/registration'),
     AutoRoute(page: LoginRoute.page, path: '/login'),
     AutoRoute(page: MyForgotPasswordRoute.page, path: '/forgotpassword'),
     AutoRoute(page: VerifyEmailRoute.page, path: '/verifyemail'),
 
-    /// Routes for App
+    /// Routen für die App
     AutoRoute(page: HomeRoute.page, path: '/home', initial: true, guards: [AuthGuard()]),
     AutoRoute(page: HouseHoldDetailRoute.page, path: '/haushalt/:id', guards: [AuthGuard()]),
     AutoRoute(page: ShoppingListRoute.page, path: '/haushalt/:id/shoppinglist', guards: [AuthGuard()]),

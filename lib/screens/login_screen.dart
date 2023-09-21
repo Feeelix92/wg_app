@@ -7,9 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
+
 import '../widgets/custom_snackbars.dart';
 
-
+/// {@category Screens}
+/// Login Screen
 @RoutePage()
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);

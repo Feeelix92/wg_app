@@ -7,6 +7,8 @@ import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/h1.dart';
 
+/// {@category Screens}
+/// Ansicht für die Einkaufsliste eines Haushalts
 @RoutePage()
 class ShoppingListScreen extends StatefulWidget {
   const ShoppingListScreen(

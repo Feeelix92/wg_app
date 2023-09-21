@@ -5,6 +5,8 @@ import 'package:provider/provider.dart';
 import '../../providers/user_provider.dart';
 import '../../routes/app_router.gr.dart';
 
+/// {@category Widgets}
+/// Widget für das ANzeigen des Burger-Menus
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
 

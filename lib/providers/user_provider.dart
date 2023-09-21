@@ -20,6 +20,7 @@ class UserProvider extends ChangeNotifier {
 
   late DocumentSnapshot snap;
 
+  /// Updated die Daten des Users
   Future updateUserInformation() async {
     try {
       final docRefUser = db.collection("users").doc(auth.currentUser!.uid);
@@ -55,7 +56,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-
+  /// Mit der Methode changeEmail kann die Email für einen User geändert werden.
   Future<bool> changeEmail(String newEmail) async {
     try {
       await auth.currentUser!.updateEmail(newEmail);
@@ -72,6 +73,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  /// Mit der Methode changePassword kann das aktuelle Passwort für einen User geändert werden.
   Future<bool> changePassword(String newPassword) async {
     try {
       await auth.currentUser!.updatePassword(newPassword);
@@ -86,6 +88,7 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  /// Mit der Methode changeUsername kann der Username für einen User geändert werden.
   Future<bool> changeUsername(String newUsername) async {
     try {
       final docRefUser = db.collection("users").doc(_user.uid);

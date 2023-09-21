@@ -5,9 +5,11 @@ import '../widgets/custom_input_decoration.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 
-// Erstelle einen GLoablKey für das Form Widget
+/// Erstelle einen GLoablKey für das Form Widget
 final _profileFormKey = GlobalKey<FormState>();
 
+/// {@category Screens}
+/// Ansicht für das Profil des angemeldeten Benutzers
 @RoutePage()
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});

@@ -16,6 +16,7 @@ class FinanceScreen extends StatefulWidget {
   const FinanceScreen(
       {super.key, @PathParam('householdId') required this.householdId});
 
+  /// Die ID des Haushalts, dessen Ausgaben angezeigt werden sollen.
   final String householdId;
 
   @override

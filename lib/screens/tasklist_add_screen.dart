@@ -4,6 +4,8 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import '../providers/household_provider.dart';
 
+/// {@category Screens}
+/// Ansicht für das Hinzufügen einer neuen AUfgabe bzw. TaskItems auf die Aufgabenliste
 class TaskListAddScreen extends StatefulWidget {
   const TaskListAddScreen({super.key, @PathParam('householdId') required this.householdId });
   final String householdId;

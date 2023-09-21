@@ -11,6 +11,8 @@ import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
 import '../widgets/custom_snackbars.dart';
 
+/// {@category Screens}
+/// Ansicht für die Registrierung eines neuen Benutzers
 @RoutePage()
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});

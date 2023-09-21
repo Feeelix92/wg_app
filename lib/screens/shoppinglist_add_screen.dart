@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/household_provider.dart';
 
+/// {@category Screens}
+/// Ansicht für das Hinzufügen eines neuen Gegenstands bzw. ShoppingItems auf die Einkaufsliste
 class ShoppingListAddScreen extends StatefulWidget {
   const ShoppingListAddScreen(
       {super.key, @PathParam('householdId') required this.householdId});

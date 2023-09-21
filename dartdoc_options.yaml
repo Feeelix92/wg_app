@@ -1,0 +1,29 @@
+dartdoc:
+  categories:
+    "Screens":
+        markdown: doc/screens.md
+        name: Screens
+    "Models":
+        markdown: doc/models.md
+        name: Models
+    "Routes":
+        markdown: doc/routes.md
+        name: Routes
+    "Provider":
+        markdown: doc/provider.md
+        name: Provider
+    "Widgets":
+        markdown: doc/widgets.md
+        name: Provider
+    "Data":
+        markdown: doc/data.md
+        name: Data
+
+  categoryOrder: ["Data", "Models", "Provider", "Routes", "Screens", "Widgets"]
+  showUndocumentedCategories: false
+  ignore:
+    - ambiguous-doc-reference
+  errors:
+    - unresolved-doc-reference
+  warnings:
+    - tool-error

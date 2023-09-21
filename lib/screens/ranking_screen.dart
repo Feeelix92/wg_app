@@ -10,6 +10,8 @@ import '../widgets/bar_chart/icon_widget.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
 
+/// {@category Screens}
+/// Ansicht für das Ranking der Mitglieder eines Haushalts
 @RoutePage()
 class RankingScreen extends StatefulWidget {
   const RankingScreen(
