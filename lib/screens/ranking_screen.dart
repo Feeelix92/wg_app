@@ -2,10 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
 import '../providers/household_provider.dart';
+import '../color_functions.dart';
 import '../widgets/bar_chart/icon_widget.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
@@ -204,6 +204,7 @@ class _RankingScreenState extends State<RankingScreen> {
   }
 }
 
+/// Eine Klasse, die die Daten für ein Balkendiagramm repräsentiert.
 class _BarData {
   const _BarData(this.name, this.value);
 

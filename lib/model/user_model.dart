@@ -1,3 +1,4 @@
+/// Dieses Model repräsentiert einen User.
 class UserModel {
   final String uid;
   final String username;
@@ -6,7 +7,7 @@ class UserModel {
   final String email;
   final String birthdate;
 
-//<editor-fold desc="Data Methods">
+ /// Konstruktor
   const UserModel({
     required this.username,
     required this.firstName,
@@ -42,6 +43,7 @@ class UserModel {
     return 'UserModel{ username: $username, firstName: $firstName, lastName: $lastName, uid: $uid, email: $email, birthdate: $birthdate,}';
   }
 
+  /// Erstellt einen neuen User mit den übergebenen Werten.
   UserModel copyWith({
     String? username,
     String? firstName,
@@ -60,6 +62,7 @@ class UserModel {
     );
   }
 
+  /// Erstellt eine Map aus dem User-Objekt.
   Map<String, dynamic> toMap() {
     return {
       'username': username,
@@ -71,6 +74,7 @@ class UserModel {
     };
   }
 
+  /// Erstellt ein User-Objekt aus eine Map.
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       username: map['username'] as String,

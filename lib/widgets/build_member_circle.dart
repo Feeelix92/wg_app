@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wg_app/data/constants.dart';
+import '../color_functions.dart';
 
+/// Erstellt einen Kreis mit dem ersten Buchstaben des Namens
 Widget buildMemberCircle(String name, double size, double brightness) {
   Color circleColor = increaseBrightness(convertToColor(name), brightness);
   double fontSize = size / 2;
