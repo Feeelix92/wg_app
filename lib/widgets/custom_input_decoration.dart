@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// Custom [InputDecoration] für die Verwendung bei [TextField]s.
 InputDecoration materialInputDecoration(String label, String? helper, IconData icon) {
   return InputDecoration(
     labelText: label,

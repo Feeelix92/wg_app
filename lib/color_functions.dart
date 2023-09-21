@@ -22,5 +22,6 @@ Color increaseBrightness(Color color, double factor) {
   int green = (color.green + (255 - color.green) * factor).round();
   int blue = (color.blue + (255 - color.blue) * factor).round();
 
+  // Farbe zurückgeben
   return Color.fromARGB(color.alpha, red, green, blue);
 }

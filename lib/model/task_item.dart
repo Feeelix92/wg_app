@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// {@category Models}
 /// Eine Klasse, die eine Aufgabe der Aufgabenliste repräsentiert.
 class TaskItem {
   final String id;

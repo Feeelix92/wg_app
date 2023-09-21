@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// {@category Models}
 /// Eine Klasse, die einen Gegenstand auf der Einkaufsliste repräsentiert.
 class ShoppingItem {
   final String id;

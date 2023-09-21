@@ -1,3 +1,4 @@
+/// {@category Models}
 /// Eine Klasse, die einen Haushalt repräsentiert.
 class Household {
   final String id; // UUID des Users

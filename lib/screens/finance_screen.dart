@@ -9,6 +9,8 @@ import '../widgets/build_member_circle.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
 
+/// Der Finanzscreen zeigt Ausgaben der Mitglieder eines Haushalts an.
+/// {@category Screens}
 @RoutePage()
 class FinanceScreen extends StatefulWidget {
   const FinanceScreen(
@@ -21,7 +23,6 @@ class FinanceScreen extends StatefulWidget {
 }
 
 class _FinanceScreenState extends State<FinanceScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(

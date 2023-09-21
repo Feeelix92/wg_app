@@ -3,13 +3,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import '../model/user_model.dart';
 
+/// {@category Providers}
+/// Die UserProvider Klasse verwaltet die Daten des Users, enthält einige Methoden für das Arbeiten mit diesen Daten.
 class UserProvider extends ChangeNotifier {
+  /// Die Instanzen der Firestore Datenbank
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  /// Der aktuelle User
   late UserModel _user;
   UserModel get user => _user;
 
+  /// Gibt an, ob der User bereits gesetzt wurde
   bool _userIsSet = false;
   bool get userIsSet => _userIsSet;
 

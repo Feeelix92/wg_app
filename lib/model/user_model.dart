@@ -1,3 +1,4 @@
+/// {@category Models}
 /// Dieses Model repräsentiert einen User.
 class UserModel {
   final String uid;
