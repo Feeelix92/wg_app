@@ -9,17 +9,17 @@ dartdoc:
     "Routes":
         markdown: doc/routes.md
         name: Routes
-    "Provider":
-        markdown: doc/provider.md
-        name: Provider
+    "Providers":
+        markdown: doc/providers.md
+        name: Providers
     "Widgets":
         markdown: doc/widgets.md
-        name: Provider
-    "Data":
-        markdown: doc/data.md
-        name: Data
+        name: Widgets
+    "Constants":
+        markdown: doc/constants.md
+        name: Constants
 
-  categoryOrder: ["Data", "Models", "Provider", "Routes", "Screens", "Widgets"]
+  categoryOrder: ["Constants", "Models", "Providers", "Routes", "Screens", "Widgets"]
   showUndocumentedCategories: false
   ignore:
     - ambiguous-doc-reference

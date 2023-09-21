@@ -6,6 +6,7 @@ import 'app_router.gr.dart';
 /// Schütz die Routen der App vor unautorisierten Zugriffen.
 class AuthGuard extends AutoRouteGuard {
   @override
+  /// Überprüft, ob der User angemeldet ist. Falls nicht, wird er auf die Login-Seite weitergeleitet.
   Future<void> onNavigation(NavigationResolver resolver, StackRouter router) async {
     final user = FirebaseAuth.instance.currentUser;
 
