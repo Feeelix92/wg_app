@@ -8,7 +8,7 @@ import 'package:wg_app/widgets/navigation/app_drawer.dart';
 import 'package:wg_app/widgets/text/fonts.dart';
 
 import '../providers/household_provider.dart';
-import '../color_functions.dart';
+import '../widgets/color_functions.dart';
 import '../widgets/custom_error_dialog.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 

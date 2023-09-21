@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
 import '../providers/household_provider.dart';
-import '../color_functions.dart';
+import '../widgets/color_functions.dart';
 import '../widgets/bar_chart/icon_widget.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';

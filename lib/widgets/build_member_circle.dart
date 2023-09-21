@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../color_functions.dart';
+import 'color_functions.dart';
 
 /// {@category Widgets}
 /// Erstellt einen farbigen Kreis mit dem ersten Buchstaben des Namens
