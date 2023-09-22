@@ -68,9 +68,9 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                         spacing: 12,
                         children: <Widget>[
                           Text('${shoppingItem['points']} P.', style: const TextStyle(height: 4.5),),
-                          _buildMemberCircle(shoppingItem["assignedTo"].toString()),
                           Text('${shoppingItem['amount']} x', style: const TextStyle(height: 4.5),),
                           Text(priceDisplay, style: const TextStyle(height: 4.5),),
+                          _buildMemberCircle(shoppingItem["assignedTo"].toString()),
                           Checkbox(
                             value: shoppingItem['done'],
                             onChanged: (value) {

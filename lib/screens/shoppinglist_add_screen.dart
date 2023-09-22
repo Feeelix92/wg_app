@@ -173,7 +173,6 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton(
-                  // onPressed: addShoppingItem,
                   onPressed: () {
                     if (validateShoppingItemData()) {
                       String itemId;
@@ -215,28 +214,4 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
       );
     });
   }
-}
-
-Widget _buildMemberCircle(String name) {
-  Color circleColor = convertToColor(name);
-  return Padding(
-    padding: const EdgeInsets.all(8.0),
-    child: Container(
-      width: 35,
-      height: 35,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: circleColor,
-      ),
-      child: Center(
-        child: Text(
-          name[0],
-          style: const TextStyle(
-            fontSize: 20,
-            color: Colors.white,
-          ),
-        ),
-      ),
-    ),
-  );
 }
