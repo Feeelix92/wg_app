@@ -2,14 +2,16 @@ import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
 import '../providers/household_provider.dart';
+import '../widgets/color_functions.dart';
 import '../widgets/bar_chart/icon_widget.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
 
+/// {@category Screens}
+/// Ansicht für das Ranking der Mitglieder eines Haushalts
 @RoutePage()
 class RankingScreen extends StatefulWidget {
   const RankingScreen(
@@ -21,7 +23,10 @@ class RankingScreen extends StatefulWidget {
   State<RankingScreen> createState() => _RankingScreenState();
 }
 
+/// State für [RankingScreen]
 class _RankingScreenState extends State<RankingScreen> {
+
+  /// Mit dieser Methode wird ein Balken für das Balkendiagramm generiert.
   BarChartGroupData generateBarGroup(
     int x,
     Color color,
@@ -40,6 +45,7 @@ class _RankingScreenState extends State<RankingScreen> {
     );
   }
 
+  /// Index des angeklickten Balkens
   int touchedGroupIndex = -1;
 
 
@@ -72,13 +78,19 @@ class _RankingScreenState extends State<RankingScreen> {
                           return const Center(
                               child: Text('Keine Daten verfügbar'));
                         } else {
+                          /// memberPointsOverview erhält die Daten für das Balkendiagramm aus dem Snapshot
                           var memberPointsOverview = snapshot.data!;
-                          var dataList =
-                              memberPointsOverview.entries.map((entry) {
-                            return _BarData(
-                                entry.key, entry.value.toDouble());
+
+                          /// dataList enthält die Daten für das Balkendiagramm
+                          var dataList = memberPointsOverview.entries.map((entry) {
+                            return _BarData(entry.key, entry.value.toDouble());
                           }).toList();
-                          // Bestimmen der maximalen Y-Achsen-Höhe bzw. Beschriftung
+
+                          /// Bestimmen der maximalen Y-Achsen-Höhe bzw. Beschriftung
+                          /// memberPointsOverview.values.first gibt den höchsten Punktestand zurück
+                          /// Wenn der höchste Wert kleiner oder gleich 10 ist, wird der Wert um 20 erhöht und als Höhe der Y-Achse verwendet
+                          /// Wenn der höchste Wert kleiner oder gleich 20 ist, wird der Wert um 10 erhöht und als Höhe der Y-Achse verwendet
+                          /// Ansonsten wird der höchste Wert als Höhe für die Y-Achse verwendet
                           double maxY;
                           if (memberPointsOverview.values.first <= 10){
                             maxY = (memberPointsOverview.values.first + 20).toDouble();
@@ -88,6 +100,7 @@ class _RankingScreenState extends State<RankingScreen> {
                             maxY = memberPointsOverview.values.first.toDouble();
                           }
 
+                          /// Erstellen des Balkendiagramms
                           return BarChart(
                             BarChartData(
                               alignment: BarChartAlignment.spaceBetween,
@@ -107,7 +120,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                     showTitles: true,
                                     reservedSize: 30,
                                     getTitlesWidget: (value, meta) {
-                                      if (value.isFinite) { // Überprüfen, ob der Wert endlich ist
+                                      if (value.isFinite) { /// Überprüfen, ob der Wert endlich ist
                                         return Text(
                                           value.toInt().toString(),
                                           textAlign: TextAlign.left,
@@ -178,7 +191,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                   ) {
                                     final name = dataList[groupIndex].name;
                                     return BarTooltipItem(
-                                      '$name: ${rod.toY.toStringAsFixed(2)}', // Hier wird der Name und der Wert angezeigt
+                                      '$name: ${rod.toY.toStringAsFixed(2)}', /// Hier wird der Name und der Wert angezeigt
                                       const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,
@@ -204,6 +217,7 @@ class _RankingScreenState extends State<RankingScreen> {
   }
 }
 
+/// Eine Klasse, die die Daten für ein Balkendiagramm repräsentiert.
 class _BarData {
   const _BarData(this.name, this.value);
 

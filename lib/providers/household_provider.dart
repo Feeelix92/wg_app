@@ -6,20 +6,26 @@ import 'package:wg_app/model/shopping_item.dart';
 
 import '../model/task_Item.dart';
 
+/// {@category Providers}
+/// Die HouseholdProvider Klasse, verwaltet alle Daten die zum Haushalt gehören und enthält einige Methoden für das Arbeiten mit diesen Daten
 class HouseholdProvider extends ChangeNotifier {
+
+  /// Instanzen der Datenbank
   final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  /// Instanz der Authentifizierung
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  /// Haushalt der aktuell ausgewählt ist
   late Household _household;
-
   Household get household => _household;
 
+  /// Liste aller für den User verfügbaren Haushalte
   late List<Household> _accessibleHouseholds = [];
-
   List<Household> get accessibleHouseholds => _accessibleHouseholds;
 
 
-  // Funktion die den aktuellen Haushalt updatet
+  /// Funktion die den aktuellen Haushalt updatet
   Future updateHouseholdInformation() async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -38,6 +44,7 @@ class HouseholdProvider extends ChangeNotifier {
         taskList: householdDetailData['taskList'].cast<String>(),
       );
 
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
       return;
@@ -47,7 +54,7 @@ class HouseholdProvider extends ChangeNotifier {
       }
     }
   }
-
+  /// Funktion die einen Haushalt erstellt
   Future<bool> createHousehold(String title, String description) async {
     try {
       final docRefHousehold = await db.collection("households").add({
@@ -59,7 +66,7 @@ class HouseholdProvider extends ChangeNotifier {
         'taskList': [],
       });
 
-      // Damit die ID des Haushalts für die Methode updateHouseholdInformation() verfügbar ist
+      /// Damit die ID des Haushalts für die Methode updateHouseholdInformation() verfügbar ist
       _household = Household(
         admin: auth.currentUser!.uid,
         id: docRefHousehold.id,
@@ -71,6 +78,8 @@ class HouseholdProvider extends ChangeNotifier {
       );
 
       await updateHouseholdInformation();
+
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
       return true;
@@ -82,7 +91,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die die Daten eines Haushalts in der Datenbank aktualisiert
+  /// Die Methode updateHouseholdInfo aktualisiert die Daten eines Haushalts in der Datenbank
   Future<bool> updateHouseholdInfo(String title, String description) async {
     try {
       await db.collection("households").doc(_household.id).update({
@@ -90,10 +99,11 @@ class HouseholdProvider extends ChangeNotifier {
         'description': description,
       });
 
-      // Nach dem Aktualisieren der Daten in Firebase die lokale Kopie aktualisieren
+      /// Nach dem Aktualisieren der Daten in Firebase die lokale Kopie aktualisieren
       _household.title = title;
       _household.description = description;
 
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
       return true;
@@ -105,9 +115,10 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
+  /// Die Methode deleteHousehold löscht einen spezifischen Haushalt aus der Datenbank
   Future<bool> deleteHousehold(String householdId) async {
     try {
-      // LÖschen der Shopping- und Task-Liste des Haushalts
+      /// Löschen der Shopping- und Task-Liste des Haushalts
       await Future.wait([
         db.collection("households").doc(householdId)
             .collection("shoppingList")
@@ -127,8 +138,10 @@ class HouseholdProvider extends ChangeNotifier {
         }),
       ]);
 
-      // Löschen des Haushalts
+      /// Löschen des Haushalts
       await db.collection("households").doc(householdId).delete();
+
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
       return true;
@@ -140,7 +153,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Statische Mitgliederliste für Testzwecke
+  /// Statische Mitgliederliste für Testzwecke im Frontend
   final Map<String, Map<String, dynamic>> staticMembers = {
     'staticUserId1': {
       'username': 'StaticUser1',
@@ -172,7 +185,7 @@ class HouseholdProvider extends ChangeNotifier {
     },
   };
 
-  // Funktion die die Daten aller Mitglieder eines Haushalts lädt
+  /// Funktion die die Daten aller Mitglieder eines Haushalts lädt
   Future<Map<String, Map<String, dynamic>>> getHouseholdMembersData(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households")
@@ -212,7 +225,7 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
 
-  // Funktion gibt eine Liste aller User die nciht in einem bestimtmen Haushalt Mitglied sind zurück
+  /// Funktion gibt eine Liste aller User die nciht in einem bestimtmen Haushalt Mitglied sind zurück
   Future<Map<String, String>> getUsersNotInHousehold(String householdId) async {
     try {
       final usersCollection = db.collection("users");
@@ -237,11 +250,12 @@ class HouseholdProvider extends ChangeNotifier {
       if (kDebugMode) {
         print(e);
       }
-      return {}; // Wenn ein Fehler auftritt oder keine Benutzer vorhanden sind.
+      /// Wenn ein Fehler auftritt oder keine Benutzer vorhanden sind.
+      return {};
     }
   }
 
-  // Funktion prüft ob ein User Mitglied in einem bestimmten Haushalt ist
+  /// Funktion prüft ob ein User Mitglied in einem bestimmten Haushalt ist
   Future<bool> isUserInHousehold(String householdId, String userId) async {
     try {
       final docRefHousehold = await db.collection("households")
@@ -262,10 +276,11 @@ class HouseholdProvider extends ChangeNotifier {
       if (kDebugMode) {
         print(e);
       }
-      return false; // Wenn ein Fehler auftritt oder der Haushalt nicht gefunden wird.
+      /// Wenn ein Fehler auftritt oder der Haushalt nicht gefunden wird.
+      return false;
     }
   }
- // Funktion die den Username mithilfe der UserId herausfindet
+ /// Funktion die den Username mithilfe der UserId herausfindet
   Future<String?> getUsernameForUserId(String userId) async {
     try {
       final docRefUser = await db.collection("users").doc(userId).get();
@@ -274,17 +289,19 @@ class HouseholdProvider extends ChangeNotifier {
         final userData = docRefUser.data() as Map<String, dynamic>;
         return userData['username'] as String?;
       }
-      return null; // Benutzer nicht gefunden
+      /// Benutzer nicht gefunden
+      return null;
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return null; // Fehler beim Abrufen der Benutzerdaten
+      /// Fehler beim Abrufen der Benutzerdaten
+      return null;
     }
   }
 
 
-  // Funktion die den Username mithilfe der Email herausfindet
+  /// Funktion die den Username mithilfe der Email herausfindet
   Future<String?> getUsernameFromEmail(String email) async {
     try {
       final usersCollection = db.collection("users");
@@ -296,40 +313,45 @@ class HouseholdProvider extends ChangeNotifier {
         final username = userData['username'] as String?;
         return username;
       } else {
-        return null; // Wenn die E-Mail-Adresse nicht gefunden wurde.
+        /// Wenn die E-Mail-Adresse nicht gefunden wurde.
+        return null;
       }
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return null; // Wenn ein Fehler auftritt.
+      /// Wenn ein Fehler auftritt.
+      return null;
     }
   }
 
-  // Funktion die die Email mithilfe des Usernamen herausfindet
+  /// Funktion die die Email mithilfe des Usernamen herausfindet
   Future<String?> getEmailFromUsername(String username) async {
     try {
       final usersCollection = db.collection("users");
       final querySnapshot = await usersCollection.where(
           'username', isEqualTo: username).get();
 
+      /// Überprüfen ob der Username existiert
       if (querySnapshot.docs.isNotEmpty) {
         final userData = querySnapshot.docs.first.data();
         final email = userData['email'] as String?;
         return email;
       } else {
-        return null; // Wenn der Username nicht gefunden wurde.
+        /// Wenn der Username nicht gefunden wurde.
+        return null;
       }
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return null; // Wenn ein Fehler auftritt.
+      /// Wenn ein Fehler auftritt.
+      return null;
     }
   }
 
 
-// Suche nach User in der Datenbank anhand der Email und füge ihn dem Haushalt hinzu
+  /// Suche nach User in der Datenbank anhand der Email und füge ihn dem Haushalt hinzu
   Future<bool> addUserToHousehold(String email) async {
     try {
       final docRefUser = await db.collection("users").where(
@@ -341,10 +363,11 @@ class HouseholdProvider extends ChangeNotifier {
 
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
-      final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
+      /// Abrufen der ID (uid) des Benutzers
+      final userId = docRefUser.docs.first.id;
       final List<String> members = householdDetailData['members'].cast<String>();
 
-      // Überprüfen, ob der Benutzer bereits im Haushalt ist
+      /// Überprüfen, ob der Benutzer bereits im Haushalt ist
       if (!members.contains(userId)) {
         members.add(userId);
 
@@ -354,8 +377,7 @@ class HouseholdProvider extends ChangeNotifier {
 
         await updateHouseholdInformation();
       } else {
-        // Benutzer ist bereits im Haushalt
-        print('Benutzer ist bereits im Haushalt');
+        /// Benutzer ist bereits im Haushalt
         return false;
       }
 
@@ -368,7 +390,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die einen User anhand der Email aus einem Haushalt entfernt
+  /// Funktion die einen User anhand der Email aus einem Haushalt entfernt
   Future<bool> removeUserFromHousehold(String email) async {
     try {
       final docRefUser = await db.collection("users").where(
@@ -403,7 +425,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die alle Haushalte eines Users lädt
+  /// Funktion die alle Haushalte eines Users lädt
   Future<bool> loadAllAccessibleHouseholds() async {
     print("loadAllAccessibleHouseholds from Firebase");
     try {
@@ -425,7 +447,10 @@ class HouseholdProvider extends ChangeNotifier {
         households.add(household);
       }
       _accessibleHouseholds = households;
+
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
+
       return true;
     } catch (e) {
       if (kDebugMode) {
@@ -435,7 +460,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die einen Haushalt anhand der ID lädt
+  /// Funktion die einen Haushalt anhand der ID lädt
   Future<bool> loadHousehold(String id) async {
     print("loadHousehold from Firebase");
     try {
@@ -452,28 +477,32 @@ class HouseholdProvider extends ChangeNotifier {
         taskList: householdDetailData?['taskList'],
 
       );
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
-      // Wenn der Haushalt erfolgreich geladen wurde, dann true zurückgeben
+      /// Wenn der Haushalt erfolgreich geladen wurde, dann true zurückgeben
       return true;
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      // Wenn der Haushalt nicht geladen werden konnte, dann false zurückgeben
+      /// Wenn der Haushalt nicht geladen werden konnte, dann false zurückgeben
       return false;
     }
   }
 
-  // Funktion die den admin eines Haushalts ändert
+  /// Funktion die den Admin eines Haushalts ändert
   Future<bool> changeAdmin(String email) async {
     try {
+
       final docRefUser = await db.collection("users").where(
           'email', isEqualTo: email).get();
 
+      /// Überprüfen ob der Benutzer existiert
       if (docRefUser.docs.isEmpty) return false;
 
-      final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
+      /// Speichern der ID (uid) des Benutzers
+      final userId = docRefUser.docs.first.id;
 
       await db.collection("households").doc(_household.id.toString()).update({
         'admin': userId,
@@ -490,7 +519,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein ShoppingItem zu einem Haushalt hinzufügt
+  /// Funktion die ein ShoppingItem zu einem Haushalt hinzufügt
   Future<bool> addShoppingItem(ShoppingItem item) async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -519,7 +548,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein ShoppingItem aus einem Haushalt entfernt
+  /// Funktion die ein ShoppingItem aus einem Haushalt entfernt
   Future<bool> removeShoppingItem(ShoppingItem item) async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -548,7 +577,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein ShoppingItem in einem Haushalt updatet
+  /// Funktion die ein ShoppingItem in einem Haushalt updatet
   Future<bool> updateShoppingItem(ShoppingItem item) async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -578,7 +607,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt
+  /// Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt
   Future<bool> removeDoneShoppingItems() async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -606,7 +635,7 @@ class HouseholdProvider extends ChangeNotifier {
     return false;
   }
 
-  // Funktion die die Ausgaben eines Haushalts berechnet
+  /// Funktion die die Ausgaben eines Haushalts berechnet
   Future<Map<String, dynamic>> calculateMemberExpenses(
       String householdId) async {
     try {
@@ -622,30 +651,36 @@ class HouseholdProvider extends ChangeNotifier {
         final memberExpenses = <String, Map<String, dynamic>>{};
         double totalExpenses = 0.0;
 
-        // Berechnung der Gesamtsumme aller  Ausgaben
+        /// Berechnung der Gesamtsumme aller  Ausgaben
+        /// Iteration für alle ShoppingItems
         for (final shoppingItem in shoppingList) {
           final price = shoppingItem['price'] as double;
           final done = shoppingItem['done'] as bool;
 
+          /// Wenn das ShoppingItem erledigt ist, dann wird der Preis zu den Gesamtausgaben hinzugefügt
           if (done) {
             totalExpenses += price;
           }
         }
 
+        /// Berechnung der Ausgaben für jedes Mitglied
+        /// Iteration für alle Mitglieder
         for (final memberId in memberIds) {
           double memberExpense = 0.0;
 
+          /// Iteration für alle ShoppingItems
           for (final shoppingItem in shoppingList) {
             final doneBy = shoppingItem['doneBy'] as String?;
             final price = shoppingItem['price'] as double;
             final done = shoppingItem['done'] as bool;
 
+            /// Wenn das ShoppingItem erledigt ist und das Mitglied es erledigt hat, dann wird der Preis zu den Ausgaben des Mitglieds hinzugefügt
             if (done && doneBy == memberId) {
               memberExpense += price;
             }
           }
 
-          // Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
+          /// Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
           double percentageOfTotal = 0.0;
           if (totalExpenses != 0.0) {
             percentageOfTotal = (memberExpense / totalExpenses) * 100;
@@ -672,7 +707,7 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
 
-  // Funktion die ein TaskItem zu einem Haushalt hinzufügt
+  /// Funktion die ein TaskItem zu einem Haushalt hinzufügt
   Future<bool> addTaskItem(TaskItem item) async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -700,7 +735,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein TaskItem aus einem Haushalt entfernt
+  /// Funktion die ein TaskItem aus einem Haushalt entfernt
   Future<bool> removeTaskItem(TaskItem item) async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -728,7 +763,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein TaskItem in einem Haushalt updatet
+  /// Funktion die ein TaskItem in einem Haushalt updatet
   Future<bool> updateTaskItem(TaskItem item) async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -757,7 +792,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die alle erledigten TaskItems aus einem Haushalt entfernt
+  /// Funktion die alle erledigten TaskItems aus einem Haushalt entfernt
   Future<bool> removeDoneTaskItems() async {
     try {
       final docRefHousehold = await db.collection("households").doc(
@@ -785,7 +820,7 @@ class HouseholdProvider extends ChangeNotifier {
     return false;
   }
 
-  // Funktion die die Punkte der Mitglieder eines Haushalts berechnet
+  /// Funktion die die Punkte der Mitglieder eines Haushalts berechnet
   Future<Map<String, int>> getMemberPointsOverview(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(householdId).get();
@@ -796,13 +831,13 @@ class HouseholdProvider extends ChangeNotifier {
 
         final memberPoints = <String, int>{};
 
-        // Iteration für alle Mitglieder
+        /// Iteration für alle Mitglieder
         for (final memberUserId in members) {
           final username = await getUsernameForUserId(memberUserId);
           if (username != null) {
             int points = 0;
 
-            // Iteration für alle ShoppingItems und TaskItems
+            /// Iteration für alle ShoppingItems und TaskItems
             final items = [
               ...householdDetailData['shoppingList'],
               ...householdDetailData['taskList']
@@ -816,12 +851,12 @@ class HouseholdProvider extends ChangeNotifier {
                 points += pointsEarned;
               }
             }
-            // Punkte für die Mitglieder im Haushalt speichern
+            /// Punkte für das aktuelle Mitglied im Haushalt speichern
             memberPoints[username] = points;
           }
         }
 
-        // Jetzt die Punkte absteigend sortieren
+        /// sortedMemberPoints speichert die Map sortiert nach den Punkten, die Person mit der Höchsten Punktzahl steht an erster Stelle
         final sortedMemberPoints = Map<String, int>.fromEntries(
             memberPoints.entries.toList()
               ..sort((a, b) => b.value.compareTo(a.value))

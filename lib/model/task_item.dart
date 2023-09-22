@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// {@category Models}
+/// Eine Klasse, die eine Aufgabe der Aufgabenliste repräsentiert.
 class TaskItem {
   final String id;
   String name;
@@ -11,7 +13,7 @@ class TaskItem {
   Timestamp? doneOn;
   int? points;
 
-//<editor-fold desc="Data Methods">
+  /// Konstruktor
   TaskItem({
     required this.id,
     required this.name,
@@ -56,6 +58,7 @@ class TaskItem {
     return 'TaskItem{ id: $id, name: $name, description: $description, dateDue: $dateDue, assignedTo: $assignedTo, done: $done, doneBy: $doneBy, doneOn: $doneOn, points: $points,}';
   }
 
+  /// Erstellt eine neue Aufgabe mit den übergebenen Werten.
   TaskItem copyWith({
     String? id,
     String? name,
@@ -80,6 +83,7 @@ class TaskItem {
     );
   }
 
+/// Erstellt eine Map aus einem TaskItem.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -94,6 +98,7 @@ class TaskItem {
     };
   }
 
+  /// Erstellt ein TaskItem aus einer Map.
   factory TaskItem.fromMap(Map<String, dynamic> map) {
     return TaskItem(
       id: map['id'] as String,

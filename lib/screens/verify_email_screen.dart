@@ -7,6 +7,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wg_app/main.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
 
+/// {@category Screens}
+/// Ansicht für die Verifizierung der Email-Adresse
 @RoutePage()
 class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({Key? key}) : super(key: key);
@@ -15,7 +17,9 @@ class VerifyEmailScreen extends StatefulWidget {
   State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
 }
 
+/// State für den [VerifyEmailScreen]
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
+
   bool _isEmailVerified = false;
   bool _canResendEmail = true;
 
@@ -27,8 +31,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   void initState() {
     super.initState();
 
+    /// Speichert den aktuell angemeldeten Benutzer
     final user = FirebaseAuth.instance.currentUser;
 
+    /// Prüft ob der Benutzer existiert
     if (user != null) {
       _isEmailVerified = user.emailVerified;
 
@@ -36,11 +42,15 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
         sendVerificationEmail();
       }
 
+      /// Prüft alle 3 Sekunden ob die Email-Adresse verifiziert wurde
       timer = Timer.periodic(const Duration(seconds: 3), (timer) => checkEmailVerified());
     }
   }
 
+  /// sendVerificationEmail sendet eine Email an den Benutzer zur Verifizierung
   Future sendVerificationEmail() async {
+
+    /// Speichert den aktuell angemeldeten Benutzer
     final user = FirebaseAuth.instance.currentUser;
 
     try {
@@ -57,8 +67,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
     }
   }
 
+  /// checkEmailVerified prüft ob die Email-Adresse verifiziert wurde
   Future checkEmailVerified() async {
-    // Call after email verification
+
+    /// Speichert den aktuell angemeldeten Benutzer
     final user = FirebaseAuth.instance.currentUser;
 
     if (user != null) {

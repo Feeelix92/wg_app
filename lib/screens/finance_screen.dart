@@ -2,18 +2,21 @@ import 'package:auto_route/auto_route.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 import '../providers/household_provider.dart';
+import '../widgets/color_functions.dart';
 import '../widgets/build_member_circle.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
 
+/// Der Finanzscreen zeigt Ausgaben der Mitglieder eines Haushalts an.
+/// {@category Screens}
 @RoutePage()
 class FinanceScreen extends StatefulWidget {
   const FinanceScreen(
       {super.key, @PathParam('householdId') required this.householdId});
 
+  /// Die ID des Haushalts, dessen Ausgaben angezeigt werden sollen.
   final String householdId;
 
   @override
@@ -21,7 +24,6 @@ class FinanceScreen extends StatefulWidget {
 }
 
 class _FinanceScreenState extends State<FinanceScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(

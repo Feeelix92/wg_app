@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="generator" content="made with love by dartdoc 7.0.0-dev">
+  <meta name="description" content="wg_app API docs, for the Dart programming language.">
+  <title>wg_app - Dart API docs</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="static-assets/github.css?v1">
+  <link rel="stylesheet" href="static-assets/styles.css?v1">
+  <link rel="icon" href="static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li class="self-crumb">wg_app package</li>
+  </ol>
+  <div class="self-name">wg_app</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div id="dartdoc-main-content" class="main-content">
+      
+<section class="desc markdown">
+  <h1 id="liv2gether">Liv2Gether</h1>
+<p>Eine App die beim Organisieren einer WG hilft.</p>
+<h2 id="app-plattformen">App-Plattformen</h2>
+<p>Die App ist für die nachfolgenden Plattformen verfügbar, jedoch wurde sie,
+aufgrund der zeitlichen Einschränkungen im Entwicklungsprozess,
+nur auf Android Geräten getestet und für Android Smartphones optimiert.</p>
+<ul>
+<li>Android</li>
+<li>iOS</li>
+<li>Linux</li>
+<li>MacOS</li>
+<li>Web</li>
+<li>Windows</li>
+</ul>
+<h2 id="features-der-app">Features der App:</h2>
+<ul>
+<li>Erstellung eines neuen Haushalts und Einladen/ Entfernen von Mitbewohnern.</li>
+<li>Erstellung einer funktionsfähigen Einkauf- und Aufgabenliste mit der Möglichkeit, Produkte und Aufgaben hinzuzufügen,
+zu entfernen und Bewohnern zuzuweisen.</li>
+<li>Ausgabenverwaltung für gemeinsame Ausgaben.</li>
+<li>Rangliste mit Punktestand über gesammelte Punkte</li>
+<li>ausstehend: Belohnungen in Form von Punkten für erledigte Aufgaben</li>
+<li>ausstehend: Erinnerungsfunktion für anstehende Aufgaben</li>
+</ul>
+<h2 id="verwendete-technologien">Verwendete Technologien</h2>
+<ul>
+<li>Flutter</li>
+<li>Firebase</li>
+</ul>
+<h2 id="development">Development</h2>
+<p>Im nachfolgenden Abschnitt wird beschrieben, wie die App lokal gestartet werden kann.</p>
+<h3 id="voraussetzungen">Voraussetzungen</h3>
+<ul>
+<li>Flutter SDK</li>
+<li>Android Studio</li>
+<li>Android Emulator oder Android Gerät</li>
+</ul>
+<h3 id="installation">Installation</h3>
+<ul>
+<li>Flutter installieren: <a href="https://flutter.dev/docs/get-started/install">https://flutter.dev/docs/get-started/install</a></li>
+<li>Android Studio installieren: <a href="https://developer.android.com/studio/install">https://developer.android.com/studio/install</a></li>
+<li>Flutter Plugin für Android Studio installieren: <a href="https://flutter.dev/docs/get-started/editor?tab=androidstudio">https://flutter.dev/docs/get-started/editor?tab=androidstudio</a></li>
+<li>Android Studio starten und Flutter SDK Pfad angeben</li>
+<li>Flutter Projekt klonen: <code>git clone https://github.com/Feeelix92/wg_app</code></li>
+<li>Packages installieren: <code>flutter pub get</code></li>
+<li>Android Emulator starten oder Android Gerät anschließen</li>
+<li>App starten: <code>flutter run</code></li>
+</ul>
+<h3 id="weitere-befehle">Weitere Befehle</h3>
+<ul>
+<li>App bauen: <code>flutter build apk</code></li>
+<li>Packages installieren: <code>flutter pub get</code></li>
+<li>Packages aktualisieren: <code>flutter pub upgrade</code></li>
+<li>Prüfen, ob alles notwendige korrekt installiert ist: <code>flutter doctor</code></li>
+</ul>
+<h3 id="route-hinzufgen">Route hinzufügen</h3>
+<ul>
+<li>im jeweiligen Screen die Annotation <code>@RoutePage()</code> hinzufügen</li>
+<li>in /routes/app_router.dart kann ein Pfad für die Route hinzugefügt werden</li>
+<li>Befehl <code>flutter packages pub run build_runner build</code> ausführen, damit automatisch die Route generiert wird</li>
+</ul>
+</section>
+
+
+      <section class="summary">
+          <h2>Libraries</h2>
+        <dl>
+          <dt id="app_drawer">
+  <span class="name"><a href="widgets_navigation_app_drawer/widgets_navigation_app_drawer-library.html">app_drawer</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="app_router">
+  <span class="name"><a href="routes_app_router/routes_app_router-library.html">app_router</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="app_router.gr">
+  <span class="name"><a href="routes_app_router.gr/routes_app_router.gr-library.html">app_router.gr</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="build_member_circle">
+  <span class="name"><a href="widgets_build_member_circle/widgets_build_member_circle-library.html">build_member_circle</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="color_functions">
+  <span class="name"><a href="widgets_color_functions/widgets_color_functions-library.html">color_functions</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="constants">
+  <span class="name"><a href="data_constants/data_constants-library.html">constants</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="custom_app_bar">
+  <span class="name"><a href="widgets_navigation_custom_app_bar/widgets_navigation_custom_app_bar-library.html">custom_app_bar</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="custom_error_dialog">
+  <span class="name"><a href="widgets_custom_error_dialog/widgets_custom_error_dialog-library.html">custom_error_dialog</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="custom_input_decoration">
+  <span class="name"><a href="widgets_custom_input_decoration/widgets_custom_input_decoration-library.html">custom_input_decoration</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="custom_snackbars">
+  <span class="name"><a href="widgets_custom_snackbars/widgets_custom_snackbars-library.html">custom_snackbars</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="custom_text">
+  <span class="name"><a href="widgets_text_custom_text/widgets_text_custom_text-library.html">custom_text</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="finance_screen">
+  <span class="name"><a href="screens_finance_screen/screens_finance_screen-library.html">finance_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="firebase_options">
+  <span class="name"><a href="firebase_options/firebase_options-library.html">firebase_options</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="fonts">
+  <span class="name"><a href="widgets_text_fonts/widgets_text_fonts-library.html">fonts</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="h1">
+  <span class="name"><a href="widgets_text_h1/widgets_text_h1-library.html">h1</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="h2">
+  <span class="name"><a href="widgets_text_h2/widgets_text_h2-library.html">h2</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="h3">
+  <span class="name"><a href="widgets_text_h3/widgets_text_h3-library.html">h3</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="home_screen">
+  <span class="name"><a href="screens_home_screen/screens_home_screen-library.html">home_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="household">
+  <span class="name"><a href="model_household/model_household-library.html">household</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="household_create_screen">
+  <span class="name"><a href="screens_household_create_screen/screens_household_create_screen-library.html">household_create_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="household_detail_screen">
+  <span class="name"><a href="screens_household_detail_screen/screens_household_detail_screen-library.html">household_detail_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="household_edit_screen">
+  <span class="name"><a href="screens_household_edit_screen/screens_household_edit_screen-library.html">household_edit_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="household_member_screen">
+  <span class="name"><a href="screens_household_member_screen/screens_household_member_screen-library.html">household_member_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="household_provider">
+  <span class="name"><a href="providers_household_provider/providers_household_provider-library.html">household_provider</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="icon_widget">
+  <span class="name"><a href="widgets_bar_chart_icon_widget/widgets_bar_chart_icon_widget-library.html">icon_widget</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="login_screen">
+  <span class="name"><a href="screens_login_screen/screens_login_screen-library.html">login_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="main">
+  <span class="name"><a href="main/main-library.html">main</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="my_forgot_password_screen">
+  <span class="name"><a href="screens_my_forgot_password_screen/screens_my_forgot_password_screen-library.html">my_forgot_password_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="profile_screen">
+  <span class="name"><a href="screens_profile_screen/screens_profile_screen-library.html">profile_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="ranking_screen">
+  <span class="name"><a href="screens_ranking_screen/screens_ranking_screen-library.html">ranking_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="registration_screen">
+  <span class="name"><a href="screens_registration_screen/screens_registration_screen-library.html">registration_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="route_guard">
+  <span class="name"><a href="routes_route_guard/routes_route_guard-library.html">route_guard</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="shopping_item">
+  <span class="name"><a href="model_shopping_item/model_shopping_item-library.html">shopping_item</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="shoppinglist_add_screen">
+  <span class="name"><a href="screens_shoppinglist_add_screen/screens_shoppinglist_add_screen-library.html">shoppinglist_add_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="shoppinglist_screen">
+  <span class="name"><a href="screens_shoppinglist_screen/screens_shoppinglist_screen-library.html">shoppinglist_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="task_Item">
+  <span class="name"><a href="model_task_Item/model_task_Item-library.html">task_Item</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="task_item">
+  <span class="name"><a href="model_task_item/model_task_item-library.html">task_item</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="tasklist_add_screen">
+  <span class="name"><a href="screens_tasklist_add_screen/screens_tasklist_add_screen-library.html">tasklist_add_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="tasklist_screen">
+  <span class="name"><a href="screens_tasklist_screen/screens_tasklist_screen-library.html">tasklist_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="user_model">
+  <span class="name"><a href="model_user_model/model_user_model-library.html">user_model</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="user_provider">
+  <span class="name"><a href="providers_user_provider/providers_user_provider-library.html">user_provider</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+          <dt id="verify_email_screen">
+  <span class="name"><a href="screens_verify_email_screen/screens_verify_email_screen-library.html">verify_email_screen</a></span> 
+
+</dt>
+<dd>
+</dd>
+
+        </dl>
+      </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li class="self-crumb">wg_app package</li>
+</ol>
+
+
+    <h5 class="hidden-xs"><span class="package-name">wg_app</span> <span class="package-kind">package</span></h5>
+    <ol>
+      <li class="section-title">Topics</li>
+        <li><a href="topics/Constants-topic.html">Constants</a></li>
+        <li><a href="topics/Models-topic.html">Models</a></li>
+        <li><a href="topics/Providers-topic.html">Providers</a></li>
+        <li><a href="topics/Routes-topic.html">Routes</a></li>
+        <li><a href="topics/Screens-topic.html">Screens</a></li>
+        <li><a href="topics/Widgets-topic.html">Widgets</a></li>
+      <li class="section-title">Libraries</li>
+      <li><a href="widgets_navigation_app_drawer/widgets_navigation_app_drawer-library.html">app_drawer</a></li>
+      <li><a href="routes_app_router/routes_app_router-library.html">app_router</a></li>
+      <li><a href="routes_app_router.gr/routes_app_router.gr-library.html">app_router.gr</a></li>
+      <li><a href="widgets_build_member_circle/widgets_build_member_circle-library.html">build_member_circle</a></li>
+      <li><a href="widgets_color_functions/widgets_color_functions-library.html">color_functions</a></li>
+      <li><a href="data_constants/data_constants-library.html">constants</a></li>
+      <li><a href="widgets_navigation_custom_app_bar/widgets_navigation_custom_app_bar-library.html">custom_app_bar</a></li>
+      <li><a href="widgets_custom_error_dialog/widgets_custom_error_dialog-library.html">custom_error_dialog</a></li>
+      <li><a href="widgets_custom_input_decoration/widgets_custom_input_decoration-library.html">custom_input_decoration</a></li>
+      <li><a href="widgets_custom_snackbars/widgets_custom_snackbars-library.html">custom_snackbars</a></li>
+      <li><a href="widgets_text_custom_text/widgets_text_custom_text-library.html">custom_text</a></li>
+      <li><a href="screens_finance_screen/screens_finance_screen-library.html">finance_screen</a></li>
+      <li><a href="firebase_options/firebase_options-library.html">firebase_options</a></li>
+      <li><a href="widgets_text_fonts/widgets_text_fonts-library.html">fonts</a></li>
+      <li><a href="widgets_text_h1/widgets_text_h1-library.html">h1</a></li>
+      <li><a href="widgets_text_h2/widgets_text_h2-library.html">h2</a></li>
+      <li><a href="widgets_text_h3/widgets_text_h3-library.html">h3</a></li>
+      <li><a href="screens_home_screen/screens_home_screen-library.html">home_screen</a></li>
+      <li><a href="model_household/model_household-library.html">household</a></li>
+      <li><a href="screens_household_create_screen/screens_household_create_screen-library.html">household_create_screen</a></li>
+      <li><a href="screens_household_detail_screen/screens_household_detail_screen-library.html">household_detail_screen</a></li>
+      <li><a href="screens_household_edit_screen/screens_household_edit_screen-library.html">household_edit_screen</a></li>
+      <li><a href="screens_household_member_screen/screens_household_member_screen-library.html">household_member_screen</a></li>
+      <li><a href="providers_household_provider/providers_household_provider-library.html">household_provider</a></li>
+      <li><a href="widgets_bar_chart_icon_widget/widgets_bar_chart_icon_widget-library.html">icon_widget</a></li>
+      <li><a href="screens_login_screen/screens_login_screen-library.html">login_screen</a></li>
+      <li><a href="main/main-library.html">main</a></li>
+      <li><a href="screens_my_forgot_password_screen/screens_my_forgot_password_screen-library.html">my_forgot_password_screen</a></li>
+      <li><a href="screens_profile_screen/screens_profile_screen-library.html">profile_screen</a></li>
+      <li><a href="screens_ranking_screen/screens_ranking_screen-library.html">ranking_screen</a></li>
+      <li><a href="screens_registration_screen/screens_registration_screen-library.html">registration_screen</a></li>
+      <li><a href="routes_route_guard/routes_route_guard-library.html">route_guard</a></li>
+      <li><a href="model_shopping_item/model_shopping_item-library.html">shopping_item</a></li>
+      <li><a href="screens_shoppinglist_add_screen/screens_shoppinglist_add_screen-library.html">shoppinglist_add_screen</a></li>
+      <li><a href="screens_shoppinglist_screen/screens_shoppinglist_screen-library.html">shoppinglist_screen</a></li>
+      <li><a href="model_task_Item/model_task_Item-library.html">task_Item</a></li>
+      <li><a href="model_task_item/model_task_item-library.html">task_item</a></li>
+      <li><a href="screens_tasklist_add_screen/screens_tasklist_add_screen-library.html">tasklist_add_screen</a></li>
+      <li><a href="screens_tasklist_screen/screens_tasklist_screen-library.html">tasklist_screen</a></li>
+      <li><a href="model_user_model/model_user_model-library.html">user_model</a></li>
+      <li><a href="providers_user_provider/providers_user_provider-library.html">user_provider</a></li>
+      <li><a href="screens_verify_email_screen/screens_verify_email_screen-library.html">verify_email_screen</a></li>
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div>
+
+</main>
+
+<footer>
+  <span class="no-break">
+    wg_app
+      1.0.0+1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="static-assets/highlight.pack.js?v1"></script>
+<script src="static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+

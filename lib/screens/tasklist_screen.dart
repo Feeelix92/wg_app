@@ -7,6 +7,8 @@ import '../providers/household_provider.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/text/h1.dart';
 
+/// {@category Screens}
+/// Ansicht für die Aufgabenliste eines Haushalts
 @RoutePage()
 class TaskListScreen extends StatefulWidget {
   const TaskListScreen(

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// {@category Widgets}
+/// Widget für Text Elemente mit definiertem Style als H2-Element
 class H2 extends StatefulWidget {
   const H2({
     super.key,

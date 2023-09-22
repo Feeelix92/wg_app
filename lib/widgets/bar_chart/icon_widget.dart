@@ -2,6 +2,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:wg_app/widgets/build_member_circle.dart';
 
+/// {@category Widgets}
+/// Widget für die Icons im Ranking
 class IconWidget extends ImplicitlyAnimatedWidget {
   const IconWidget({super.key,
     required this.color,

@@ -11,6 +11,8 @@ import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 import '../widgets/text/fonts.dart';
 
+/// {@category Screens}
+/// Detailansicht eines Haushalts
 @RoutePage()
 class HouseHoldDetailScreen extends StatefulWidget {
   const HouseHoldDetailScreen(
@@ -23,18 +25,20 @@ class HouseHoldDetailScreen extends StatefulWidget {
 }
 
 class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
-  bool isLoading = true; // Starte mit dem Ladezustand
+  /// Starte mit dem Ladezustand
+  bool isLoading = true;
   bool showInviteField = false;
 
   @override
   void initState() {
     super.initState();
-    _loadData(); // Starte den Ladevorgang beim Initialisieren des Widgets
+    /// Starte den Ladevorgang beim Initialisieren des Widgets
+    _loadData();
   }
 
   Future<void> _loadData() async {
     try {
-      // Lade deine Daten hier, z.B. mit deinem Provider
+      /// Lade deine Daten hier, z.B. mit deinem Provider
       final householdProvider =
           Provider.of<HouseholdProvider>(context, listen: false);
       final loadHousehold =
@@ -52,7 +56,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
             duration: Duration(seconds: 3),
           ),
         );
-        // Fehler beim Laden der Daten
+        /// Fehler beim Laden der Daten
         setState(() {
           isLoading = true;
         });
@@ -81,14 +85,14 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
             )
           : Consumer<HouseholdProvider>(
               builder: (context, houseHoldProvider, child) {
-                // Ansonsten baue die Hauptansicht
+                /// Ansonsten baue die Hauptansicht
                 return SingleChildScrollView(
                   child: Center(
                     child: Column(
                       children: [
                         H1(text: houseHoldProvider.household.title),
                         Text(houseHoldProvider.household.description),
-                        // Anzeige der Personen-Kreise
+                        /// Anzeige der Personen-Kreise
                         if (houseHoldProvider.household.members.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -125,7 +129,7 @@ class _HouseHoldDetailScreenState extends State<HouseHoldDetailScreen> {
                               },
                             ),
                           ),
-                        // Anzeige der Karten
+                        /// Anzeige der Karten
                         buildCard(
                             context,
                             'Einkaufsliste',

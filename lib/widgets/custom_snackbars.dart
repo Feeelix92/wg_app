@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// {@category Widgets}
+/// Zeigt eine Snackbar mit einem Icon und einer Nachricht an.
 void showAwesomeSnackbar(BuildContext context, String message, Color color, IconData icon) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(

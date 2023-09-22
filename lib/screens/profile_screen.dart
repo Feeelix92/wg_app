@@ -5,9 +5,11 @@ import '../widgets/custom_input_decoration.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/navigation/custom_app_bar.dart';
 
-// Erstelle einen GLoablKey für das Form Widget
+/// Erstelle einen GLoablKey für das Form Widget
 final _profileFormKey = GlobalKey<FormState>();
 
+/// {@category Screens}
+/// Ansicht für das Profil des angemeldeten Benutzers
 @RoutePage()
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -17,9 +19,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  /// Speichert ob sich die Benutzerdaten geändert haben
   bool _userDataIsChanged = false;
 
+  /// Controller für die Eingabe des Namens
   final TextEditingController _nameController = TextEditingController(text: '');
+
+  /// Controller für die Eingabe der Email
   final TextEditingController _emailController = TextEditingController(text: '');
 
 

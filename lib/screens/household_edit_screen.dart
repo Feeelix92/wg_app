@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:wg_app/widgets/custom_error_dialog.dart';
 import '../providers/household_provider.dart';
 
+/// {@category Screens}
+/// Ansicht um die Haushaltsinformationen zu bearbeiten.
 class HouseHoldEditScreen extends StatefulWidget {
   const HouseHoldEditScreen(
       {super.key, @PathParam('householdId') required this.householdId});

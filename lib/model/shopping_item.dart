@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+/// {@category Models}
+/// Eine Klasse, die einen Gegenstand auf der Einkaufsliste repräsentiert.
 class ShoppingItem {
   final String id;
   String name;
@@ -13,7 +15,7 @@ class ShoppingItem {
   Timestamp? doneOn;
   int? points;
 
-//<editor-fold desc="Data Methods">
+  /// Konstruktor
   ShoppingItem({
     required this.id,
     required this.name,
@@ -64,6 +66,7 @@ class ShoppingItem {
     return 'ShoppingItem{ id: $id, name: $name, description: $description, amount: $amount, price: $price, date_due: $dateDue, assignedTo: $assignedTo, done: $done, doneBy: $doneBy, doneOn: $doneOn, points: $points,}';
   }
 
+  /// Erstellt ein ShoppingItem mit den übergebenen Parametern.
   ShoppingItem copyWith({
     String? id,
     String? name,
@@ -92,6 +95,7 @@ class ShoppingItem {
     );
   }
 
+  /// Erstellt eine Map aus einem ShoppingItem.
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -108,6 +112,7 @@ class ShoppingItem {
     };
   }
 
+  /// Erstellt ein ShoppingItem aus einer Map.
   factory ShoppingItem.fromMap(Map<String, dynamic> map) {
     return ShoppingItem(
       id: map['id'] as String,
