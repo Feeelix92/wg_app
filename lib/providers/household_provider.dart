@@ -30,7 +30,7 @@ class HouseholdProvider extends ChangeNotifier {
         title: householdDetailData['title'],
         description: householdDetailData['description'],
         members: householdDetailData['members'].cast<String>(),
-        shoppingList: householdDetailData['shoppingList'].cast<String>(),
+        shoppingList: householdDetailData['shoppingList'].cast<Map<String, dynamic>>(),
         taskList: householdDetailData['taskList'].cast<String>(),
       );
 
@@ -321,9 +321,9 @@ class HouseholdProvider extends ChangeNotifier {
 
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
-      final List<ShoppingItem> shoppingList = householdDetailData['shoppingList'].cast<ShoppingItem>();
-      shoppingList.add(item);
-
+      final List<Map<String, dynamic>> shoppingList = householdDetailData['shoppingList']?.cast<Map<String, dynamic>>() ?? [];
+      shoppingList.add(item.toMap()); // Hier wird das ShoppingItem in ein Map-Objekt umgewandelt
+      
       await db.collection("households").doc(_household.id.toString()).update({
         'shoppingList': shoppingList,
       });
@@ -340,14 +340,14 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
   // Funktion die ein ShoppingItem aus einem Haushalt entfernt
-  Future<bool> removeShoppingItem(ShoppingItem item) async {
+  Future<bool> removeShoppingItem(String itemId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
 
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
-      final List<ShoppingItem> shoppingList = householdDetailData['shoppingList'].cast<ShoppingItem>();
-      shoppingList.remove(item);
+      final List<Map<String, dynamic>> shoppingList = householdDetailData['shoppingList']?.cast<Map<String, dynamic>>() ?? [];
+      shoppingList.removeWhere((element) => element['id'] == itemId);
 
       await db.collection("households").doc(_household.id.toString()).update({
         'shoppingList': shoppingList,
@@ -371,9 +371,43 @@ class HouseholdProvider extends ChangeNotifier {
 
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
-      final List<ShoppingItem> shoppingList = householdDetailData['shoppingList'].cast<ShoppingItem>();
-      shoppingList.removeWhere((element) => element.id == item.id);
-      shoppingList.add(item);
+      final List<Map<String, dynamic>> shoppingList = householdDetailData['shoppingList']?.cast<Map<String, dynamic>>() ?? [];
+      shoppingList.removeWhere((element) => element['id'] == item.id);
+      shoppingList.add(item.toMap());
+
+      await db.collection("households").doc(_household.id.toString()).update({
+        'shoppingList': shoppingList,
+      });
+
+      await updateHouseholdInformation();
+
+      return true;
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return false;
+    }
+  }
+
+  // Funktion die ein ShoppingItem in einem Haushalt updatet
+  Future<bool> toggleShoppingItemDoneStatus(String itemId) async {
+    try {
+      final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
+
+      final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
+
+      final List<Map<String, dynamic>> shoppingList = householdDetailData['shoppingList']?.cast<Map<String, dynamic>>() ?? [];
+      Map<String, dynamic> itemToUpdate = shoppingList.firstWhere((element) => element['id'] == itemId);
+      shoppingList.removeWhere((element) => element['id'] == itemId);
+      itemToUpdate['done'] = !itemToUpdate['done'];
+      //Fertigstellungs-Timestamp Updaten
+      if (itemToUpdate['done']) {
+        itemToUpdate['doneOn'] = DateTime.now().toString();
+      } else if (!itemToUpdate['done']) {
+        itemToUpdate['doneOn'] = null;
+      }
+      shoppingList.add(itemToUpdate);
 
       await db.collection("households").doc(_household.id.toString()).update({
         'shoppingList': shoppingList,
@@ -397,8 +431,14 @@ class HouseholdProvider extends ChangeNotifier {
 
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
-      List<ShoppingItem> shoppingList = householdDetailData['shoppingList'].cast<ShoppingItem>();
-      shoppingList.removeWhere((element) => element.done == true);
+      final List<Map<String, dynamic>> shoppingList = householdDetailData['shoppingList']?.cast<Map<String, dynamic>>() ?? [];
+      for (var element in shoppingList) {
+        if(element['done']) {
+          //hier punkte auszählen an leute
+        }
+      }
+
+      shoppingList.removeWhere((element) => element['done'] == true);
 
       await db.collection("households").doc(_household.id.toString()).update({
         'shoppingList': shoppingList,
