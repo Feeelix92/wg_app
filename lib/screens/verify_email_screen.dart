@@ -16,7 +16,7 @@ class VerifyEmailScreen extends StatefulWidget {
   @override
   State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
 }
-/// {@category Screens}
+
 /// State für den [VerifyEmailScreen]
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
 
