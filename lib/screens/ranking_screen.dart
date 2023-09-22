@@ -23,7 +23,10 @@ class RankingScreen extends StatefulWidget {
   State<RankingScreen> createState() => _RankingScreenState();
 }
 
+/// State für [RankingScreen]
 class _RankingScreenState extends State<RankingScreen> {
+
+  /// Mit dieser Methode wird ein Balken für das Balkendiagramm generiert.
   BarChartGroupData generateBarGroup(
     int x,
     Color color,
@@ -42,6 +45,7 @@ class _RankingScreenState extends State<RankingScreen> {
     );
   }
 
+  /// Index des angeklickten Balkens
   int touchedGroupIndex = -1;
 
 
@@ -74,13 +78,19 @@ class _RankingScreenState extends State<RankingScreen> {
                           return const Center(
                               child: Text('Keine Daten verfügbar'));
                         } else {
+                          /// memberPointsOverview erhält die Daten für das Balkendiagramm aus dem Snapshot
                           var memberPointsOverview = snapshot.data!;
-                          var dataList =
-                              memberPointsOverview.entries.map((entry) {
-                            return _BarData(
-                                entry.key, entry.value.toDouble());
+
+                          /// dataList enthält die Daten für das Balkendiagramm
+                          var dataList = memberPointsOverview.entries.map((entry) {
+                            return _BarData(entry.key, entry.value.toDouble());
                           }).toList();
-                          // Bestimmen der maximalen Y-Achsen-Höhe bzw. Beschriftung
+
+                          /// Bestimmen der maximalen Y-Achsen-Höhe bzw. Beschriftung
+                          /// memberPointsOverview.values.first gibt den höchsten Punktestand zurück
+                          /// Wenn der höchste Wert kleiner oder gleich 10 ist, wird der Wert um 20 erhöht und als Höhe der Y-Achse verwendet
+                          /// Wenn der höchste Wert kleiner oder gleich 20 ist, wird der Wert um 10 erhöht und als Höhe der Y-Achse verwendet
+                          /// Ansonsten wird der höchste Wert als Höhe für die Y-Achse verwendet
                           double maxY;
                           if (memberPointsOverview.values.first <= 10){
                             maxY = (memberPointsOverview.values.first + 20).toDouble();
@@ -90,6 +100,7 @@ class _RankingScreenState extends State<RankingScreen> {
                             maxY = memberPointsOverview.values.first.toDouble();
                           }
 
+                          /// Erstellen des Balkendiagramms
                           return BarChart(
                             BarChartData(
                               alignment: BarChartAlignment.spaceBetween,
@@ -109,7 +120,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                     showTitles: true,
                                     reservedSize: 30,
                                     getTitlesWidget: (value, meta) {
-                                      if (value.isFinite) { // Überprüfen, ob der Wert endlich ist
+                                      if (value.isFinite) { /// Überprüfen, ob der Wert endlich ist
                                         return Text(
                                           value.toInt().toString(),
                                           textAlign: TextAlign.left,
@@ -180,7 +191,7 @@ class _RankingScreenState extends State<RankingScreen> {
                                   ) {
                                     final name = dataList[groupIndex].name;
                                     return BarTooltipItem(
-                                      '$name: ${rod.toY.toStringAsFixed(2)}', // Hier wird der Name und der Wert angezeigt
+                                      '$name: ${rod.toY.toStringAsFixed(2)}', /// Hier wird der Name und der Wert angezeigt
                                       const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         color: Colors.black,

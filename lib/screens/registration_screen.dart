@@ -27,10 +27,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void _initializeFormKey() {
     _formKeyRegister = GlobalKey<FormState>();
   }
+
+  /// Anzeige des Passwortes
   bool _isObscure = true;
+
+  /// Anzeige des Ladekreises
   bool _isLoading = false;
 
+  /// Firebase Auth Instanz für die Authentifizierung
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  /// Firebase Firestore Instanz für die Datenbank
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   final TextEditingController _firstNameController = TextEditingController();

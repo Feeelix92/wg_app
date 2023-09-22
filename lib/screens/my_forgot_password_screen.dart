@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/custom_snackbars.dart';
 
+/// Initialisierung des FormKeys für das Absenden des Passwort vergessen Formulars
 final _formKeyForgotPassword = GlobalKey<FormState>();
 
 /// {@category Screens}
@@ -20,6 +21,8 @@ class MyForgotPasswordScreen extends StatefulWidget {
 }
 
 class _MyForgotPasswordScreenState extends State<MyForgotPasswordScreen> {
+
+  /// Controller für die Eingabe der Email
   final TextEditingController _emailController = TextEditingController(text: '');
 
   bool _canResendEmail = true;

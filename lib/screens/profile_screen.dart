@@ -19,9 +19,13 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  /// Speichert ob sich die Benutzerdaten geändert haben
   bool _userDataIsChanged = false;
 
+  /// Controller für die Eingabe des Namens
   final TextEditingController _nameController = TextEditingController(text: '');
+
+  /// Controller für die Eingabe der Email
   final TextEditingController _emailController = TextEditingController(text: '');
 
 

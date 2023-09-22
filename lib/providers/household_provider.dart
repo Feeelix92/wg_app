@@ -9,8 +9,11 @@ import '../model/task_Item.dart';
 /// {@category Providers}
 /// Die HouseholdProvider Klasse, verwaltet alle Daten die zum Haushalt gehören und enthält einige Methoden für das Arbeiten mit diesen Daten
 class HouseholdProvider extends ChangeNotifier {
+
   /// Instanzen der Datenbank
   final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  /// Instanz der Authentifizierung
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   /// Haushalt der aktuell ausgewählt ist
@@ -41,6 +44,7 @@ class HouseholdProvider extends ChangeNotifier {
         taskList: householdDetailData['taskList'].cast<String>(),
       );
 
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
       return;
@@ -74,6 +78,8 @@ class HouseholdProvider extends ChangeNotifier {
       );
 
       await updateHouseholdInformation();
+
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
       return true;
@@ -97,6 +103,7 @@ class HouseholdProvider extends ChangeNotifier {
       _household.title = title;
       _household.description = description;
 
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
       return true;
@@ -111,7 +118,7 @@ class HouseholdProvider extends ChangeNotifier {
   /// Die Methode deleteHousehold löscht einen spezifischen Haushalt aus der Datenbank
   Future<bool> deleteHousehold(String householdId) async {
     try {
-      // Löschen der Shopping- und Task-Liste des Haushalts
+      /// Löschen der Shopping- und Task-Liste des Haushalts
       await Future.wait([
         db.collection("households").doc(householdId)
             .collection("shoppingList")
@@ -131,8 +138,10 @@ class HouseholdProvider extends ChangeNotifier {
         }),
       ]);
 
-      // Löschen des Haushalts
+      /// Löschen des Haushalts
       await db.collection("households").doc(householdId).delete();
+
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
       return true;
@@ -429,7 +438,10 @@ class HouseholdProvider extends ChangeNotifier {
         households.add(household);
       }
       _accessibleHouseholds = households;
+
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
+
       return true;
     } catch (e) {
       if (kDebugMode) {
@@ -456,15 +468,16 @@ class HouseholdProvider extends ChangeNotifier {
         taskList: householdDetailData?['taskList'],
 
       );
+      /// Benachrichtige alle Listener, dass sich die Daten geändert haben
       notifyListeners();
 
-      // Wenn der Haushalt erfolgreich geladen wurde, dann true zurückgeben
+      /// Wenn der Haushalt erfolgreich geladen wurde, dann true zurückgeben
       return true;
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      // Wenn der Haushalt nicht geladen werden konnte, dann false zurückgeben
+      /// Wenn der Haushalt nicht geladen werden konnte, dann false zurückgeben
       return false;
     }
   }

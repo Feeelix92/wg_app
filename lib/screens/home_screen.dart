@@ -22,39 +22,47 @@ class HomeScreen extends StatefulWidget {
 
 /// State der Startseite
 class _HomeScreenState extends State<HomeScreen> {
-  bool isLoading = true; // Starte mit dem Ladezustand
-  DateTime? lastLoadTime; // Zeitpunkt des letzten erfolgreichen Datenladens
+  /// Starte mit dem Ladezustand
+  bool isLoading = true;
+
+  /// Zeitpunkt des letzten erfolgreichen Datenladens
+  DateTime? lastLoadTime;
 
   @override
   void initState() {
     super.initState();
-    _loadData(); // Starte den Ladevorgang beim Initialisieren des Widgets
+
+    /// Starte den Ladevorgang beim Initialisieren des Widgets
+    _loadData();
   }
 
   /// Lädt die Daten der verfügbaren Haushalte
   Future<void> _loadData() async {
     try {
-      // Prüfen, ob genügend Zeit seit dem letzten Laden vergangen ist
+      /// Prüfen, ob genügend Zeit seit dem letzten Laden vergangen ist
       if (lastLoadTime == null ||
           DateTime.now().difference(lastLoadTime!) >
               const Duration(minutes: 5)) {
-        // Laden der Daten
+
+        /// Laden der Daten
         final householdProvider = Provider.of<HouseholdProvider>(context, listen: false);
+
         final success = await householdProvider.loadAllAccessibleHouseholds();
 
         if (success) {
-          // Zeitpunkt des letzten erfolgreichen Datenladens aktualisieren
+
+          /// Zeitpunkt des letzten erfolgreichen Datenladens aktualisieren
           setState(() {
             lastLoadTime = DateTime.now();
             isLoading = false;
           });
         } else {
-          // Fehler beim Laden der Daten
+          /// Fehler beim Laden der Daten
           setState(() {
-            // Ladezustand beenden
+            /// Ladezustand beenden
             isLoading = false;
           });
-          // Fehlermeldung anzeigen
+          /// Fehlermeldung anzeigen
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text('Fehler beim Laden der Haushalte.'),
@@ -64,10 +72,10 @@ class _HomeScreenState extends State<HomeScreen> {
         }
       }
     } catch (e) {
-      // Handle andere Fehler hier
+      /// Handle andere Fehler hier
       print(e);
       setState(() {
-        // Ladezustand beenden
+        /// Ladezustand beenden
         isLoading = false;
       });
     }
@@ -85,14 +93,14 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: const CustomAppBar(),
       endDrawer: const AppDrawer(),
       body: isLoading
-          // Ladekreis anzeigen, wenn die Daten noch geladen werden
+          /// Ladekreis anzeigen, wenn die Daten noch geladen werden
           ? const Center(
-              child: CircularProgressIndicator(), // Ladekreis anzeigen
+              child: CircularProgressIndicator(),
             )
-          // Ansonsten prüfe, verwende die Daten aus dem Provider...
+          /// Ansonsten prüfe, verwende die Daten aus dem Provider...
           : Consumer<HouseholdProvider>(
               builder: (context, householdProvider, child) {
-                // ... und baue die Hauptansicht
+                /// ... und baue die Hauptansicht
                 return Center(
                   child: Column(
                     children: [
