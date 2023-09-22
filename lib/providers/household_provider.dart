@@ -9,12 +9,18 @@ import '../model/task_Item.dart';
 /// {@category Providers}
 /// Die HouseholdProvider Klasse, verwaltet alle Daten die zum Haushalt gehören und enthält einige Methoden für das Arbeiten mit diesen Daten
 class HouseholdProvider extends ChangeNotifier {
+  final FirebaseFirestore db;
+  final FirebaseAuth auth;
 
-  /// Instanzen der Datenbank
-  final FirebaseFirestore db = FirebaseFirestore.instance;
+  HouseholdProvider({FirebaseFirestore? firestore, FirebaseAuth? firebaseAuth})
+      : db = firestore ?? FirebaseFirestore.instance,
+        auth = firebaseAuth ?? FirebaseAuth.instance;
 
-  /// Instanz der Authentifizierung
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  // /// Instanzen der Datenbank
+  // final FirebaseFirestore db = FirebaseFirestore.instance;
+  //
+  // /// Instanz der Authentifizierung
+  // final FirebaseAuth auth = FirebaseAuth.instance;
 
   /// Haushalt der aktuell ausgewählt ist
   late Household _household;

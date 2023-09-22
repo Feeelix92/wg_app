@@ -132,6 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           autofocus: false,
                           controller: _emailController,
+                          key: const ValueKey('email_field'),
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                             labelText: 'E-Mail',
@@ -150,6 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           autofocus: false,
                           controller: _passwordController,
+                          key: const ValueKey('password_field'),
                           obscureText: _isObscure,
                           decoration: InputDecoration(
                             labelText: 'Passwort',
@@ -185,13 +187,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                       backgroundColor: Colors.black12, foregroundColor: Colors.black54),
                                   child: const Text('Passwort vergessen')),
                               ElevatedButton(
+                                key: const Key('login_button'),
                                 onPressed: _isLoading ? null : () {
                                   if (_formKeyLogin.currentState!.validate()) {
                                     setState(() => _isLoading = true);
                                     _signIn(context);
                                   }
                                 },
-                                child: const Text('Login'),
+                                child: const Text('einloggen'),
                               ),
                             ],
                           ),
