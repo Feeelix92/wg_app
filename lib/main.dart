@@ -11,18 +11,21 @@ import 'firebase_options.dart';
 
 /// Die Main-Methode startet die App.
 Future main() async {
-  // .env-Datei laden
+
+  /// .env-Datei laden
   await dotenv.load(fileName: ".env");
 
-  // Firebase auf für entsprechende Platform konfigurieren
+  /// Firebase auf für entsprechende Plattform konfigurieren
   WidgetsFlutterBinding.ensureInitialized();
+
+  /// Firebase initialisieren
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // App starten
+  /// App starten
   runApp(
-    // Initialisieren der Provider für die Datenverwaltung
+    /// Initialisieren der Provider für die Datenverwaltung
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
@@ -37,8 +40,10 @@ Future main() async {
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
-  // AppRouter für die Navigation
+  /// AppRouter für ddas Verwenden von Routen
   final _appRouter = AppRouter();
+
+  /// NavigatorKey für die Navigation
   final navigatorKey = GlobalKey<NavigatorState>();
 
 
@@ -46,11 +51,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      /// Konfiguration des AppRouters
       routerConfig: _appRouter.config(),
       debugShowCheckedModeBanner: false,
-      // Titel der App
+      /// Titel der App
       title: Constants.appName,
-      // Theme für die App
+      /// Theme für die App
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,

@@ -66,7 +66,7 @@ class HouseholdProvider extends ChangeNotifier {
         'taskList': [],
       });
 
-      // Damit die ID des Haushalts für die Methode updateHouseholdInformation() verfügbar ist
+      /// Damit die ID des Haushalts für die Methode updateHouseholdInformation() verfügbar ist
       _household = Household(
         admin: auth.currentUser!.uid,
         id: docRefHousehold.id,
@@ -250,7 +250,8 @@ class HouseholdProvider extends ChangeNotifier {
       if (kDebugMode) {
         print(e);
       }
-      return {}; // Wenn ein Fehler auftritt oder keine Benutzer vorhanden sind.
+      /// Wenn ein Fehler auftritt oder keine Benutzer vorhanden sind.
+      return {};
     }
   }
 
@@ -275,7 +276,8 @@ class HouseholdProvider extends ChangeNotifier {
       if (kDebugMode) {
         print(e);
       }
-      return false; // Wenn ein Fehler auftritt oder der Haushalt nicht gefunden wird.
+      /// Wenn ein Fehler auftritt oder der Haushalt nicht gefunden wird.
+      return false;
     }
   }
  /// Funktion die den Username mithilfe der UserId herausfindet
@@ -287,12 +289,14 @@ class HouseholdProvider extends ChangeNotifier {
         final userData = docRefUser.data() as Map<String, dynamic>;
         return userData['username'] as String?;
       }
-      return null; // Benutzer nicht gefunden
+      /// Benutzer nicht gefunden
+      return null;
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return null; // Fehler beim Abrufen der Benutzerdaten
+      /// Fehler beim Abrufen der Benutzerdaten
+      return null;
     }
   }
 
@@ -309,13 +313,15 @@ class HouseholdProvider extends ChangeNotifier {
         final username = userData['username'] as String?;
         return username;
       } else {
-        return null; // Wenn die E-Mail-Adresse nicht gefunden wurde.
+        /// Wenn die E-Mail-Adresse nicht gefunden wurde.
+        return null;
       }
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return null; // Wenn ein Fehler auftritt.
+      /// Wenn ein Fehler auftritt.
+      return null;
     }
   }
 
@@ -326,18 +332,21 @@ class HouseholdProvider extends ChangeNotifier {
       final querySnapshot = await usersCollection.where(
           'username', isEqualTo: username).get();
 
+      /// Überprüfen ob der Username existiert
       if (querySnapshot.docs.isNotEmpty) {
         final userData = querySnapshot.docs.first.data();
         final email = userData['email'] as String?;
         return email;
       } else {
-        return null; // Wenn der Username nicht gefunden wurde.
+        /// Wenn der Username nicht gefunden wurde.
+        return null;
       }
     } catch (e) {
       if (kDebugMode) {
         print(e);
       }
-      return null; // Wenn ein Fehler auftritt.
+      /// Wenn ein Fehler auftritt.
+      return null;
     }
   }
 
@@ -354,10 +363,11 @@ class HouseholdProvider extends ChangeNotifier {
 
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
-      final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
+      /// Abrufen der ID (uid) des Benutzers
+      final userId = docRefUser.docs.first.id;
       final List<String> members = householdDetailData['members'].cast<String>();
 
-      // Überprüfen, ob der Benutzer bereits im Haushalt ist
+      /// Überprüfen, ob der Benutzer bereits im Haushalt ist
       if (!members.contains(userId)) {
         members.add(userId);
 
@@ -367,8 +377,7 @@ class HouseholdProvider extends ChangeNotifier {
 
         await updateHouseholdInformation();
       } else {
-        // Benutzer ist bereits im Haushalt
-        print('Benutzer ist bereits im Haushalt');
+        /// Benutzer ist bereits im Haushalt
         return false;
       }
 
@@ -485,12 +494,15 @@ class HouseholdProvider extends ChangeNotifier {
   /// Funktion die den Admin eines Haushalts ändert
   Future<bool> changeAdmin(String email) async {
     try {
+
       final docRefUser = await db.collection("users").where(
           'email', isEqualTo: email).get();
 
+      /// Überprüfen ob der Benutzer existiert
       if (docRefUser.docs.isEmpty) return false;
 
-      final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
+      /// Speichern der ID (uid) des Benutzers
+      final userId = docRefUser.docs.first.id;
 
       await db.collection("households").doc(_household.id.toString()).update({
         'admin': userId,
@@ -639,30 +651,36 @@ class HouseholdProvider extends ChangeNotifier {
         final memberExpenses = <String, Map<String, dynamic>>{};
         double totalExpenses = 0.0;
 
-        // Berechnung der Gesamtsumme aller  Ausgaben
+        /// Berechnung der Gesamtsumme aller  Ausgaben
+        /// Iteration für alle ShoppingItems
         for (final shoppingItem in shoppingList) {
           final price = shoppingItem['price'] as double;
           final done = shoppingItem['done'] as bool;
 
+          /// Wenn das ShoppingItem erledigt ist, dann wird der Preis zu den Gesamtausgaben hinzugefügt
           if (done) {
             totalExpenses += price;
           }
         }
 
+        /// Berechnung der Ausgaben für jedes Mitglied
+        /// Iteration für alle Mitglieder
         for (final memberId in memberIds) {
           double memberExpense = 0.0;
 
+          /// Iteration für alle ShoppingItems
           for (final shoppingItem in shoppingList) {
             final doneBy = shoppingItem['doneBy'] as String?;
             final price = shoppingItem['price'] as double;
             final done = shoppingItem['done'] as bool;
 
+            /// Wenn das ShoppingItem erledigt ist und das Mitglied es erledigt hat, dann wird der Preis zu den Ausgaben des Mitglieds hinzugefügt
             if (done && doneBy == memberId) {
               memberExpense += price;
             }
           }
 
-          // Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
+          /// Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
           double percentageOfTotal = 0.0;
           if (totalExpenses != 0.0) {
             percentageOfTotal = (memberExpense / totalExpenses) * 100;
@@ -813,13 +831,13 @@ class HouseholdProvider extends ChangeNotifier {
 
         final memberPoints = <String, int>{};
 
-        // Iteration für alle Mitglieder
+        /// Iteration für alle Mitglieder
         for (final memberUserId in members) {
           final username = await getUsernameForUserId(memberUserId);
           if (username != null) {
             int points = 0;
 
-            // Iteration für alle ShoppingItems und TaskItems
+            /// Iteration für alle ShoppingItems und TaskItems
             final items = [
               ...householdDetailData['shoppingList'],
               ...householdDetailData['taskList']
@@ -833,12 +851,12 @@ class HouseholdProvider extends ChangeNotifier {
                 points += pointsEarned;
               }
             }
-            // Punkte für die Mitglieder im Haushalt speichern
+            /// Punkte für das aktuelle Mitglied im Haushalt speichern
             memberPoints[username] = points;
           }
         }
 
-        // Jetzt die Punkte absteigend sortieren
+        /// sortedMemberPoints speichert die Map sortiert nach den Punkten, die Person mit der Höchsten Punktzahl steht an erster Stelle
         final sortedMemberPoints = Map<String, int>.fromEntries(
             memberPoints.entries.toList()
               ..sort((a, b) => b.value.compareTo(a.value))

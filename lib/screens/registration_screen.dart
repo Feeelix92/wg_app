@@ -50,6 +50,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   DateTime _selectedDate = DateTime.now();
 
 
+  /// Funktion für die Registrierung eines neuen Benutzers
   Future signUp() async {
     try {
       final authCredential = await FirebaseAuth.instance
@@ -76,6 +77,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
   }
 
+  /// Funktion für das Speichern der Benutzerdaten in der Datenbank
   Future sendUserDetails(String uid) async {
     final credentials = db.collection("users").doc(uid).set({
       'firstName': _firstNameController.text.trim(),
@@ -100,6 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
 
+  /// Funktion für das Leeren der Formularfelder
   void clearForm() {
     setState(() {
       _firstNameController.clear();
