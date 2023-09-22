@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the showAwesomeSnackbar function from the custom_snackbars library, for the Dart programming language.">
+  <title>showAwesomeSnackbar function - custom_snackbars library - Dart API</title>
+
+
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
+</head>
+
+
+<body data-base-href="../" data-using-base-href="false" class="light-theme">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <span id="sidenav-left-toggle" class="material-symbols-outlined" role="button" tabindex="0">menu</span>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">wg_app</a></li>
+    <li><a href="../widgets_custom_snackbars/widgets_custom_snackbars-library.html">custom_snackbars</a></li>
+    <li class="self-crumb">showAwesomeSnackbar function</li>
+  </ol>
+  <div class="self-name">showAwesomeSnackbar</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+  <div class="toggle" id="theme-button">
+    <label for="theme">
+      <input type="checkbox" id="theme" value="light-theme">
+      <span id="dark-theme-button" class="material-symbols-outlined">
+        brightness_4
+      </span>
+      <span id="light-theme-button" class="material-symbols-outlined">
+        brightness_5
+      </span>
+    </label>
+  </div>
+</header>
+<main>
+
+  <div
+      id="dartdoc-main-content"
+      class="main-content"
+      data-above-sidebar="widgets_custom_snackbars&#47;widgets_custom_snackbars-library-sidebar.html"
+      data-below-sidebar="">
+      <div>
+<h1><span class="kind-function">showAwesomeSnackbar</span> function 
+ 
+    <span class="category widgets cp-5 linked" title="This is part of the Widgets topic."><a href="../topics/Widgets-topic.html">Widgets</a></span>
+</h1></div>
+
+    <section class="multi-line-signature">
+        
+
+<span class="returntype">void</span>
+<span class="name ">showAwesomeSnackbar</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="showAwesomeSnackbar-param-context"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/BuildContext-class.html">BuildContext</a></span> <span class="parameter-name">context</span>, </span></li>
+<li><span class="parameter" id="showAwesomeSnackbar-param-message"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">message</span>, </span></li>
+<li><span class="parameter" id="showAwesomeSnackbar-param-color"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-ui/Color-class.html">Color</a></span> <span class="parameter-name">color</span>, </span></li>
+<li><span class="parameter" id="showAwesomeSnackbar-param-icon"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/widgets/IconData-class.html">IconData</a></span> <span class="parameter-name">icon</span></span></li>
+</ol>)
+
+        
+
+    </section>
+    
+<section class="desc markdown">
+  <p>Zeigt eine Snackbar mit einem Icon und einer Nachricht an.</p>
+</section>
+
+
+    
+<section class="summary source-code" id="source">
+  <h2><span>Implementation</span></h2>
+  <pre class="language-dart"><code class="language-dart">void showAwesomeSnackbar(BuildContext context, String message, Color color, IconData icon) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: color,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+      ),
+      content: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            color: Colors.white,
+          ),
+          const SizedBox(width: 12),
+          Text(message),
+          const SizedBox(width: 12),
+        ],
+      ),
+    ),
+  );
+}</code></pre>
+</section>
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <!-- The search input and breadcrumbs below are only responsively visible at low resolutions. -->
+<header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+    <li><a href="../index.html">wg_app</a></li>
+    <li><a href="../widgets_custom_snackbars/widgets_custom_snackbars-library.html">custom_snackbars</a></li>
+    <li class="self-crumb">showAwesomeSnackbar function</li>
+</ol>
+
+
+    <h5>custom_snackbars library</h5>
+  </div><!--/.sidebar-offcanvas-left-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    wg_app
+      1.0.0+1
+  </span>
+
+  
+</footer>
+
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/docs.dart.js"></script>
+
+
+
+</body>
+
+</html>
+
