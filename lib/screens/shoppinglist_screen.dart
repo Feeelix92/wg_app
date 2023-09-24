@@ -81,8 +81,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                                     actions: [
                                       IconButton(onPressed: () {
                                           Navigator.of(context, rootNavigator: true).pop('dialog');
-                                          houseHoldData.toggleShoppingItemDoneStatus(shoppingItem['id']);
-                                          //TODO: doneBy feld ausfüllen indem man den eigenen user mitsendet?
+                                          houseHoldData.toggleShoppingItemDoneStatus(shoppingItem['id'], houseHoldData.auth.currentUser!.uid);
                                         }, icon: const Icon(Icons.check),
                                       )
                                     ],

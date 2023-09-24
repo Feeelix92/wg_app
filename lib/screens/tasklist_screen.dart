@@ -81,8 +81,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
                                     actions: [
                                       IconButton(onPressed: () {
                                         Navigator.of(context, rootNavigator: true).pop('dialog');
-                                        householdProvider.toggleTaskItemDoneStatus(taskItem['id']);
-                                        //TODO: doneBy feld ausfüllen indem man den eigenen user mitsendet?
+                                        householdProvider.toggleTaskItemDoneStatus(taskItem['id'], householdProvider.auth.currentUser!.uid);
                                       }, icon: const Icon(Icons.check),
                                       )
                                     ],
