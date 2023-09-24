@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// {@category Widgets}
+/// Widget für Text Elemente mit definiertem Style als H1-Element
 class H1 extends StatefulWidget {
   const H1({
     super.key,
@@ -15,14 +17,11 @@ class H1 extends StatefulWidget {
 class _H1State extends State<H1> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Text(
-        widget._text,
-        style: const TextStyle(
-          fontSize: 24,
-          fontWeight: FontWeight.bold,
-        ),
+    return Text(
+      widget._text,
+      style: const TextStyle(
+        fontSize: 24,
+        fontWeight: FontWeight.bold,
       ),
     );
   }

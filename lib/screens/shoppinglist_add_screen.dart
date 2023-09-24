@@ -6,6 +6,8 @@ import '../data/constants.dart';
 import '../providers/household_provider.dart';
 import '../model/shoppingItem.dart';
 
+/// {@category Screens}
+/// Ansicht für das Hinzufügen eines neuen Gegenstands bzw. ShoppingItems auf die Einkaufsliste
 class ShoppingListAddScreen extends StatefulWidget {
   const ShoppingListAddScreen({
     super.key,

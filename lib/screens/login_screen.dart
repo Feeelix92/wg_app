@@ -7,9 +7,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
-import '../widgets/my_snackbars.dart';
 
+import '../widgets/custom_snackbars.dart';
 
+/// {@category Screens}
+/// Login Screen
 @RoutePage()
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -21,16 +23,24 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   GlobalKey<FormState> _formKeyLogin = GlobalKey<FormState>();
 
+  /// Initialisierung des FormKeys für das Absenden des Login Formulars
   void _initializeFormKey() {
     _formKeyLogin = GlobalKey<FormState>();
   }
-  // show the password or not
+
+  /// Anzeige des Passwortes
   bool _isObscure = true;
+
+  /// Anzeige des Ladekreises
   bool _isLoading = false;
 
+  /// Controller für die Eingabe der Email
   final TextEditingController _emailController = TextEditingController(text: '');
+
+  /// Controller für die Eingabe des Passwortes
   final TextEditingController _passwordController = TextEditingController(text: '');
 
+  /// Login mit Email und Passwort
   Future _signIn(BuildContext context) async {
     setState(() {
       _isLoading = true;
@@ -71,6 +81,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _initializeFormKey();
+
+    /// Setzen der Orientierung auf Portrait
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,

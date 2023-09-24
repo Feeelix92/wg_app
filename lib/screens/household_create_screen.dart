@@ -2,8 +2,10 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/household_provider.dart';
-import '../routes/app_router.gr.dart';
 
+
+/// {@category Screens}
+/// Screen zum Erstellen eines neuen Haushalts
 class HouseHoldCreateScreen extends StatefulWidget {
   const HouseHoldCreateScreen({super.key});
 
@@ -12,9 +14,10 @@ class HouseHoldCreateScreen extends StatefulWidget {
 }
 
 class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
+  /// Dieser Controller für liest den Namen des Haushalts aus dem Textfeld
   final TextEditingController _houseHoldNameController = TextEditingController();
+  /// Dieser Controller für liest die Beschreibung des Haushalts aus dem Textfeld
   final TextEditingController _houseHoldDescriptionController = TextEditingController();
-  final TextEditingController _personNameController = TextEditingController();
 
 
   @override
@@ -24,101 +27,73 @@ class _HouseHoldCreateScreenState extends State<HouseHoldCreateScreen> {
 
   @override
   void dispose() {
+    /// Controller müssen manuell entsorgt werden, um Speicherlecks zu vermeiden
     _houseHoldNameController.dispose();
     _houseHoldDescriptionController.dispose();
-    _personNameController.dispose();
     super.dispose();
   }
 
   @override
+  /// Erstellt den Screen
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(builder: (context, householdProvider, child) {
       return Container(
-      padding: const EdgeInsets.all(16.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            TextField(
-              controller: _houseHoldNameController,
-              maxLength: 20,
-              decoration: InputDecoration(
-                labelText: 'Name',
-                hintText: 'z.B. Muster WG',
-                prefixIcon: const Icon(Icons.title),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+        padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0,bottom: MediaQuery.of(context).viewInsets.bottom),
+        /// SingleChildScrollView ermöglicht das Scrollen der Seite
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              TextField(
+                controller: _houseHoldNameController,
+                maxLength: 20,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  hintText: 'z.B. Muster WG',
+                  prefixIcon: const Icon(Icons.title),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
-            ),
-            TextField(
-              controller: _houseHoldDescriptionController,
-              maxLength: 100,
-              decoration: InputDecoration(
-                labelText: 'Beschreibung',
-                hintText: 'z.B. WG in der Bahnhofstraße 13',
-                prefixIcon: const Icon(Icons.description),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(30),
+              TextField(
+                controller: _houseHoldDescriptionController,
+                maxLength: 100,
+                decoration: InputDecoration(
+                  labelText: 'Beschreibung',
+                  hintText: 'z.B. WG in der Bahnhofstraße 13',
+                  prefixIcon: const Icon(Icons.description),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                 ),
               ),
-            ), // Eingabefeld für Personen hinzufügen,
-            // TextField(
-            //   controller: _personNameController,
-            //   inputFormatters: <TextInputFormatter>[
-            //     FilteringTextInputFormatter.allow(RegExp("[0-9a-zA-Z]")),
-            //   ], // Only
-            //   decoration: InputDecoration(
-            //     labelText: 'Person hinzufügen',
-            //     hintText: 'Email der Person',
-            //     prefixIcon: const Icon(Icons.email),
-            //     border: OutlineInputBorder(
-            //       borderRadius: BorderRadius.circular(30),
-            //     ),
-            //     suffixIcon: IconButton(
-            //       icon: const Icon(Icons.add),
-            //       onPressed: () {
-            //         householdProvider.addUserToHousehold(_personNameController.text);
-            //         _personNameController.clear();
-            //       },
-            //     ),
-            //   ),
-            // ),
-            // Wrap(
-            //   spacing: 8,
-            //   children: addedMembers.map((person) {
-            //     return Chip(
-            //       label: Text(person),
-            //       onDeleted: () => _removePersonFromHouseHold(person),
-            //     );
-            //   }).toList(),
-            // ),
-            // // Anzeige der hinzugefügten Personen
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton(
-                  onPressed: () async {
-                    String title = _houseHoldNameController.text;
-                    String description = _houseHoldDescriptionController.text;
-                    householdProvider.createHousehold(title, description);
-                    householdProvider.loadAllAccessibleHouseholds();
-                    AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
-                  },
-                  child: const Text('Hinzufügen'),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    AutoRouter.of(context).pop(); // Zurück zum HomeScreen
-                  },
-                  child: const Text('Abbrechen'),
-                ),
-              ],
-            ),
-          ],
+              // Anzeige der hinzugefügten Personen
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () async {
+                      String title = _houseHoldNameController.text;
+                      String description = _houseHoldDescriptionController.text;
+                      householdProvider.createHousehold(title, description);
+                      householdProvider.loadAllAccessibleHouseholds();
+                      AutoRouter.of(context).popUntilRoot(); // Zurück zur Homeseite
+                    },
+                    child: const Text('Hinzufügen'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      AutoRouter.of(context).pop(); // Zurück zum HomeScreen
+                    },
+                    child: const Text('Abbrechen'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
   });
   }
 }

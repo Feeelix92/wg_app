@@ -1,4 +1,3 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
@@ -10,8 +9,10 @@ import 'package:intl/intl.dart';
 import 'package:wg_app/routes/app_router.gr.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 
-import '../widgets/my_snackbars.dart';
+import '../widgets/custom_snackbars.dart';
 
+/// {@category Screens}
+/// Ansicht für die Registrierung eines neuen Benutzers
 @RoutePage()
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -26,10 +27,17 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   void _initializeFormKey() {
     _formKeyRegister = GlobalKey<FormState>();
   }
+
+  /// Anzeige des Passwortes
   bool _isObscure = true;
+
+  /// Anzeige des Ladekreises
   bool _isLoading = false;
 
+  /// Firebase Auth Instanz für die Authentifizierung
   FirebaseAuth auth = FirebaseAuth.instance;
+
+  /// Firebase Firestore Instanz für die Datenbank
   FirebaseFirestore db = FirebaseFirestore.instance;
 
   final TextEditingController _firstNameController = TextEditingController();
@@ -42,6 +50,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   DateTime _selectedDate = DateTime.now();
 
 
+  /// Funktion für die Registrierung eines neuen Benutzers
   Future signUp() async {
     try {
       final authCredential = await FirebaseAuth.instance
@@ -68,11 +77,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     }
   }
 
+  /// Funktion für das Speichern der Benutzerdaten in der Datenbank
   Future sendUserDetails(String uid) async {
     final credentials = db.collection("users").doc(uid).set({
       'firstName': _firstNameController.text.trim(),
       'lastName': _lastNameController.text.trim(),
       'username': _usernameController.text.trim(),
+      'email': _emailController.text.trim(),
       'birthdate': _selectedDate.toString().trim(),
       'isAdmin': false,
     }).then((value) {
@@ -91,6 +102,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
 
+  /// Funktion für das Leeren der Formularfelder
   void clearForm() {
     setState(() {
       _firstNameController.clear();

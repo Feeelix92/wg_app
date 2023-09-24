@@ -1,13 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wg_app/widgets/customErrorDialog.dart';
-
-import '../data/constants.dart';
-import '../model/household.dart';
+import 'package:wg_app/widgets/custom_error_dialog.dart';
 import '../providers/household_provider.dart';
-import '../routes/app_router.gr.dart';
 
+/// {@category Screens}
+/// Ansicht um die Haushaltsinformationen zu bearbeiten.
 class HouseHoldEditScreen extends StatefulWidget {
   const HouseHoldEditScreen(
       {super.key, @PathParam('householdId') required this.householdId});
@@ -48,7 +46,7 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
   Widget build(BuildContext context) {
     return Consumer<HouseholdProvider>(builder: (context, houseHoldProvider, child) {
       return Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(top: 16.0, left: 16.0, right: 16.0, bottom: MediaQuery.of(context).viewInsets.bottom),
         child: SingleChildScrollView(
           child: Column(
             children: [

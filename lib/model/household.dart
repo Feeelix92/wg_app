@@ -1,3 +1,5 @@
+/// {@category Models}
+/// Eine Klasse, die einen Haushalt repräsentiert.
 class Household {
   final String id; // UUID des Users
   String title;
@@ -7,6 +9,7 @@ class Household {
   List<dynamic> shoppingList; // Liste von Einkäufen
   List<dynamic> taskList; // Liste von Aufgaben
 
+  /// Konstruktor
   Household({
     required this.admin,
     required this.id,

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// {@category Widgets}
+/// Widget für Text Elemente mit definiertem Style
 class CustomText extends StatefulWidget {
   const CustomText({
     super.key,

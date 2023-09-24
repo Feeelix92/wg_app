@@ -9,19 +9,23 @@ import 'package:wg_app/routes/app_router.dart';
 
 import 'firebase_options.dart';
 
+/// Die Main-Methode startet die App.
 Future main() async {
-  // To load the .env file contents into dotenv.
-  // NOTE: fileName defaults to .env and can be omitted in this case.
-  // Ensure that the filename corresponds to the path in step 1 and 2.
+
+  /// .env-Datei laden
   await dotenv.load(fileName: ".env");
 
-  // Firebase auf für entsprechende Platform konfigurieren
+  /// Firebase auf für entsprechende Plattform konfigurieren
   WidgetsFlutterBinding.ensureInitialized();
+
+  /// Firebase initialisieren
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
+  /// App starten
   runApp(
+    /// Initialisieren der Provider für die Datenverwaltung
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserProvider()),
@@ -32,20 +36,27 @@ Future main() async {
   );
 }
 
+/// Die MyApp-Klasse ist die Wurzel der App.
 class MyApp extends StatelessWidget {
   MyApp({super.key});
 
+  /// AppRouter für ddas Verwenden von Routen
   final _appRouter = AppRouter();
+
+  /// NavigatorKey für die Navigation
   final navigatorKey = GlobalKey<NavigatorState>();
 
 
-  // This widget is the root of your application.
+  /// Die build-Methode baut die App.
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      /// Konfiguration des AppRouters
       routerConfig: _appRouter.config(),
       debugShowCheckedModeBanner: false,
+      /// Titel der App
       title: Constants.appName,
+      /// Theme für die App
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,

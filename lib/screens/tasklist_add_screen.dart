@@ -3,12 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:wg_app/model/shoppingItem.dart';
-
-import '../model/TaskItem.dart';
 import '../providers/household_provider.dart';
 import '../widgets/my_snackbars.dart';
 
+/// {@category Screens}
+/// Ansicht für das Hinzufügen einer neuen AUfgabe bzw. TaskItems auf die Aufgabenliste
 class TaskListAddScreen extends StatefulWidget {
   const TaskListAddScreen({
     super.key,
