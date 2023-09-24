@@ -3,8 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import '../model/task_Item.dart';
 import '../providers/household_provider.dart';
-import '../widgets/my_snackbars.dart';
+import '../widgets/custom_snackbars.dart';
 
 /// {@category Screens}
 /// Ansicht für das Hinzufügen einer neuen AUfgabe bzw. TaskItems auf die Aufgabenliste
@@ -39,19 +40,22 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _pointsController = TextEditingController();
-  String _selectedPerson = 'Alle';
+  String? _selectedUserId;
   DateTime _selectedDate = DateTime.now();
 
   void editPrefillValues() {
     _titleController.text = widget.title!;
     _descriptionController.text = widget.description!;
     _pointsController.text = widget.points!;
-    _selectedPerson = widget.assignedTo!;
+    _selectedUserId = widget.assignedTo!;
     _selectedDate = widget.dateDue!.toDate();
   }
 
   @override
   void initState() {
+    final householdProvider =
+      Provider.of<HouseholdProvider>(context, listen: false);
+    _selectedUserId = householdProvider.auth.currentUser?.uid;
     if (widget.edit) {editPrefillValues();}
     return super.initState();
   }
@@ -134,8 +138,8 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
             },
           ),
           const SizedBox(height: 10.0),
-          FutureBuilder<List<String>>(
-              future: householdProvider.getHouseholdMembersNames(householdProvider.household.id),
+          FutureBuilder<Map<String, Map<String, dynamic>>>(
+              future: householdProvider.getHouseholdMembersData(householdProvider.household.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator(); // Zeige einen Ladekreis während des Ladens an
@@ -145,18 +149,17 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
                   return const Text('Keine Mitglieder gefunden');
                 } else {
                   final members = snapshot.data;
-                  members!.add("Alle");
                   return DropdownButtonFormField<String>(
-                    value: _selectedPerson,
-                    items: members.map((String person) {
+                    value: _selectedUserId,
+                    items: members?.keys.map((String userId) {
                       return DropdownMenuItem<String>(
-                        value: person,
-                        child: Text(person),
+                        value: userId,
+                        child: Text(members[userId]?['username']),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        _selectedPerson = newValue ?? 'Alle'; // Aktualisiere die ausgewählte Person
+                        _selectedUserId = newValue ?? householdProvider.auth.currentUser!.uid; // Aktualisiere die ausgewählte Person
                       });
                     },
                     decoration: InputDecoration(
@@ -187,7 +190,7 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
                         id: itemId,
                         name: _titleController.text,
                         description: _descriptionController.text,
-                        assignedTo: _selectedPerson,
+                        assignedTo: _selectedUserId,
                         points: int.tryParse(_pointsController.text) ?? 0,
                         dateDue: Timestamp.fromDate(_selectedDate),
                         done: false);

@@ -1,10 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:wg_app/widgets/my_snackbars.dart';
 import 'package:provider/provider.dart';
-import '../data/constants.dart';
+import '../model/shopping_item.dart';
 import '../providers/household_provider.dart';
-import '../model/shoppingItem.dart';
+import '../widgets/custom_snackbars.dart';
 
 /// {@category Screens}
 /// Ansicht für das Hinzufügen eines neuen Gegenstands bzw. ShoppingItems auf die Einkaufsliste
@@ -42,7 +41,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _pointsController = TextEditingController();
-  String selectedPerson = 'Alle';
+  String? _selectedUserId;
 
   void editPrefillValues() {
     _titleController.text = widget.title!;
@@ -50,11 +49,14 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
     _priceController.text = widget.price!;
     _amountController.text = widget.amount!;
     _pointsController.text = widget.points!;
-    selectedPerson = widget.assignedTo!;
+    _selectedUserId = widget.assignedTo!;
   }
 
   @override
   void initState() {
+    final householdProvider =
+      Provider.of<HouseholdProvider>(context, listen: false);
+    _selectedUserId = householdProvider.auth.currentUser?.uid;
     if (widget.edit) {editPrefillValues();}
     return super.initState();
   }
@@ -134,8 +136,8 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
               ),
             ),
             const SizedBox(height: 10.0),
-            FutureBuilder<List<String>>(
-              future: householdProvider.getHouseholdMembersNames(householdProvider.household.id),
+            FutureBuilder<Map<String, Map<String, dynamic>>>(
+              future: householdProvider.getHouseholdMembersData(householdProvider.household.id),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const CircularProgressIndicator(); // Zeige einen Ladekreis während des Ladens an
@@ -145,18 +147,17 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                   return const Text('Keine Mitglieder gefunden');
                 } else {
                   final members = snapshot.data;
-                  members!.add("Alle");
                   return DropdownButtonFormField<String>(
-                    value: selectedPerson,
-                    items: members.map((String person) {
+                    value: _selectedUserId,
+                    items: members?.keys.map((String userId) {
                       return DropdownMenuItem<String>(
-                        value: person,
-                        child: Text(person),
+                        value: userId,
+                        child: Text(members[userId]?['username']),
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
                       setState(() {
-                        selectedPerson = newValue ?? 'Alle'; // Aktualisiere die ausgewählte Person
+                        _selectedUserId = newValue ?? householdProvider.auth.currentUser!.uid; // Aktualisiere die ausgewählte Person
                       });
                     },
                     decoration: InputDecoration(
@@ -189,7 +190,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                           description: _descriptionController.text,
                           amount: int.tryParse(_amountController.text) ?? 0,
                           price: double.tryParse(_priceController.text.replaceAll(',','.')) ?? 0.0,
-                          assignedTo: selectedPerson,
+                          assignedTo: _selectedUserId,
                           points: int.tryParse(_pointsController.text) ?? 0,
                           done: false);
                       if(widget.edit) {

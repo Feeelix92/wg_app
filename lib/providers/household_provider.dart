@@ -676,11 +676,9 @@ class HouseholdProvider extends ChangeNotifier {
   // Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt
   Future<bool> removeDoneShoppingItems() async {
     try {
-      final docRefHousehold = await db.collection("households").doc(
-          _household.id.toString()).get();
+      final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
 
-      final householdDetailData = docRefHousehold.data() as Map<String,
-          dynamic>;
+      final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
       final List<Map<String, dynamic>> shoppingList = householdDetailData['shoppingList']?.cast<Map<String, dynamic>>() ?? [];
       final Map<String, dynamic> scoreboard = householdDetailData['scoreboard'] ?? [];
@@ -691,12 +689,14 @@ class HouseholdProvider extends ChangeNotifier {
             score += element['points'] as int;
           }
         }
+        scoreboard[member] = score;
       });
 
       shoppingList.removeWhere((element) => element['done'] == true);
 
       await db.collection("households").doc(_household.id.toString()).update({
         'shoppingList': shoppingList,
+        'scoreboard' : scoreboard,
       });
 
       await updateHouseholdInformation();
@@ -711,8 +711,7 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
   /// Funktion die die Ausgaben eines Haushalts berechnet
-  Future<Map<String, dynamic>> calculateMemberExpenses(
-      String householdId) async {
+  Future<Map<String, dynamic>> calculateMemberExpenses(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households")
           .doc(householdId)
