@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
-      await FirebaseAuth.instance
+      UserCredential userCredential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
@@ -55,7 +55,13 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _isLoading = false;
       });
-      AutoRouter.of(context).replace(const HomeRoute());
+
+      if (userCredential.user!.emailVerified) {
+        AutoRouter.of(context).replace(const HomeRoute());
+      } else {
+        AutoRouter.of(context).replace(const VerifyEmailRoute());
+      }
+
       AutoRouter.of(context).popUntilRoot();
     } on FirebaseAuthException catch (e) {
 
@@ -76,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
       }
     }
   }
+
 
   @override
   void initState() {
