@@ -10,15 +10,20 @@ void main() {
     late HouseholdProvider householdProvider;
     late FakeFirebaseFirestore fakeFirestore;
     late MockFirebaseAuth mockAuth;
+    final mockUser = MockUser(
+      isAnonymous: false,
+      email: 'test@mail.de',
+      displayName: 'Test User',
+    );
 
     setUp(() {
       fakeFirestore = FakeFirebaseFirestore();
-      mockAuth = MockFirebaseAuth(signedIn: true);
+      mockAuth = MockFirebaseAuth(mockUser: mockUser, signedIn: true);
       householdProvider = HouseholdProvider(firestore: fakeFirestore, firebaseAuth: mockAuth);
     });
 
     /// Test für das Erstellen eines Haushalts.
-    test('Erstellen eines Haushalts', () async {
+    test('Test createHousehold', () async {
       // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
       final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
       // Überprüfung, ob das Erstellen erfolgreich war.
@@ -33,7 +38,7 @@ void main() {
     });
 
     /// Test für das Erstellen und Laden eines Haushalts.
-    test('Erstellen und Laden eines Haushalts', () async {
+    test('Test loadHousehold', () async {
       // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
       final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
       // Überprüfung, ob das Erstellen erfolgreich war.
@@ -57,7 +62,7 @@ void main() {
     });
 
     /// Test für das Erstellen und Aktualisieren von Titel und Beschreibung eines Haushalts.
-    test('Erstellen und Aktualisieren von Titel und Beschreibung eines Haushalts', () async {
+    test('Test updateHouseholdTitleAndDescription', () async {
       // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
       final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
       // Überprüfung, ob das Erstellen erfolgreich war.
@@ -83,7 +88,7 @@ void main() {
     });
 
     /// Test für das Erstellen und Löschen eines Haushalts.
-    test('Erstellen und Löschen eines Haushalts', () async {
+    test('Test deleteHousehold', () async {
       // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
       final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
       // Überprüfung, ob das Erstellen erfolgreich war.
@@ -107,7 +112,7 @@ void main() {
     });
 
     /// Test für das Erstellen und Abfragen der Daten von Mitgliedern eines Haushalts.
-    test('Erstellen und Abfragen der Daten von Mitgliedern eines Haushalts', () async {
+    test('Test getHouseholdMembersData', () async {
       // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
       final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
       // Überprüfung, ob das Erstellen erfolgreich war.
@@ -137,7 +142,7 @@ void main() {
     });
 
     /// Test für das Erstellen eines Haushalts und Überprüfung, ob ein bestimmter Benutzer in einem bestimmten Haushalt.
-    test('Erstellen eines Haushalts und Überprüfung, ob ein bestimmter Benutzer in einem bestimmten Haushalt.', () async {
+    test('Test isUserInHousehold', () async {
       // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
       final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
       // Überprüfung, ob das Erstellen erfolgreich war.
@@ -160,22 +165,47 @@ void main() {
       }
     });
 
-    // /// Test für das Abfragen des Username anhand der UUID
-    // test('Abfragen des Username anhand der UUID', () async {
-    //   final username = await householdProvider.getUsernameForUserId(mockAuth.currentUser!.uid);
-    //   expect(username, mockAuth.currentUser!.displayName);
-    // });
-    //
-    // /// Test für das Abfragen der Email anhand der Email
-    // test('Abfragen des Username anhand der Email', () async {
-    //   final email = mockAuth.currentUser?.email;
-    //   if (email != null) {
-    //     final username = await householdProvider.getUsernameFromEmail('test@mail.de');
-    //     expect(username, mockAuth.currentUser!.displayName);
-    //   } else {
-    //     fail('Email sollte nicht null sein.');
-    //   }
-    // });
+    /// Test für das Abfragen des Username anhand der UUID
+    test('Test getUsernameForUserId', () async {
+      // Simulieren einer gültigen Benutzer-UUID und eines gespeicherten Benutzernamens in Firestore.
+      const userId = 'gültigeBenutzerID123';
+      const expectedUsername = 'Gültiger Benutzername';
+
+      // Hinzufügen der Daten in Firestore (Simulieren der Datenbank).
+      fakeFirestore.collection('users').doc(userId).set({'username': expectedUsername});
+
+      // Methodenaufruf mit der simulierten Benutzer-UUID.
+      final username = await householdProvider.getUsernameForUserId(userId);
+
+      // Überprüfung, ob die Methode den erwarteten Benutzernamen zurückgibt.
+      expect(username, expectedUsername);
+
+      // Test, wnen die Benutzer-ID nicht vorhanden ist.
+      const nonExistentUserId = 'ungültigeBenutzerID456';
+      final nonExistentUsername = await householdProvider.getUsernameForUserId(nonExistentUserId);
+      expect(nonExistentUsername, isNull); // Benutzer sollte nicht gefunden werden.
+    });
+
+    /// Test für das Abfragen der Email anhand der Email
+    test('Test getUsernameFromEmail', () async {
+      // Simulieren einer gültigen E-Mail-Adresse und eines Benutzernamen in Firestore.
+      const userEmail = 'test@mail.de';
+      const expectedUsername = 'Gültiger Benutzername';
+
+      // Hinzufügen der Daten in Firestore (Simulieren der Datenbank).
+      fakeFirestore.collection('users').add({'email': userEmail, 'username': expectedUsername});
+
+      // Methodenaufruf getUsernameFromEmail.
+      final username = await householdProvider.getUsernameFromEmail(userEmail);
+
+      // Überprüfung, ob die Methode den erwarteten Benutzernamen zurückgibt.
+      expect(username, expectedUsername);
+
+      // Test, ob die E-Mail nicht vorhanden ist.
+      const nonExistentUserEmail = 'nichtvorhanden@mail.de';
+      final nonExistentUsername = await householdProvider.getUsernameFromEmail(nonExistentUserEmail);
+      expect(nonExistentUsername, isNull); // E-Mail-Adresse sollte nicht gefunden werden.
+    });
 
    //  /// Test für das Hinzufügen eines Mitglieds zu einem Haushalt.
    // test('Hinzufügen eines Mitglieds zu einem Haushalt', () async {
