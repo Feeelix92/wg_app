@@ -63,7 +63,7 @@ class _RankingScreenState extends State<RankingScreen> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 16.0),
-                    child: FutureBuilder<Map<String, int>>(
+                    child: FutureBuilder<Map<String, dynamic>>(
                       future: householdProvider
                           .getMemberPointsOverview(widget.householdId),
                       builder: (context, snapshot) {
@@ -80,10 +80,9 @@ class _RankingScreenState extends State<RankingScreen> {
                         } else {
                           /// memberPointsOverview erhält die Daten für das Balkendiagramm aus dem Snapshot
                           var memberPointsOverview = snapshot.data!;
-
                           /// dataList enthält die Daten für das Balkendiagramm
                           var dataList = memberPointsOverview.entries.map((entry) {
-                            return _BarData(entry.key, entry.value.toDouble());
+                            return _BarData(entry.value['username'], entry.value['points'].toDouble());
                           }).toList();
 
                           /// Bestimmen der maximalen Y-Achsen-Höhe bzw. Beschriftung
@@ -91,11 +90,11 @@ class _RankingScreenState extends State<RankingScreen> {
                           /// Wenn der höchste Wert kleiner oder gleich 10 ist, wird der Wert um 20 erhöht und als Höhe der Y-Achse verwendet
                           /// Wenn der höchste Wert kleiner oder gleich 20 ist, wird der Wert um 10 erhöht und als Höhe der Y-Achse verwendet
                           /// Ansonsten wird der höchste Wert als Höhe für die Y-Achse verwendet
-                          double maxY;
-                          if (memberPointsOverview.values.first <= 10){
+                          double maxY = 20;
+                          if (memberPointsOverview.entries.map((entry) => entry.value['points']).first <= 10){
                             maxY = (memberPointsOverview.values.first + 20).toDouble();
-                          } else if(memberPointsOverview.values.first <= 20){
-                            maxY = (memberPointsOverview.values.first + 10).toDouble();
+                          } else if(memberPointsOverview.entries.map((entry) => entry.value['points']).first <= 20){
+                            maxY = (memberPointsOverview.entries.map((entry) => entry.value['points']).first + 10).toDouble();
                           } else{
                             maxY = memberPointsOverview.values.first.toDouble();
                           }

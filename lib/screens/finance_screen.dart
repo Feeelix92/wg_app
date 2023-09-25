@@ -121,7 +121,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
         color: Colors.white,
         shadows: shadows,
       ),
-      badgeWidget: buildMemberCircle(personName, 50.0, 0.5),
+      badgeWidget: buildMemberCircle(personName, 50.0, 0.2),
       borderSide: const BorderSide(color: Colors.grey, width: 1),
       badgePositionPercentageOffset: .99,
     );

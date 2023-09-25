@@ -721,52 +721,6 @@ class HouseholdProvider extends ChangeNotifier {
     return false;
   }
 
-  /// Funktion die die Ausgaben eines Haushalts berechnet
-  Future<Map<String, dynamic>> calculateMemberExpenses(String householdId) async {
-    try {
-      final docRefHousehold = await db.collection("households").doc(householdId).get();
-
-      if (docRefHousehold.exists) {
-        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
-        final memberIds = householdDetailData['members'].cast<String>();
-        final memberExpenses = householdDetailData['expenses'] as Map<String, dynamic>;
-
-        double totalExpenses = 0.0;
-        double percentageOfTotal = 0.0;
-
-        /// Berechnung der Gesamtausgaben
-        for (final memberId in memberIds){
-          totalExpenses += memberExpenses[memberId];
-        }
-
-        /// Iteration für alle Mitglieder
-        for (final memberId in memberIds) {
-
-          /// Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
-          if (totalExpenses != 0.0) {
-            percentageOfTotal = (memberExpenses[memberId] / totalExpenses) * 100;
-          }
-
-          final username = await getUsernameForUserId(memberId);
-          memberExpenses[memberId] = {
-            'username': username,
-            'expense': memberExpenses[memberId],
-            'percentageOfTotal': percentageOfTotal,
-          };
-        }
-        return memberExpenses;
-      }
-
-      return {};
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return {};
-    }
-  }
-
-
   /// Funktion die ein TaskItem zu einem Haushalt hinzufügt
   Future<bool> addTaskItem(TaskItem item) async {
     try {
@@ -882,20 +836,73 @@ class HouseholdProvider extends ChangeNotifier {
     return false;
   }
 
-  /// Funktion die die Punkte der Mitglieder eines Haushalts berechnet
-  Future<Map<String, int>> getMemberPointsOverview(String householdId) async {
+  /// Funktion die die Ausgaben eines Haushalts berechnet
+  Future<Map<String, dynamic>> calculateMemberExpenses(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(householdId).get();
 
       if (docRefHousehold.exists) {
         final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
-        final scoreboard = householdDetailData['scoreboard'] as Map<String, int>;
+        final memberIds = householdDetailData['members'].cast<String>();
+        final memberExpenses = householdDetailData['expenses'] as Map<String, dynamic>;
+
+        double totalExpenses = 0.0;
+        double percentageOfTotal = 0.0;
+
+        /// Berechnung der Gesamtausgaben
+        for (final memberId in memberIds){
+          totalExpenses += memberExpenses[memberId];
+        }
+
+        /// Iteration für alle Mitglieder
+        for (final memberId in memberIds) {
+
+          /// Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
+          if (totalExpenses != 0.0) {
+            percentageOfTotal = (memberExpenses[memberId] / totalExpenses) * 100;
+          }
+
+          final username = await getUsernameForUserId(memberId);
+          memberExpenses[memberId] = {
+            'username': username,
+            'expense': memberExpenses[memberId].toDouble(),
+            'percentageOfTotal': percentageOfTotal,
+          };
+        }
+        return memberExpenses;
+      }
+
+      return {};
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return {};
+    }
+  }
+
+  /// Funktion die die Punkte der Mitglieder eines Haushalts berechnet
+  Future<Map<String, dynamic>> getMemberPointsOverview(String householdId) async {
+    try {
+      final docRefHousehold = await db.collection("households").doc(householdId).get();
+
+      if (docRefHousehold.exists) {
+        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
+        final memberIds = householdDetailData['members'].cast<String>();
+        final scoreboard = householdDetailData['scoreboard'] as Map<String, dynamic>;
 
         /// sortedMemberPoints speichert die Map sortiert nach den Punkten, die Person mit der Höchsten Punktzahl steht an erster Stelle
-        final sortedMemberPoints = Map<String, int>.fromEntries(
+        final sortedMemberPoints = Map<String, dynamic>.fromEntries(
             scoreboard.entries.toList()
               ..sort((a, b) => b.value.compareTo(a.value))
         );
+        for (final memberId in memberIds){
+          final username = await getUsernameForUserId(memberId);
+          sortedMemberPoints[memberId] = {
+            'username': username,
+            'points': sortedMemberPoints[memberId],
+          };
+        }
 
         return sortedMemberPoints;
       }
