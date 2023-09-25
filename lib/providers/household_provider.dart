@@ -225,7 +225,7 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
 
-  /// Funktion gibt eine Liste aller User die nciht in einem bestimtmen Haushalt Mitglied sind zurück
+  /// Funktion gibt eine Liste aller User die nicht in einem bestimtmen Haushalt Mitglied sind zurück
   Future<Map<String, String>> getUsersNotInHousehold(String householdId) async {
     try {
       final usersCollection = db.collection("users");
