@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
 import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+import 'package:wg_app/model/shopping_item.dart';
+import 'package:wg_app/model/task_Item.dart';
 import 'package:wg_app/providers/household_provider.dart';
 
 void main() {
@@ -248,5 +250,81 @@ void main() {
       expect(householdProvider.household.admin == householdProvider.household.members[1], true);
     });
 
+    /// Test für das Hinzufügen und Entfernen eines Elements zur Einkaufsliste.
+    test('Test addShoppingItem', () async {
+      await createHouseholdAndAssert('Haushalt 1', 'Haushalt 1 Beschreibung');
+      final itemId = DateTime.timestamp().toString();
+
+      // überprüfen, ob ein Element hinzugefügt wurde und ob die Rückgabe true ist.
+      final item = ShoppingItem(id: itemId, name: 'Test Item', description: '', amount: 2, price: 2.99, done: false);
+      final added = await householdProvider.addShoppingItem(item);
+
+      // Überprüfen, ob das Hinzufügen erfolgreich war.
+      expect(added, true);
+      expect(item.toMap(), householdProvider.household.shoppingList[0]);
+
+      final removed = await householdProvider.removeShoppingItem(itemId);
+      expect(removed, true);  // überprüfen, ob ein Element entfernt wurde und ob die Rückgabe true ist.
+      expect(householdProvider.household.shoppingList.isEmpty, true); // überprüfen, ob das Element tatsächlich entfernt wurde.
+    });
+
+    /// Test für das Hinzufügen und updaten eines Elements der Einkaufsliste.
+    test('Test updateShoppingItem', () async {
+      await createHouseholdAndAssert('Haushalt 1', 'Haushalt 1 Beschreibung');
+      final itemId = DateTime.timestamp().toString();
+
+      // überprüfen, ob ein Element hinzugefügt wurde und ob die Rückgabe true ist.
+      final item = ShoppingItem(id: itemId, name: 'Test Item', description: '', amount: 2, price: 2.99, done: false);
+      final added = await householdProvider.addShoppingItem(item);
+
+      // Überprüfen, ob das Hinzufügen erfolgreich war.
+      expect(added, true);
+      expect(item.toMap(), householdProvider.household.shoppingList[0]);
+
+      item.name = 'Test Item update';
+      item.description = 'Test Item update';
+      item.amount = 3;
+      item.price = 3.99;
+
+      final updated = await householdProvider.updateShoppingItem(item);
+      expect(updated, true);  // überprüfen, ob das Element aktualisiert wurde und ob die Rückgabe true ist.
+      expect(item.toMap(), householdProvider.household.shoppingList[0]); // überprüfen, ob das Element tatsächlich aktualisiert wurde.
+    });
+
+    /// Test für das Hinzufügen und Entfernen eines Elements zur Aufgabenliste.
+    test('Test addTaskItem', () async {
+      await createHouseholdAndAssert('Haushalt 1', 'Haushalt 1 Beschreibung');
+      final itemId = DateTime.timestamp().toString();
+
+      // überprüfen, ob ein Element hinzugefügt wurde und ob die Rückgabe true ist.
+      final item = TaskItem(id: itemId, name: 'Test Item', description: '', done: false);
+      final added = await householdProvider.addTaskItem(item);
+
+      // Überprüfen, ob das Hinzufügen erfolgreich war.
+      expect(added, true);
+      expect(item.toMap(), householdProvider.household.taskList[0]);
+
+      final removed = await householdProvider.removeTaskItem(itemId);
+      expect(removed, true);  // überprüfen, ob ein Element entfernt wurde und ob die Rückgabe true ist.
+      expect(householdProvider.household.taskList.isEmpty, true); // überprüfen, ob das Element tatsächlich entfernt wurde.
+    });
+
+    /// Test für das Hinzufügen und Entfernen eines Elements zur Aufgabenliste.
+    test('Test updateTaskItem', () async {
+      await createHouseholdAndAssert('Haushalt 1', 'Haushalt 1 Beschreibung');
+      final itemId = DateTime.timestamp().toString();
+
+      // überprüfen, ob ein Element hinzugefügt wurde und ob die Rückgabe true ist.
+      final item = TaskItem(id: itemId, name: 'Test Item', description: '', done: false);
+      final added = await householdProvider.addTaskItem(item);
+
+      // Überprüfen, ob das Hinzufügen erfolgreich war.
+      expect(added, true);
+      expect(item.toMap(), householdProvider.household.taskList[0]);
+
+      final updated = await householdProvider.updateTaskItem(item);
+      expect(updated, true);  // überprüfen, ob das Element aktualisiert wurde und ob die Rückgabe true ist.
+      expect(item.toMap(), householdProvider.household.taskList[0]); // überprüfen, ob das Element tatsächlich aktualisiert wurde.
+    });
   });
 }
