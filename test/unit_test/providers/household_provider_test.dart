@@ -22,35 +22,33 @@ void main() {
       householdProvider = HouseholdProvider(firestore: fakeFirestore, firebaseAuth: mockAuth);
     });
 
-    /// Test für das Erstellen eines Haushalts.
-    test('Test createHousehold', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
+    Future<void> createHouseholdAndAssert(String title, String description) async {
+      final created = await householdProvider.createHousehold(title, description);
+      expect(created, true);
+      expect(householdProvider.household.title, title);
+      expect(householdProvider.household.description, description);
+
       // Überprüfung, ob das Erstellen erfolgreich war.
       if(created) {
         expect(created, true);
         // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
+        expect(householdProvider.household.title, title);
+        expect(householdProvider.household.description, description);
       }else{
         fail("Household konnte nicht erstellt werden");
       }
+    }
+
+    /// Test für das Erstellen eines Haushalts.
+    test('Test createHousehold', () async {
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
     });
 
     /// Test für das Erstellen und Laden eines Haushalts.
     test('Test loadHousehold', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-      // Überprüfung, ob das Erstellen erfolgreich war.
-      if(created) {
-        expect(created, true);
-        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-      }else{
-        fail("Household konnte nicht erstellt werden");
-
-      }
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
       // Schritt 2: Laden des erstellten Haushalts.
       final loaded = await householdProvider.loadHousehold(householdProvider.household.id);
       // Überprüfung, ob das Laden erfolgreich war.
@@ -63,17 +61,8 @@ void main() {
 
     /// Test für das Erstellen und Aktualisieren von Titel und Beschreibung eines Haushalts.
     test('Test updateHouseholdTitleAndDescription', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-      // Überprüfung, ob das Erstellen erfolgreich war.
-      if(created) {
-        expect(created, true);
-        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-      }else{
-        fail("Household konnte nicht erstellt werden");
-      }
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
 
       // Schritt 2: Aktualisierung von Titel und Beschreibung des Haushalts ("Haushalt eins" und "Haushalt eins Beschreibung").
       final updated = await householdProvider.updateHouseholdTitleAndDescription("Haushalt eins", "Haushalt eins Beschreibung");
@@ -89,17 +78,8 @@ void main() {
 
     /// Test für das Erstellen und Löschen eines Haushalts.
     test('Test deleteHousehold', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-      // Überprüfung, ob das Erstellen erfolgreich war.
-      if(created) {
-        expect(created, true);
-        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-      }else{
-        fail("Household konnte nicht erstellt werden");
-      }
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
 
       // Schritt 2: Löschen des Haushalts.
       final deleted = await householdProvider.deleteHousehold(householdProvider.household.id);
@@ -113,17 +93,8 @@ void main() {
 
     /// Test für das Erstellen und Abfragen der Daten von Mitgliedern eines Haushalts.
     test('Test getHouseholdMembersData', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-      // Überprüfung, ob das Erstellen erfolgreich war.
-      if(created) {
-        expect(created, true);
-        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-      }else{
-        fail("Household konnte nicht erstellt werden");
-      }
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
 
       // Schritt 2: Abfragen der Daten von Mitgliedern eines Haushalts.
       final membersData = await householdProvider.getHouseholdMembersData(householdProvider.household.id);
@@ -143,17 +114,8 @@ void main() {
 
     /// Test für das Erstellen eines Haushalts und Überprüfung, ob ein bestimmter Benutzer in einem bestimmten Haushalt.
     test('Test isUserInHousehold', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-      // Überprüfung, ob das Erstellen erfolgreich war.
-      if(created) {
-        expect(created, true);
-        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-      }else{
-        fail("Household konnte nicht erstellt werden");
-      }
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
 
       // Schritt 2: Überprüfung, ob ein bestimmter Benutzer in einem bestimmten Haushalt ist.
       final userInHousehold = await householdProvider.isUserInHousehold(householdProvider.household.id, mockAuth.currentUser!.uid);
@@ -209,17 +171,8 @@ void main() {
 
    /// Test für das Hinzufügen eines Mitglieds zu einem Haushalt.
     test('Test addUserToHousehold', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-      // Überprüfung, ob das Erstellen erfolgreich war.
-      if(created) {
-        expect(created, true);
-        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-      }else{
-        fail("Household konnte nicht erstellt werden");
-      }
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
 
       const userEmail = 'tester@mail.de';
       const expectedUsername = 'Gültiger Benutzername';
@@ -240,17 +193,8 @@ void main() {
 
     /// Test für das Entfernen eines Mitglieds aus einem Haushalt und erneutem Hinzufügen.
     test('Entfernen eines Mitglieds aus einem Haushalt und erneutem Hinzufügen', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-      // Überprüfung, ob das Erstellen erfolgreich war.
-      if(created) {
-        expect(created, true);
-        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-      }else{
-        fail("Household konnte nicht erstellt werden");
-      }
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
 
       // Der aktuelle User wird zuerst entfernt...
       final userRemoved = await householdProvider.removeUserFromHousehold(mockAuth.currentUser!.email!);
@@ -274,17 +218,8 @@ void main() {
 
     /// Test für das Ändern des Admins in einem Haushalt.
     test('Test changeAdmin', () async {
-      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-      // Überprüfung, ob das Erstellen erfolgreich war.
-      if(created) {
-        expect(created, true);
-        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-        expect(householdProvider.household.title, "Haushalt 1");
-        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-      }else{
-        fail("Household konnte nicht erstellt werden");
-      }
+      // Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      await createHouseholdAndAssert("Haushalt 1", "Haushalt 1 Beschreibung");
 
       expect(householdProvider.household.admin == householdProvider.household.members[0], true);
 
