@@ -889,7 +889,6 @@ class HouseholdProvider extends ChangeNotifier {
 
       if (docRefHousehold.exists) {
         final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
-        final members = householdDetailData['members'].cast<String>();
         final scoreboard = householdDetailData['scoreboard'] as Map<String, int>;
 
         /// sortedMemberPoints speichert die Map sortiert nach den Punkten, die Person mit der Höchsten Punktzahl steht an erster Stelle
