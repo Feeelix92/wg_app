@@ -359,8 +359,8 @@ class HouseholdProvider extends ChangeNotifier {
       /// Abrufen der ID (uid) des Benutzers
       final userId = docRefUser.docs.first.id;
       final List<String> members = householdDetailData['members'].cast<String>();
-      final Map<String, num> expenses = householdDetailData['expenses'];
-      final Map<String, num> scoreboard = householdDetailData['scoreboard'];
+      final Map<String, dynamic> expenses = householdDetailData['expenses'];
+      final Map<String, dynamic> scoreboard = householdDetailData['scoreboard'];
 
       /// Überprüfen, ob der Benutzer bereits im Haushalt ist
       if (!members.contains(userId)) {
@@ -403,8 +403,8 @@ class HouseholdProvider extends ChangeNotifier {
       final userId = docRefUser.docs.first.id; // Abrufen der ID (uid) des Benutzers
 
       final List<String> members = householdDetailData['members'].cast<String>();
-      final Map<String, num> expenses = householdDetailData['expenses'];
-      final Map<String, num> scoreboard = householdDetailData['scoreboard'];
+      final Map<String, dynamic> expenses = householdDetailData['expenses'];
+      final Map<String, dynamic> scoreboard = householdDetailData['scoreboard'];
       members.remove(userId);
       expenses.removeWhere((key, value) => key == userId);
       scoreboard.removeWhere((key, value) => key == userId);

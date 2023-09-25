@@ -8,8 +8,8 @@ class Household {
   List<String> members; // Liste der Personen, die dem Haushalt angehören
   List<dynamic> shoppingList; // Liste von Einkäufen
   List<dynamic> taskList; // Liste von Aufgaben
-  Map<String, num> expenses; // Map mit allen Mitgliedern des Haushalts und ihren gesammelten Ausgaben
-  Map<String, num> scoreboard; // Map mit allen Mitgliedern des Haushalts und ihren gesammelten Punkten
+  Map<String, dynamic> expenses; // Map mit allen Mitgliedern des Haushalts und ihren gesammelten Ausgaben
+  Map<String, dynamic> scoreboard; // Map mit allen Mitgliedern des Haushalts und ihren gesammelten Punkten
 
   /// Konstruktor
   Household({
@@ -20,8 +20,8 @@ class Household {
     required this.members,
     List<dynamic>? shoppingList, // Standardmäßig leere Listen
     List<dynamic>? taskList, // Standardmäßig leere Listen
-    Map<String, num>? expenses,
-    Map<String, num>? scoreboard,
+    Map<String, dynamic>? expenses,
+    Map<String, dynamic>? scoreboard,
   }) : shoppingList = shoppingList ?? [],
         taskList = taskList ?? [],
         expenses = expenses ?? {},
