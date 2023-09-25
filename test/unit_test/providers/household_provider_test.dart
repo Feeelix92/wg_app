@@ -207,40 +207,110 @@ void main() {
       expect(nonExistentUsername, isNull); // E-Mail-Adresse sollte nicht gefunden werden.
     });
 
-   //  /// Test für das Hinzufügen eines Mitglieds zu einem Haushalt.
-   // test('Hinzufügen eines Mitglieds zu einem Haushalt', () async {
-   //   // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
-   //   final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
-   //   // Überprüfung, ob das Erstellen erfolgreich war.
-   //   if(created) {
-   //     expect(created, true);
-   //     // Und, ob der erstellte Haushalt die erwarteten Werte hat.
-   //     expect(householdProvider.household.title, "Haushalt 1");
-   //     expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
-   //   }else{
-   //     if (kDebugMode) {
-   //       print("Household konnte nicht erstellt werden");
-   //     }
-   //   }
-   //   // Test erfolgt mit dem aktuellen Benutzer. Da dieser bereits in einem Haushalt ist, sollte das Hinzufügen fehlschlagen.
-   //    final userAdded = await householdProvider.addUserToHousehold(mockAuth.currentUser!.email);
-   //    if(userAdded) {
-   //      expect(userAdded, false);
-   //    }
-   //  });
+   /// Test für das Hinzufügen eines Mitglieds zu einem Haushalt.
+    test('Test addUserToHousehold', () async {
+      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
+      // Überprüfung, ob das Erstellen erfolgreich war.
+      if(created) {
+        expect(created, true);
+        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
+        expect(householdProvider.household.title, "Haushalt 1");
+        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
+      }else{
+        fail("Household konnte nicht erstellt werden");
+      }
 
-    // /// Test für das Entfernen eines Mitglieds aus einem Haushalt und erneutem Hinzufügen.
-    // test('Entfernen eines Mitglieds aus einem Haushalt und erneutem Hinzufügen', () async {
-    //   // Der aktuelle User wird zuerst entfernt...
-    //   final userRemoved = await householdProvider.removeUserFromHousehold(mockAuth.currentUser!.email!);
-    //   if(userRemoved) {
-    //     expect(userRemoved, true);
-    //     // ...und dann wieder hinzugefügt.
-    //     final userAdded = await householdProvider.addUserToHousehold(mockAuth.currentUser!.email!);
-    //     if(userAdded) {
-    //       expect(userAdded, true);
-    //     }
-    //   }
-    // });
+      const userEmail = 'tester@mail.de';
+      const expectedUsername = 'Gültiger Benutzername';
+
+      // Hinzufügen der Daten in Firestore (Simulieren der Datenbank).
+      fakeFirestore.collection('users').add({'email': userEmail, 'username': expectedUsername});
+
+      // Hinzufügen des Benutzers zum Haushalt.
+      final added = await householdProvider.addUserToHousehold(userEmail);
+
+      // Überprüfen, ob der Benutzer erfolgreich hinzugefügt wurde.
+      expect(added, true);
+
+      // Testen, ob der Benutzer bereits im Haushalt ist.
+      final alreadyAdded = await householdProvider.addUserToHousehold(userEmail);
+      expect(alreadyAdded, false); // Benutzer sollte nicht erneut hinzugefügt werden.
+    });
+
+    /// Test für das Entfernen eines Mitglieds aus einem Haushalt und erneutem Hinzufügen.
+    test('Entfernen eines Mitglieds aus einem Haushalt und erneutem Hinzufügen', () async {
+      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
+      // Überprüfung, ob das Erstellen erfolgreich war.
+      if(created) {
+        expect(created, true);
+        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
+        expect(householdProvider.household.title, "Haushalt 1");
+        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
+      }else{
+        fail("Household konnte nicht erstellt werden");
+      }
+
+      // Der aktuelle User wird zuerst entfernt...
+      final userRemoved = await householdProvider.removeUserFromHousehold(mockAuth.currentUser!.email!);
+      if(userRemoved) {
+        expect(userRemoved, true);
+        // ...und dann wieder hinzugefügt.
+
+        const userEmail = 'tester@mail.de';
+        const expectedUsername = 'Gültiger Benutzername';
+
+        // Hinzufügen der Daten in Firestore (Simulieren der Datenbank).
+        fakeFirestore.collection('users').add({'email': userEmail, 'username': expectedUsername});
+
+        // Hinzufügen des Benutzers zum Haushalt.
+        final added = await householdProvider.addUserToHousehold(userEmail);
+
+        // Überprüfen, ob der Benutzer erfolgreich hinzugefügt wurde.
+        expect(added, true);
+      }
+    });
+
+    test('Test changeAdmin', () async {
+      // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
+      final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
+      // Überprüfung, ob das Erstellen erfolgreich war.
+      if(created) {
+        expect(created, true);
+        // Und, ob der erstellte Haushalt die erwarteten Werte hat.
+        expect(householdProvider.household.title, "Haushalt 1");
+        expect(householdProvider.household.description, "Haushalt 1 Beschreibung");
+      }else{
+        fail("Household konnte nicht erstellt werden");
+      }
+
+      expect(householdProvider.household.admin == householdProvider.household.members[0], true);
+
+      const userEmail = 'tester@mail.de';
+      const expectedUsername = 'Gültiger Benutzername';
+
+      // Hinzufügen der Daten in Firestore (Simulieren der Datenbank).
+      fakeFirestore.collection('users').add({'email': userEmail, 'username': expectedUsername});
+
+      // Hinzufügen des Benutzers zum Haushalt.
+      final added = await householdProvider.addUserToHousehold(userEmail);
+
+      // Überprüfen, ob der Benutzer erfolgreich hinzugefügt wurde.
+      expect(added, true);
+
+      // Ändern des Administrators des Haushalts.
+      final changed = await householdProvider.changeAdmin(userEmail);
+
+      // Überprüfen, ob die Änderung erfolgreich war.
+      expect(changed, true);
+
+      // Überprüfen, ob der Benutzer tatsächlich der neue Administrator ist.
+      // final household = await householdProvider.loadHousehold(householdProvider.household.id);
+
+      expect(householdProvider.household.admin == householdProvider.household.members[0], false);
+      expect(householdProvider.household.admin == householdProvider.household.members[1], true);
+    });
+
   });
 }
