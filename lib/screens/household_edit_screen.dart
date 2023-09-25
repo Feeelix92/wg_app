@@ -82,7 +82,7 @@ class _HouseHoldEditScreenState extends State<HouseHoldEditScreen> {
                     onPressed: () async {
                       final title = _houseHoldNameController.text;
                       final description = _houseHoldDescriptionController.text;
-                      final success = await houseHoldProvider.updateHouseholdInfo(title, description);
+                      final success = await houseHoldProvider.updateHouseholdTitleAndDescription(title, description);
                       final loadAllAccessibleHouseholds = await houseHoldProvider.loadAllAccessibleHouseholds();
                       if (success && loadAllAccessibleHouseholds) {
                         // Die Daten wurden erfolgreich aktualisiert

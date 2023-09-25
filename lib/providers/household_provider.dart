@@ -9,12 +9,12 @@ import '../model/task_Item.dart';
 /// {@category Providers}
 /// Die HouseholdProvider Klasse, verwaltet alle Daten die zum Haushalt gehören und enthält einige Methoden für das Arbeiten mit diesen Daten
 class HouseholdProvider extends ChangeNotifier {
+  final FirebaseFirestore db;
+  final FirebaseAuth auth;
 
-  /// Instanzen der Datenbank
-  final FirebaseFirestore db = FirebaseFirestore.instance;
-
-  /// Instanz der Authentifizierung
-  final FirebaseAuth auth = FirebaseAuth.instance;
+  HouseholdProvider({FirebaseFirestore? firestore, FirebaseAuth? firebaseAuth})
+      : db = firestore ?? FirebaseFirestore.instance,
+        auth = firebaseAuth ?? FirebaseAuth.instance;
 
   /// Haushalt der aktuell ausgewählt ist
   late Household _household;
@@ -95,8 +95,8 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  /// Die Methode updateHouseholdInfo aktualisiert die Daten eines Haushalts in der Datenbank
-  Future<bool> updateHouseholdInfo(String title, String description) async {
+  /// Die Methode updateHouseholdTitleAndDescription aktualisiert den Titel und die Beschreibung eines Haushalts in der Datenbank
+  Future<bool> updateHouseholdTitleAndDescription(String title, String description) async {
     try {
       await db.collection("households").doc(_household.id).update({
         'title': title,
@@ -225,7 +225,7 @@ class HouseholdProvider extends ChangeNotifier {
   }
 
 
-  /// Funktion gibt eine Liste aller User die nciht in einem bestimtmen Haushalt Mitglied sind zurück
+  /// Funktion gibt eine Liste aller User die nicht in einem bestimtmen Haushalt Mitglied sind zurück
   Future<Map<String, String>> getUsersNotInHousehold(String householdId) async {
     try {
       final usersCollection = db.collection("users");
@@ -428,7 +428,6 @@ class HouseholdProvider extends ChangeNotifier {
 
   /// Funktion die alle Haushalte eines Users lädt
   Future<bool> loadAllAccessibleHouseholds() async {
-    print("loadAllAccessibleHouseholds from Firebase");
     try {
       final querySnapshot = await db.collection("households").where("members", arrayContains: auth.currentUser!.uid).get();
       final households = <Household>[];
@@ -462,7 +461,6 @@ class HouseholdProvider extends ChangeNotifier {
 
   /// Funktion die einen Haushalt anhand der ID lädt
   Future<bool> loadHousehold(String id) async {
-    print("loadHousehold from Firebase");
     try {
       final docRefHousehold = await db.collection("households").doc(id).get();
       final householdDetailData = docRefHousehold.data();
@@ -723,75 +721,6 @@ class HouseholdProvider extends ChangeNotifier {
     return false;
   }
 
-  /// Funktion die die Ausgaben eines Haushalts berechnet
-  Future<Map<String, dynamic>> calculateMemberExpenses(String householdId) async {
-    try {
-      final docRefHousehold = await db.collection("households").doc(householdId).get();
-
-      if (docRefHousehold.exists) {
-        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
-        final memberIds = householdDetailData['members'].cast<String>();
-        final shoppingList = householdDetailData['shoppingList'].cast<Map<String, dynamic>>();
-
-        final memberExpenses = <String, Map<String, dynamic>>{};
-        double totalExpenses = 0.0;
-
-        /// Berechnung der Gesamtsumme aller  Ausgaben
-        /// Iteration für alle ShoppingItems
-        for (final shoppingItem in shoppingList) {
-          final price = shoppingItem['price'] as double;
-          final done = shoppingItem['done'] as bool;
-
-          /// Wenn das ShoppingItem erledigt ist, dann wird der Preis zu den Gesamtausgaben hinzugefügt
-          if (done) {
-            totalExpenses += price;
-          }
-        }
-
-        /// Berechnung der Ausgaben für jedes Mitglied
-        /// Iteration für alle Mitglieder
-        for (final memberId in memberIds) {
-          double memberExpense = 0.0;
-
-          /// Iteration für alle ShoppingItems
-          for (final shoppingItem in shoppingList) {
-            final doneBy = shoppingItem['doneBy'] as String?;
-            final price = shoppingItem['price'] as double;
-            final done = shoppingItem['done'] as bool;
-
-            /// Wenn das ShoppingItem erledigt ist und das Mitglied es erledigt hat, dann wird der Preis zu den Ausgaben des Mitglieds hinzugefügt
-            if (done && doneBy == memberId) {
-              memberExpense += price;
-            }
-          }
-
-          /// Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
-          double percentageOfTotal = 0.0;
-          if (totalExpenses != 0.0) {
-            percentageOfTotal = (memberExpense / totalExpenses) * 100;
-          }
-
-          final username = await getUsernameForUserId(memberId);
-          memberExpenses[memberId] = {
-            'username': username,
-            'expense': memberExpense,
-            'percentageOfTotal': percentageOfTotal,
-          };
-        }
-
-        return memberExpenses;
-      }
-
-      return {};
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      return {};
-    }
-  }
-
-
   /// Funktion die ein TaskItem zu einem Haushalt hinzufügt
   Future<bool> addTaskItem(TaskItem item) async {
     try {
@@ -907,47 +836,73 @@ class HouseholdProvider extends ChangeNotifier {
     return false;
   }
 
-  /// Funktion die die Punkte der Mitglieder eines Haushalts berechnet
-  Future<Map<String, int>> getMemberPointsOverview(String householdId) async {
+  /// Funktion die die Ausgaben eines Haushalts berechnet
+  Future<Map<String, dynamic>> calculateMemberExpenses(String householdId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(householdId).get();
 
       if (docRefHousehold.exists) {
         final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
-        final members = householdDetailData['members'].cast<String>();
+        final memberIds = householdDetailData['members'].cast<String>();
+        final memberExpenses = householdDetailData['expenses'] as Map<String, dynamic>;
 
-        final memberPoints = <String, int>{};
+        double totalExpenses = 0.0;
+        double percentageOfTotal = 0.0;
 
-        /// Iteration für alle Mitglieder
-        for (final memberUserId in members) {
-          final username = await getUsernameForUserId(memberUserId);
-          if (username != null) {
-            int points = 0;
-
-            /// Iteration für alle ShoppingItems und TaskItems
-            final items = [
-              ...householdDetailData['shoppingList'],
-              ...householdDetailData['taskList']
-            ];
-            for (final itemData in items) {
-              final doneBy = itemData['doneBy'] as String?;
-              final isDone = itemData['done'] as bool? ?? false;
-              final pointsEarned = itemData['points'] as int? ?? 0;
-
-              if (doneBy == memberUserId && isDone) {
-                points += pointsEarned;
-              }
-            }
-            /// Punkte für das aktuelle Mitglied im Haushalt speichern
-            memberPoints[username] = points;
-          }
+        /// Berechnung der Gesamtausgaben
+        for (final memberId in memberIds){
+          totalExpenses += memberExpenses[memberId];
         }
 
+        /// Iteration für alle Mitglieder
+        for (final memberId in memberIds) {
+
+          /// Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
+          if (totalExpenses != 0.0) {
+            percentageOfTotal = (memberExpenses[memberId] / totalExpenses) * 100;
+          }
+
+          final username = await getUsernameForUserId(memberId);
+          memberExpenses[memberId] = {
+            'username': username,
+            'expense': memberExpenses[memberId].toDouble(),
+            'percentageOfTotal': percentageOfTotal,
+          };
+        }
+        return memberExpenses;
+      }
+
+      return {};
+    } catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+      return {};
+    }
+  }
+
+  /// Funktion die die Punkte der Mitglieder eines Haushalts berechnet
+  Future<Map<String, dynamic>> getMemberPointsOverview(String householdId) async {
+    try {
+      final docRefHousehold = await db.collection("households").doc(householdId).get();
+
+      if (docRefHousehold.exists) {
+        final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
+        final memberIds = householdDetailData['members'].cast<String>();
+        final scoreboard = householdDetailData['scoreboard'] as Map<String, dynamic>;
+
         /// sortedMemberPoints speichert die Map sortiert nach den Punkten, die Person mit der Höchsten Punktzahl steht an erster Stelle
-        final sortedMemberPoints = Map<String, int>.fromEntries(
-            memberPoints.entries.toList()
+        final sortedMemberPoints = Map<String, dynamic>.fromEntries(
+            scoreboard.entries.toList()
               ..sort((a, b) => b.value.compareTo(a.value))
         );
+        for (final memberId in memberIds){
+          final username = await getUsernameForUserId(memberId);
+          sortedMemberPoints[memberId] = {
+            'username': username,
+            'points': sortedMemberPoints[memberId],
+          };
+        }
 
         return sortedMemberPoints;
       }
