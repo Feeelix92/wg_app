@@ -56,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
 
+      /// Proof if email is verified or not and navigate to the right screen
       if (userCredential.user!.emailVerified) {
         AutoRouter.of(context).replace(const HomeRoute());
       } else {
