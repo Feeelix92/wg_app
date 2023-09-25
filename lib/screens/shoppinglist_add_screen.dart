@@ -199,8 +199,8 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                         householdProvider.addShoppingItem(item);
                       }
                       householdProvider.loadHousehold(widget.householdId);
-                      AutoRouter.of(context).pop();
                     }
+                    AutoRouter.of(context).pop();
                   },
                   child: const Text('Hinzufügen'),
                 ),

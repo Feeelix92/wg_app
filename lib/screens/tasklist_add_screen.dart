@@ -200,8 +200,8 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
                       householdProvider.addTaskItem(task);
                     }
                     householdProvider.loadHousehold(widget.householdId);
-                    AutoRouter.of(context).pop();
                   }
+                  AutoRouter.of(context).pop();
                 },
                 child: const Text('Hinzufügen'),
               ),
