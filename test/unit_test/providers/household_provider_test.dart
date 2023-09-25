@@ -272,6 +272,7 @@ void main() {
       }
     });
 
+    /// Test für das Ändern des Admins in einem Haushalt.
     test('Test changeAdmin', () async {
       // Schritt 1: Erstellen eines Haushalts ("Haushalt 1") mit einer Beschreibung ("Haushalt 1 Beschreibung").
       final created = await householdProvider.createHousehold("Haushalt 1", "Haushalt 1 Beschreibung");
