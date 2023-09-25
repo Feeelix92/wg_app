@@ -186,7 +186,7 @@ void main() {
       expect(nonExistentUsername, isNull); // Benutzer sollte nicht gefunden werden.
     });
 
-    /// Test für das Abfragen der Email anhand der Email
+    /// Test für das Abfragen des Username anhand der Email
     test('Test getUsernameFromEmail', () async {
       // Simulieren einer gültigen E-Mail-Adresse und eines Benutzernamen in Firestore.
       const userEmail = 'test@mail.de';
