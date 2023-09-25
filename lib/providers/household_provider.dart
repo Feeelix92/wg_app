@@ -16,12 +16,6 @@ class HouseholdProvider extends ChangeNotifier {
       : db = firestore ?? FirebaseFirestore.instance,
         auth = firebaseAuth ?? FirebaseAuth.instance;
 
-  // /// Instanzen der Datenbank
-  // final FirebaseFirestore db = FirebaseFirestore.instance;
-  //
-  // /// Instanz der Authentifizierung
-  // final FirebaseAuth auth = FirebaseAuth.instance;
-
   /// Haushalt der aktuell ausgewählt ist
   late Household _household;
   Household get household => _household;
@@ -97,8 +91,8 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  /// Die Methode updateHouseholdInfo aktualisiert die Daten eines Haushalts in der Datenbank
-  Future<bool> updateHouseholdInfo(String title, String description) async {
+  /// Die Methode updateHouseholdTitleAndDescription aktualisiert den Titel und die Beschreibung eines Haushalts in der Datenbank
+  Future<bool> updateHouseholdTitleAndDescription(String title, String description) async {
     try {
       await db.collection("households").doc(_household.id).update({
         'title': title,
@@ -330,32 +324,6 @@ class HouseholdProvider extends ChangeNotifier {
       return null;
     }
   }
-
-  /// Funktion die die Email mithilfe des Usernamen herausfindet
-  Future<String?> getEmailFromUsername(String username) async {
-    try {
-      final usersCollection = db.collection("users");
-      final querySnapshot = await usersCollection.where(
-          'username', isEqualTo: username).get();
-
-      /// Überprüfen ob der Username existiert
-      if (querySnapshot.docs.isNotEmpty) {
-        final userData = querySnapshot.docs.first.data();
-        final email = userData['email'] as String?;
-        return email;
-      } else {
-        /// Wenn der Username nicht gefunden wurde.
-        return null;
-      }
-    } catch (e) {
-      if (kDebugMode) {
-        print(e);
-      }
-      /// Wenn ein Fehler auftritt.
-      return null;
-    }
-  }
-
 
   /// Suche nach User in der Datenbank anhand der Email und füge ihn dem Haushalt hinzu
   Future<bool> addUserToHousehold(String email) async {
