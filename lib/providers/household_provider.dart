@@ -601,21 +601,24 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein ShoppingItem in einem Haushalt updatet
-  Future<bool> toggleShoppingItemDoneStatus(String itemId, String userName) async {
+  /// Funktion die das 'erledigt' Feld eines ShoppingItems im Haushalt umschaltet
+  Future<bool> toggleShoppingItemDoneStatus(String itemId, String userId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
 
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
       final List<Map<String, dynamic>> shoppingList = householdDetailData['shoppingList']?.cast<Map<String, dynamic>>() ?? [];
+
+      /// Entfernt das Item, um es im Anschluss zu updaten und wieder hinzuzufügen
       Map<String, dynamic> itemToUpdate = shoppingList.firstWhere((element) => element['id'] == itemId);
       shoppingList.removeWhere((element) => element['id'] == itemId);
       itemToUpdate['done'] = !itemToUpdate['done'];
-      //Fertigstellungs-Timestamp Updaten und ausführenden User setzen
+
+      /// Fertigstellungs-Timestamp Updaten und ausführenden User setzen
       if (itemToUpdate['done']) {
         itemToUpdate['doneOn'] = DateTime.now().toString();
-        itemToUpdate['doneBy'] = userName;
+        itemToUpdate['doneBy'] = userId;
       } else if (!itemToUpdate['done']) {
         itemToUpdate['doneOn'] = null;
         itemToUpdate['doneBy'] = null;
@@ -637,21 +640,24 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein ShoppingItem in einem Haushalt updatet
-  Future<bool> toggleTaskItemDoneStatus(String itemId, String userName) async {
+  /// Funktion die das 'erledigt' Feld eines TaskItems im Haushalt umschaltet
+  Future<bool> toggleTaskItemDoneStatus(String itemId, String userId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
 
       final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
       final List<Map<String, dynamic>> taskList = householdDetailData['taskList']?.cast<Map<String, dynamic>>() ?? [];
+
+      /// Entfernt das Item, um es im Anschluss zu updaten und wieder hinzuzufügen
       Map<String, dynamic> taskToUpdate = taskList.firstWhere((element) => element['id'] == itemId);
       taskList.removeWhere((element) => element['id'] == itemId);
       taskToUpdate['done'] = !taskToUpdate['done'];
-      //Fertigstellungs-Timestamp Updaten
+
+      /// Fertigstellungs-Timestamp Updaten und ausführenden User setzen
       if (taskToUpdate['done']) {
         taskToUpdate['doneOn'] = DateTime.now().toString();
-        taskToUpdate['doneBy'] = userName;
+        taskToUpdate['doneBy'] = userId;
       } else if (!taskToUpdate['done']) {
         taskToUpdate['doneOn'] = null;
         taskToUpdate['doneBy'] = null;
@@ -673,7 +679,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt
+  /// Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt und ihre/n Punkte/Preis auf das Konto der Person legt, die das Item als erledigt markiert hat.
   Future<bool> removeDoneShoppingItems() async {
     try {
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
@@ -682,7 +688,9 @@ class HouseholdProvider extends ChangeNotifier {
 
       final List<Map<String, dynamic>> shoppingList = householdDetailData['shoppingList']?.cast<Map<String, dynamic>>() ?? [];
       final Map<String, dynamic> scoreboard = householdDetailData['scoreboard'] ?? [];
+      final Map<String, dynamic> expenses = householdDetailData['expenses'] ?? [];
 
+      /// Erhöht Scoreboard Eintrag des Mitglieds um die Punkte des Items
       scoreboard.forEach((member, score) {
         for (var element in shoppingList) {
           if (element['done'] && element['doneBy'] == member) {
@@ -692,11 +700,23 @@ class HouseholdProvider extends ChangeNotifier {
         scoreboard[member] = score;
       });
 
+      /// Erhöht Ausgaben Kontostand des Mitglieds um den Preis des Items
+      expenses.forEach((member, balance) {
+        for (var element in shoppingList) {
+          if (element['done'] && element['doneBy'] == member) {
+            balance += element['price'] as double;
+          }
+        }
+        expenses[member] = balance;
+      });
+
+      ///Entfernt das erledigte Item nach dem Auslesen der Punkte/des Preises
       shoppingList.removeWhere((element) => element['done'] == true);
 
       await db.collection("households").doc(_household.id.toString()).update({
         'shoppingList': shoppingList,
         'scoreboard' : scoreboard,
+        'expenses' : expenses,
       });
 
       await updateHouseholdInformation();
@@ -863,30 +883,32 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  /// Funktion die alle erledigten TaskItems aus einem Haushalt entfernt
+  /// Funktion die alle erledigten TaskItems aus einem Haushalt entfernt und ihre Punkte auf das Konto der Person legt, die das Item als erledigt markiert hat.
   Future<bool> removeDoneTaskItems() async {
     try {
-      final docRefHousehold = await db.collection("households").doc(
-          _household.id.toString()).get();
+      final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
 
-      final householdDetailData = docRefHousehold.data() as Map<String,
-          dynamic>;
+      final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
 
       final List<Map<String, dynamic>> taskList = householdDetailData['taskList']?.cast<Map<String, dynamic>>() ?? [];
       final Map<String, dynamic> scoreboard = householdDetailData['scoreboard'] ?? [];
 
+      /// Erhöht Scoreboard Eintrag des Mitglieds um die Punkte des Items
       scoreboard.forEach((member, score) {
         for (var element in taskList) {
           if (element['done'] && element['doneBy'] == member) {
             score += element['points'] as int;
           }
         }
+        scoreboard[member] = score;
       });
 
+      ///Entfernt das erledigte Item nach dem Auslesen der Punkte
       taskList.removeWhere((element) => element['done'] == true);
 
       await db.collection("households").doc(_household.id.toString()).update({
         'taskList': taskList,
+        'scoreboard' : scoreboard,
       });
 
       await updateHouseholdInformation();
