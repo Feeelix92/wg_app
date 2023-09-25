@@ -729,54 +729,31 @@ class HouseholdProvider extends ChangeNotifier {
       if (docRefHousehold.exists) {
         final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
         final memberIds = householdDetailData['members'].cast<String>();
-        final shoppingList = householdDetailData['shoppingList'].cast<Map<String, dynamic>>();
+        final memberExpenses = householdDetailData['expenses'] as Map<String, dynamic>;
 
-        final memberExpenses = <String, Map<String, dynamic>>{};
         double totalExpenses = 0.0;
+        double percentageOfTotal = 0.0;
 
-        /// Berechnung der Gesamtsumme aller  Ausgaben
-        /// Iteration für alle ShoppingItems
-        for (final shoppingItem in shoppingList) {
-          final price = shoppingItem['price'] as double;
-          final done = shoppingItem['done'] as bool;
-
-          /// Wenn das ShoppingItem erledigt ist, dann wird der Preis zu den Gesamtausgaben hinzugefügt
-          if (done) {
-            totalExpenses += price;
-          }
+        /// Berechnung der Gesamtausgaben
+        for (final memberId in memberIds){
+          totalExpenses += memberExpenses[memberId];
         }
 
-        /// Berechnung der Ausgaben für jedes Mitglied
         /// Iteration für alle Mitglieder
         for (final memberId in memberIds) {
-          double memberExpense = 0.0;
-
-          /// Iteration für alle ShoppingItems
-          for (final shoppingItem in shoppingList) {
-            final doneBy = shoppingItem['doneBy'] as String?;
-            final price = shoppingItem['price'] as double;
-            final done = shoppingItem['done'] as bool;
-
-            /// Wenn das ShoppingItem erledigt ist und das Mitglied es erledigt hat, dann wird der Preis zu den Ausgaben des Mitglieds hinzugefügt
-            if (done && doneBy == memberId) {
-              memberExpense += price;
-            }
-          }
 
           /// Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
-          double percentageOfTotal = 0.0;
           if (totalExpenses != 0.0) {
-            percentageOfTotal = (memberExpense / totalExpenses) * 100;
+            percentageOfTotal = (memberExpenses[memberId] / totalExpenses) * 100;
           }
 
           final username = await getUsernameForUserId(memberId);
           memberExpenses[memberId] = {
             'username': username,
-            'expense': memberExpense,
+            'expense': memberExpenses[memberId],
             'percentageOfTotal': percentageOfTotal,
           };
         }
-
         return memberExpenses;
       }
 
@@ -913,37 +890,11 @@ class HouseholdProvider extends ChangeNotifier {
       if (docRefHousehold.exists) {
         final householdDetailData = docRefHousehold.data() as Map<String, dynamic>;
         final members = householdDetailData['members'].cast<String>();
-
-        final memberPoints = <String, int>{};
-
-        /// Iteration für alle Mitglieder
-        for (final memberUserId in members) {
-          final username = await getUsernameForUserId(memberUserId);
-          if (username != null) {
-            int points = 0;
-
-            /// Iteration für alle ShoppingItems und TaskItems
-            final items = [
-              ...householdDetailData['shoppingList'],
-              ...householdDetailData['taskList']
-            ];
-            for (final itemData in items) {
-              final doneBy = itemData['doneBy'] as String?;
-              final isDone = itemData['done'] as bool? ?? false;
-              final pointsEarned = itemData['points'] as int? ?? 0;
-
-              if (doneBy == memberUserId && isDone) {
-                points += pointsEarned;
-              }
-            }
-            /// Punkte für das aktuelle Mitglied im Haushalt speichern
-            memberPoints[username] = points;
-          }
-        }
+        final scoreboard = householdDetailData['scoreboard'] as Map<String, int>;
 
         /// sortedMemberPoints speichert die Map sortiert nach den Punkten, die Person mit der Höchsten Punktzahl steht an erster Stelle
         final sortedMemberPoints = Map<String, int>.fromEntries(
-            memberPoints.entries.toList()
+            scoreboard.entries.toList()
               ..sort((a, b) => b.value.compareTo(a.value))
         );
 
