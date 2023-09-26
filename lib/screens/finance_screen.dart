@@ -4,12 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/widgets/navigation/custom_app_bar.dart';
 import '../providers/household_provider.dart';
-import '../widgets/color_functions.dart';
-import '../widgets/build_member_circle.dart';
 import '../widgets/navigation/app_drawer.dart';
 import '../widgets/pie_chart/build_indicator.dart';
 import '../widgets/pie_chart/build_pie_chart_section_data.dart';
-import '../widgets/pie_chart/indicator.dart';
 import '../widgets/text/h1.dart';
 
 /// Der Finanzscreen zeigt Ausgaben der Mitglieder eines Haushalts an.

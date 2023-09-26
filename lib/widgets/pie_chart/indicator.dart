@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+/// {@category Widgets}
+/// Erstellt ein [Indicator] Objekt für das Erstellen einer Legende.
 class Indicator extends StatelessWidget {
   const Indicator({
     super.key,

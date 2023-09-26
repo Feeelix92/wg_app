@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../build_member_circle.dart';
 import '../color_functions.dart';
 
+/// {@category Widgets}
 /// Erstellt ein [PieChartSectionData] Objekt für das Erstellen eines Pie Chart.
 PieChartSectionData buildPieChartSectionData(String personName, double personValue, double percentageOfTotal) {
   const fontSize = 20.0;
