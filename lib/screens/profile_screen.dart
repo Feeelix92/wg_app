@@ -73,16 +73,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// Diese Methode holt den aktuellen Benutzer vom `UserProvider` und setzt die Werte der Textfelder auf die Werte des Benutzers.
   void initialiseValues() {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final UserModel user = userProvider.user;
 
-    setState(() {
-      _usernameController.text = user.username;
-      _firstNameController.text = user.firstName;
-      _lastNameController.text = user.lastName;
-      _emailController.text = user.email;
-      _birthdateController.text = user.birthdate;
-    });
+    if (userProvider.userIsSet) {
+      final UserModel user = userProvider.user;
+
+      setState(() {
+        _usernameController.text = user.username;
+        _firstNameController.text = user.firstName;
+        _lastNameController.text = user.lastName;
+        _emailController.text = user.email;
+        _birthdateController.text = user.birthdate;
+      });
+    }
   }
+
 
   /// Listener für den `UserProvider`.
   ///
