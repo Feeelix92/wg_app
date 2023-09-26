@@ -1,5 +1,4 @@
 import 'package:auto_route/annotations.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -9,8 +8,6 @@ import '../model/user_model.dart';
 import '../providers/user_provider.dart';
 import '../widgets/custom_input_decoration.dart';
 import '../widgets/custom_snackbars.dart';
-import '../widgets/navigation/app_drawer.dart';
-import '../widgets/navigation/custom_app_bar.dart';
 
 /// Erstelle einen GLoablKey für das Form Widget
 final _profileFormKey = GlobalKey<FormState>();
@@ -71,10 +68,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// Initialisiert die Textfelder mit den aktuellen Benutzerdaten.
   ///
   /// Diese Methode holt den aktuellen Benutzer vom `UserProvider` und setzt die Werte der Textfelder auf die Werte des Benutzers.
-  void initialiseValues() {
+  void initialiseValues() async {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
+    await userProvider.updateUserInformation();
+
+    print("Before User is set: ${userProvider.user}");
+
     if (userProvider.userIsSet) {
+
+      print("After User is set: ${userProvider.userIsSet}");
+
       final UserModel user = userProvider.user;
 
       setState(() {
@@ -124,8 +128,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context, listen: true);
-    final user = userProvider.user;
 
     /// Speichert die Änderungen des Benutzerprofils.
     ///
@@ -172,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 16),
+          padding: const EdgeInsets.only(top: 64),
           child: Column(
             children: [
               Padding(
@@ -187,6 +189,54 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       TextFormField(
                         controller: _usernameController,
                         decoration: materialInputDecoration('Username', null, Icons.person),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your username';
+                          }
+                          return null;
+                        },
+                        onChanged: (_) => checkForChange(),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      TextFormField(
+                        controller: _firstNameController,
+                        decoration: materialInputDecoration('First Name', null, Icons.person),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your first name';
+                          }
+                          return null;
+                        },
+                        onChanged: (_) => checkForChange(),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      TextFormField(
+                        controller: _lastNameController,
+                        decoration: materialInputDecoration('Last Name', null, Icons.person),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your last name';
+                          }
+                          return null;
+                        },
+                        onChanged: (_) => checkForChange(),
+                      ),
+                      const SizedBox(
+                        height: 22,
+                      ),
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: materialInputDecoration('Email', null, Icons.email),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          return null;
+                        },
                         onChanged: (_) => checkForChange(),
                       ),
                       const SizedBox(
@@ -198,6 +248,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         controller: _birthdateController,
                         keyboardType: TextInputType.emailAddress,
                         decoration: materialInputDecoration('Geburtsdatum', null, Icons.date_range),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your birthdate';
+                          }
+                          return null;
+                        },
                         onTap: () async {
                           DateTime? pickedDate = await showDatePicker(
                               context: context,
@@ -209,22 +265,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   int.parse(_birthdateController.text.substring(0, 2)))
                                   : DateTime.now(),
                               firstDate: DateTime(1900),
-                              //DateTime.now() - not to allow to choose before today.
                               lastDate: DateTime.now());
 
                           if (pickedDate != null) {
-                            if (kDebugMode) {
-                              print(pickedDate);
-                            } //pickedDate output format => 2021-03-10 00:00:00.000
                             String formattedDate = DateFormat('dd-MM-yyy').format(pickedDate);
-                            if (kDebugMode) {
-                              print(formattedDate);
-                            }
                             setState(() {
                               _birthdateController.text = formattedDate;
-                              checkForChange(); //set output date to TextField value.
+                              checkForChange();
                             });
-                          } else {}
+                          }
                         },
                       ),
                       const SizedBox(
@@ -240,6 +289,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ],
                   ),
                 ),
+
               ),
             ],
           ),
