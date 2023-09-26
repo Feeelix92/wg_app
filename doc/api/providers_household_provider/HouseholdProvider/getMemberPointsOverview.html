@@ -63,7 +63,7 @@
     <section class="multi-line-signature">
       
 
-<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+<span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
 <span class="name ">getMemberPointsOverview</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="getMemberPointsOverview-param-householdId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">householdId</span></span></li>
 </ol>)
 
@@ -79,46 +79,27 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;String, int&gt;&gt; getMemberPointsOverview(String householdId) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;String, dynamic&gt;&gt; getMemberPointsOverview(String householdId) async {
   try {
     final docRefHousehold = await db.collection(&quot;households&quot;).doc(householdId).get();
 
     if (docRefHousehold.exists) {
       final householdDetailData = docRefHousehold.data() as Map&lt;String, dynamic&gt;;
-      final members = householdDetailData[&#39;members&#39;].cast&lt;String&gt;();
-
-      final memberPoints = &lt;String, int&gt;{};
-
-      &#47;&#47;&#47; Iteration für alle Mitglieder
-      for (final memberUserId in members) {
-        final username = await getUsernameForUserId(memberUserId);
-        if (username != null) {
-          int points = 0;
-
-          &#47;&#47;&#47; Iteration für alle ShoppingItems und TaskItems
-          final items = [
-            ...householdDetailData[&#39;shoppingList&#39;],
-            ...householdDetailData[&#39;taskList&#39;]
-          ];
-          for (final itemData in items) {
-            final doneBy = itemData[&#39;doneBy&#39;] as String?;
-            final isDone = itemData[&#39;done&#39;] as bool? ?? false;
-            final pointsEarned = itemData[&#39;points&#39;] as int? ?? 0;
-
-            if (doneBy == memberUserId &amp;&amp; isDone) {
-              points += pointsEarned;
-            }
-          }
-          &#47;&#47;&#47; Punkte für das aktuelle Mitglied im Haushalt speichern
-          memberPoints[username] = points;
-        }
-      }
+      final memberIds = householdDetailData[&#39;members&#39;].cast&lt;String&gt;();
+      final scoreboard = householdDetailData[&#39;scoreboard&#39;] as Map&lt;String, dynamic&gt;;
 
       &#47;&#47;&#47; sortedMemberPoints speichert die Map sortiert nach den Punkten, die Person mit der Höchsten Punktzahl steht an erster Stelle
-      final sortedMemberPoints = Map&lt;String, int&gt;.fromEntries(
-          memberPoints.entries.toList()
+      final sortedMemberPoints = Map&lt;String, dynamic&gt;.fromEntries(
+          scoreboard.entries.toList()
             ..sort((a, b) =&gt; b.value.compareTo(a.value))
       );
+      for (final memberId in memberIds){
+        final username = await getUsernameForUserId(memberId);
+        sortedMemberPoints[memberId] = {
+          &#39;username&#39;: username,
+          &#39;points&#39;: sortedMemberPoints[memberId],
+        };
+      }
 
       return sortedMemberPoints;
     }

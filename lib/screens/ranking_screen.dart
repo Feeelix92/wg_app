@@ -92,11 +92,11 @@ class _RankingScreenState extends State<RankingScreen> {
                           /// Ansonsten wird der höchste Wert als Höhe für die Y-Achse verwendet
                           double maxY = 20;
                           if (memberPointsOverview.entries.map((entry) => entry.value['points']).first <= 10){
-                            maxY = (memberPointsOverview.values.first + 20).toDouble();
+                            maxY = (memberPointsOverview.entries.map((entry) => entry.value['points']).first + 20).toDouble();
                           } else if(memberPointsOverview.entries.map((entry) => entry.value['points']).first <= 20){
                             maxY = (memberPointsOverview.entries.map((entry) => entry.value['points']).first + 10).toDouble();
                           } else{
-                            maxY = memberPointsOverview.values.first.toDouble();
+                            maxY = (memberPointsOverview.entries.map((entry) => entry.value['points']).first).toDouble();
                           }
 
                           /// Erstellen des Balkendiagramms

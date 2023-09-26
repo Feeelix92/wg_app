@@ -96,7 +96,7 @@
 
     <dl class="constructor-summary-list">
         <dt id="HouseholdProvider" class="callable">
-          <span class="name"><a href="../providers_household_provider/HouseholdProvider/HouseholdProvider.html">HouseholdProvider</a></span><span class="signature">()</span>
+          <span class="name"><a href="../providers_household_provider/HouseholdProvider/HouseholdProvider.html">HouseholdProvider</a></span><span class="signature">(<span class="parameter" id="-param-firestore">{<span class="type-annotation"><a href="https://pub.dev/documentation/cloud_firestore/4.9.2/cloud_firestore/FirebaseFirestore-class.html">FirebaseFirestore</a>?</span> <span class="parameter-name">firestore</span>, </span><span class="parameter" id="-param-firebaseAuth"><span class="type-annotation"><a href="https://pub.dev/documentation/firebase_auth/4.10.0/firebase_auth/FirebaseAuth-class.html">FirebaseAuth</a>?</span> <span class="parameter-name">firebaseAuth</span>}</span>)</span>
         </dt>
         <dd>
           
@@ -121,22 +121,22 @@
 
         <dt id="auth" class="property">
   <span class="name"><a href="../providers_household_provider/HouseholdProvider/auth.html">auth</a></span>
-  <span class="signature">&#8594; <a href="https://pub.dev/documentation/firebase_auth/4.9.0/firebase_auth/FirebaseAuth-class.html">FirebaseAuth</a></span> 
+  <span class="signature">&#8594; <a href="https://pub.dev/documentation/firebase_auth/4.10.0/firebase_auth/FirebaseAuth-class.html">FirebaseAuth</a></span> 
 
 </dt>
 <dd>
-  Instanz der Authentifizierung
+  
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
 
         <dt id="db" class="property">
   <span class="name"><a href="../providers_household_provider/HouseholdProvider/db.html">db</a></span>
-  <span class="signature">&#8594; <a href="https://pub.dev/documentation/cloud_firestore/4.9.1/cloud_firestore/FirebaseFirestore-class.html">FirebaseFirestore</a></span> 
+  <span class="signature">&#8594; <a href="https://pub.dev/documentation/cloud_firestore/4.9.2/cloud_firestore/FirebaseFirestore-class.html">FirebaseFirestore</a></span> 
 
 </dt>
 <dd>
-  Instanzen der Datenbank
+  
   <div class="features"><span class="feature">final</span></div>
 
 </dd>
@@ -352,7 +352,7 @@ object is not in a usable state and should be discarded (calls to
 
         <dt id="getMemberPointsOverview" class="callable">
   <span class="name"><a href="../providers_household_provider/HouseholdProvider/getMemberPointsOverview.html">getMemberPointsOverview</a></span><span class="signature">(<wbr><span class="parameter" id="getMemberPointsOverview-param-householdId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">householdId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/int-class.html">int</a></span>&gt;</span></span>&gt;</span></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>, <span class="type-parameter">dynamic</span>&gt;</span></span>&gt;</span></span>
   </span>
   
 
@@ -397,7 +397,7 @@ object is not in a usable state and should be discarded (calls to
 
 </dt>
 <dd>
-  Funktion gibt eine Liste aller User die nciht in einem bestimtmen Haushalt Mitglied sind zurück
+  Funktion gibt eine Liste aller User die nicht in einem bestimtmen Haushalt Mitglied sind zurück
   
 
 </dd>
@@ -475,7 +475,7 @@ object is not in a usable state and should be discarded (calls to
 
 </dt>
 <dd>
-  Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt
+  Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt und ihre/n Punkte/Preis auf das Konto der Person legt, die das Item als erledigt markiert hat.
   
 
 </dd>
@@ -488,7 +488,7 @@ object is not in a usable state and should be discarded (calls to
 
 </dt>
 <dd>
-  Funktion die alle erledigten TaskItems aus einem Haushalt entfernt
+  Funktion die alle erledigten TaskItems aus einem Haushalt entfernt und ihre Punkte auf das Konto der Person legt, die das Item als erledigt markiert hat.
   
 
 </dd>
@@ -508,27 +508,27 @@ notified when the object changes.
 </dd>
 
         <dt id="removeShoppingItem" class="callable">
-  <span class="name"><a href="../providers_household_provider/HouseholdProvider/removeShoppingItem.html">removeShoppingItem</a></span><span class="signature">(<wbr><span class="parameter" id="removeShoppingItem-param-item"><span class="type-annotation"><a href="../model_shopping_item/ShoppingItem-class.html">ShoppingItem</a></span> <span class="parameter-name">item</span></span>)
+  <span class="name"><a href="../providers_household_provider/HouseholdProvider/removeShoppingItem.html">removeShoppingItem</a></span><span class="signature">(<wbr><span class="parameter" id="removeShoppingItem-param-itemId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">itemId</span></span>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
-  Funktion die ein ShoppingItem aus einem Haushalt entfernt
+  
   
 
 </dd>
 
         <dt id="removeTaskItem" class="callable">
-  <span class="name"><a href="../providers_household_provider/HouseholdProvider/removeTaskItem.html">removeTaskItem</a></span><span class="signature">(<wbr><span class="parameter" id="removeTaskItem-param-item"><span class="type-annotation"><a href="../model_task_Item/TaskItem-class.html">TaskItem</a></span> <span class="parameter-name">item</span></span>)
+  <span class="name"><a href="../providers_household_provider/HouseholdProvider/removeTaskItem.html">removeTaskItem</a></span><span class="signature">(<wbr><span class="parameter" id="removeTaskItem-param-itemId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">itemId</span></span>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
   </span>
   
 
 </dt>
 <dd>
-  Funktion die ein TaskItem aus einem Haushalt entfernt
+  
   
 
 </dd>
@@ -546,6 +546,32 @@ notified when the object changes.
 
 </dd>
 
+        <dt id="toggleShoppingItemDoneStatus" class="callable">
+  <span class="name"><a href="../providers_household_provider/HouseholdProvider/toggleShoppingItemDoneStatus.html">toggleShoppingItemDoneStatus</a></span><span class="signature">(<wbr><span class="parameter" id="toggleShoppingItemDoneStatus-param-itemId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">itemId</span>, </span><span class="parameter" id="toggleShoppingItemDoneStatus-param-userId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">userId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Funktion die das 'erledigt' Feld eines ShoppingItems im Haushalt umschaltet
+  
+
+</dd>
+
+        <dt id="toggleTaskItemDoneStatus" class="callable">
+  <span class="name"><a href="../providers_household_provider/HouseholdProvider/toggleTaskItemDoneStatus.html">toggleTaskItemDoneStatus</a></span><span class="signature">(<wbr><span class="parameter" id="toggleTaskItemDoneStatus-param-itemId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">itemId</span>, </span><span class="parameter" id="toggleTaskItemDoneStatus-param-userId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">userId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Funktion die das 'erledigt' Feld eines TaskItems im Haushalt umschaltet
+  
+
+</dd>
+
         <dt id="toString" class="callable inherited">
   <span class="name"><a href="https://api.flutter.dev/flutter/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span>
@@ -559,19 +585,6 @@ notified when the object changes.
 
 </dd>
 
-        <dt id="updateHouseholdInfo" class="callable">
-  <span class="name"><a href="../providers_household_provider/HouseholdProvider/updateHouseholdInfo.html">updateHouseholdInfo</a></span><span class="signature">(<wbr><span class="parameter" id="updateHouseholdInfo-param-title"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span><span class="parameter" id="updateHouseholdInfo-param-description"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">description</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
-  </span>
-  
-
-</dt>
-<dd>
-  Die Methode updateHouseholdInfo aktualisiert die Daten eines Haushalts in der Datenbank
-  
-
-</dd>
-
         <dt id="updateHouseholdInformation" class="callable">
   <span class="name"><a href="../providers_household_provider/HouseholdProvider/updateHouseholdInformation.html">updateHouseholdInformation</a></span><span class="signature">(<wbr>)
     <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a></span>
@@ -581,6 +594,19 @@ notified when the object changes.
 </dt>
 <dd>
   Funktion die den aktuellen Haushalt updatet
+  
+
+</dd>
+
+        <dt id="updateHouseholdTitleAndDescription" class="callable">
+  <span class="name"><a href="../providers_household_provider/HouseholdProvider/updateHouseholdTitleAndDescription.html">updateHouseholdTitleAndDescription</a></span><span class="signature">(<wbr><span class="parameter" id="updateHouseholdTitleAndDescription-param-title"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">title</span>, </span><span class="parameter" id="updateHouseholdTitleAndDescription-param-description"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">description</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Die Methode updateHouseholdTitleAndDescription aktualisiert den Titel und die Beschreibung eines Haushalts in der Datenbank
   
 
 </dd>

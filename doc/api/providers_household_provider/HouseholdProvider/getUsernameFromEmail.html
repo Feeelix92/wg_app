@@ -82,8 +82,7 @@
   <pre class="language-dart"><code class="language-dart">Future&lt;String?&gt; getUsernameFromEmail(String email) async {
   try {
     final usersCollection = db.collection(&quot;users&quot;);
-    final querySnapshot = await usersCollection.where(
-        &#39;email&#39;, isEqualTo: email).get();
+    final querySnapshot = await usersCollection.where(&#39;email&#39;, isEqualTo: email).get();
 
     if (querySnapshot.docs.isNotEmpty) {
       final userData = querySnapshot.docs.first.data();

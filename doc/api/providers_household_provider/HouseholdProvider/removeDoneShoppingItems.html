@@ -71,7 +71,7 @@
     </section>
     
 <section class="desc markdown">
-  <p>Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt</p>
+  <p>Funktion die alle erledigten ShoppingItems aus einem Haushalt entfernt und ihre/n Punkte/Preis auf das Konto der Person legt, die das Item als erledigt markiert hat.</p>
 </section>
 
 
@@ -80,18 +80,41 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; removeDoneShoppingItems() async {
   try {
-    final docRefHousehold = await db.collection(&quot;households&quot;).doc(
-        _household.id.toString()).get();
+    final docRefHousehold = await db.collection(&quot;households&quot;).doc(_household.id.toString()).get();
 
-    final householdDetailData = docRefHousehold.data() as Map&lt;String,
-        dynamic&gt;;
+    final householdDetailData = docRefHousehold.data() as Map&lt;String, dynamic&gt;;
 
-    List&lt;ShoppingItem&gt; shoppingList = householdDetailData[&#39;shoppingList&#39;]
-        .cast&lt;ShoppingItem&gt;();
-    shoppingList.removeWhere((element) =&gt; element.done == true);
+    final List&lt;Map&lt;String, dynamic&gt;&gt; shoppingList = householdDetailData[&#39;shoppingList&#39;]?.cast&lt;Map&lt;String, dynamic&gt;&gt;() ?? [];
+    final Map&lt;String, dynamic&gt; scoreboard = householdDetailData[&#39;scoreboard&#39;] ?? [];
+    final Map&lt;String, dynamic&gt; expenses = householdDetailData[&#39;expenses&#39;] ?? [];
+
+    &#47;&#47;&#47; Erhöht Scoreboard Eintrag des Mitglieds um die Punkte des Items
+    scoreboard.forEach((member, score) {
+      for (var element in shoppingList) {
+        if (element[&#39;done&#39;] &amp;&amp; element[&#39;doneBy&#39;] == member) {
+          score += element[&#39;points&#39;] as int;
+        }
+      }
+      scoreboard[member] = score;
+    });
+
+    &#47;&#47;&#47; Erhöht Ausgaben Kontostand des Mitglieds um den Preis des Items
+    expenses.forEach((member, balance) {
+      for (var element in shoppingList) {
+        if (element[&#39;done&#39;] &amp;&amp; element[&#39;doneBy&#39;] == member) {
+          balance += element[&#39;price&#39;] as double;
+        }
+      }
+      expenses[member] = balance;
+    });
+
+    &#47;&#47;&#47;Entfernt das erledigte Item nach dem Auslesen der Punkte&#47;des Preises
+    shoppingList.removeWhere((element) =&gt; element[&#39;done&#39;] == true);
 
     await db.collection(&quot;households&quot;).doc(_household.id.toString()).update({
       &#39;shoppingList&#39;: shoppingList,
+      &#39;scoreboard&#39; : scoreboard,
+      &#39;expenses&#39; : expenses,
     });
 
     await updateHouseholdInformation();

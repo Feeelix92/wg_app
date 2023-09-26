@@ -79,10 +79,8 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; loadAllAccessibleHouseholds() async {
-  print(&quot;loadAllAccessibleHouseholds from Firebase&quot;);
   try {
-    final querySnapshot = await db.collection(&quot;households&quot;).where(
-        &quot;members&quot;, arrayContains: auth.currentUser!.uid).get();
+    final querySnapshot = await db.collection(&quot;households&quot;).where(&quot;members&quot;, arrayContains: auth.currentUser!.uid).get();
     final households = &lt;Household&gt;[];
 
     for (final docSnapshot in querySnapshot.docs) {

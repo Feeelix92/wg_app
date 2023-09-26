@@ -82,8 +82,7 @@
   <pre class="language-dart"><code class="language-dart">Future&lt;String?&gt; getEmailFromUsername(String username) async {
   try {
     final usersCollection = db.collection(&quot;users&quot;);
-    final querySnapshot = await usersCollection.where(
-        &#39;username&#39;, isEqualTo: username).get();
+    final querySnapshot = await usersCollection.where(&#39;username&#39;, isEqualTo: username).get();
 
     &#47;&#47;&#47; Überprüfen ob der Username existiert
     if (querySnapshot.docs.isNotEmpty) {

@@ -89,6 +89,8 @@
       &#39;members&#39;: [auth.currentUser!.uid],
       &#39;shoppingList&#39;: [],
       &#39;taskList&#39;: [],
+      &#39;expenses&#39;: {auth.currentUser!.uid: 0},
+      &#39;scoreboard&#39;: {auth.currentUser!.uid: 0},
     });
 
     &#47;&#47;&#47; Damit die ID des Haushalts für die Methode updateHouseholdInformation() verfügbar ist
@@ -100,6 +102,8 @@
       members: [auth.currentUser!.uid],
       shoppingList: [],
       taskList: [],
+      expenses: {auth.currentUser!.uid: 0},
+      scoreboard: {auth.currentUser!.uid: 0},
     );
 
     await updateHouseholdInformation();

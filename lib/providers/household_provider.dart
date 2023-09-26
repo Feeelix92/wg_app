@@ -866,7 +866,7 @@ class HouseholdProvider extends ChangeNotifier {
           memberExpenses[memberId] = {
             'username': username,
             'expense': memberExpenses[memberId].toDouble(),
-            'percentageOfTotal': percentageOfTotal,
+            'percentageOfTotal': double.parse((percentageOfTotal).toStringAsFixed(2)),
           };
         }
         return memberExpenses;

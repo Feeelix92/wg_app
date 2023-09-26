@@ -64,32 +64,26 @@
       
 
 <span class="returntype"><a href="https://api.flutter.dev/flutter/dart-async/Future-class.html">Future</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.flutter.dev/flutter/dart-core/bool-class.html">bool</a></span>&gt;</span></span>
-<span class="name ">removeTaskItem</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="removeTaskItem-param-item"><span class="type-annotation"><a href="../../model_task_Item/TaskItem-class.html">TaskItem</a></span> <span class="parameter-name">item</span></span></li>
+<span class="name ">removeTaskItem</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="removeTaskItem-param-itemId"><span class="type-annotation"><a href="https://api.flutter.dev/flutter/dart-core/String-class.html">String</a></span> <span class="parameter-name">itemId</span></span></li>
 </ol>)
 
       
 
     </section>
     
-<section class="desc markdown">
-  <p>Funktion die ein TaskItem aus einem Haushalt entfernt</p>
-</section>
 
 
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; removeTaskItem(TaskItem item) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; removeTaskItem(String itemId) async {
   try {
-    final docRefHousehold = await db.collection(&quot;households&quot;).doc(
-        _household.id.toString()).get();
+    final docRefHousehold = await db.collection(&quot;households&quot;).doc(_household.id.toString()).get();
 
-    final householdDetailData = docRefHousehold.data() as Map&lt;String,
-        dynamic&gt;;
+    final householdDetailData = docRefHousehold.data() as Map&lt;String, dynamic&gt;;
 
-    final List&lt;TaskItem&gt; taskList = householdDetailData[&#39;taskList&#39;].cast&lt;
-        TaskItem&gt;();
-    taskList.remove(item);
+    final List&lt;Map&lt;String, dynamic&gt;&gt; taskList = householdDetailData[&#39;taskList&#39;]?.cast&lt;Map&lt;String, dynamic&gt;&gt;() ?? [];
+    taskList.removeWhere((element) =&gt; element[&#39;id&#39;] == itemId);
 
     await db.collection(&quot;households&quot;).doc(_household.id.toString()).update({
       &#39;taskList&#39;: taskList,

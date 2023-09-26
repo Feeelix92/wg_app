@@ -81,8 +81,7 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; addUserToHousehold(String email) async {
   try {
-    final docRefUser = await db.collection(&quot;users&quot;).where(
-        &#39;email&#39;, isEqualTo: email).get();
+    final docRefUser = await db.collection(&quot;users&quot;).where(&#39;email&#39;, isEqualTo: email).get();
 
     if (docRefUser.docs.isEmpty){
       return false;
@@ -93,13 +92,19 @@
     &#47;&#47;&#47; Abrufen der ID (uid) des Benutzers
     final userId = docRefUser.docs.first.id;
     final List&lt;String&gt; members = householdDetailData[&#39;members&#39;].cast&lt;String&gt;();
+    final Map&lt;String, dynamic&gt; expenses = householdDetailData[&#39;expenses&#39;];
+    final Map&lt;String, dynamic&gt; scoreboard = householdDetailData[&#39;scoreboard&#39;];
 
     &#47;&#47;&#47; Überprüfen, ob der Benutzer bereits im Haushalt ist
     if (!members.contains(userId)) {
       members.add(userId);
+      expenses[userId] = 0;
+      scoreboard[userId] = 0;
 
       await db.collection(&quot;households&quot;).doc(_household.id.toString()).update({
         &#39;members&#39;: members,
+        &#39;expenses&#39;: expenses,
+        &#39;scoreboard&#39;: scoreboard,
       });
 
       await updateHouseholdInformation();

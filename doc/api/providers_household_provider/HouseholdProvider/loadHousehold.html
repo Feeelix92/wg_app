@@ -80,7 +80,6 @@
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; loadHousehold(String id) async {
-  print(&quot;loadHousehold from Firebase&quot;);
   try {
     final docRefHousehold = await db.collection(&quot;households&quot;).doc(id).get();
     final householdDetailData = docRefHousehold.data();
