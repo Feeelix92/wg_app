@@ -81,14 +81,10 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;String, Map&lt;String, dynamic&gt;&gt;&gt; getHouseholdMembersData(String householdId) async {
   try {
-    final docRefHousehold = await db.collection(&quot;households&quot;)
-        .doc(householdId)
-        .get();
+    final docRefHousehold = await db.collection(&quot;households&quot;).doc(householdId).get();
 
     if (docRefHousehold.exists) {
-      final householdDetailData = docRefHousehold.data() as Map&lt;
-          String,
-          dynamic&gt;;
+      final householdDetailData = docRefHousehold.data() as Map&lt;String, dynamic&gt;;
       final memberIds = householdDetailData[&#39;members&#39;].cast&lt;String&gt;();
 
       final memberData = &lt;String, Map&lt;String, dynamic&gt;&gt;{};

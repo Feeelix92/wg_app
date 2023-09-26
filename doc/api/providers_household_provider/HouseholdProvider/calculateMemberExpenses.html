@@ -79,64 +79,38 @@
     
 <section class="summary source-code" id="source">
   <h2><span>Implementation</span></h2>
-  <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;String, dynamic&gt;&gt; calculateMemberExpenses(
-    String householdId) async {
+  <pre class="language-dart"><code class="language-dart">Future&lt;Map&lt;String, dynamic&gt;&gt; calculateMemberExpenses(String householdId) async {
   try {
-    final docRefHousehold = await db.collection(&quot;households&quot;)
-        .doc(householdId)
-        .get();
+    final docRefHousehold = await db.collection(&quot;households&quot;).doc(householdId).get();
 
     if (docRefHousehold.exists) {
       final householdDetailData = docRefHousehold.data() as Map&lt;String, dynamic&gt;;
       final memberIds = householdDetailData[&#39;members&#39;].cast&lt;String&gt;();
-      final shoppingList = householdDetailData[&#39;shoppingList&#39;].cast&lt;Map&lt;String, dynamic&gt;&gt;();
+      final memberExpenses = householdDetailData[&#39;expenses&#39;] as Map&lt;String, dynamic&gt;;
 
-      final memberExpenses = &lt;String, Map&lt;String, dynamic&gt;&gt;{};
       double totalExpenses = 0.0;
+      double percentageOfTotal = 0.0;
 
-      &#47;&#47;&#47; Berechnung der Gesamtsumme aller  Ausgaben
-      &#47;&#47;&#47; Iteration für alle ShoppingItems
-      for (final shoppingItem in shoppingList) {
-        final price = shoppingItem[&#39;price&#39;] as double;
-        final done = shoppingItem[&#39;done&#39;] as bool;
-
-        &#47;&#47;&#47; Wenn das ShoppingItem erledigt ist, dann wird der Preis zu den Gesamtausgaben hinzugefügt
-        if (done) {
-          totalExpenses += price;
-        }
+      &#47;&#47;&#47; Berechnung der Gesamtausgaben
+      for (final memberId in memberIds){
+        totalExpenses += memberExpenses[memberId];
       }
 
-      &#47;&#47;&#47; Berechnung der Ausgaben für jedes Mitglied
       &#47;&#47;&#47; Iteration für alle Mitglieder
       for (final memberId in memberIds) {
-        double memberExpense = 0.0;
-
-        &#47;&#47;&#47; Iteration für alle ShoppingItems
-        for (final shoppingItem in shoppingList) {
-          final doneBy = shoppingItem[&#39;doneBy&#39;] as String?;
-          final price = shoppingItem[&#39;price&#39;] as double;
-          final done = shoppingItem[&#39;done&#39;] as bool;
-
-          &#47;&#47;&#47; Wenn das ShoppingItem erledigt ist und das Mitglied es erledigt hat, dann wird der Preis zu den Ausgaben des Mitglieds hinzugefügt
-          if (done &amp;&amp; doneBy == memberId) {
-            memberExpense += price;
-          }
-        }
 
         &#47;&#47;&#47; Berechnung des prozentualen Anteils der Ausgaben eines Mitglieds an den Gesamtkosten
-        double percentageOfTotal = 0.0;
         if (totalExpenses != 0.0) {
-          percentageOfTotal = (memberExpense &#47; totalExpenses) * 100;
+          percentageOfTotal = (memberExpenses[memberId] &#47; totalExpenses) * 100;
         }
 
         final username = await getUsernameForUserId(memberId);
         memberExpenses[memberId] = {
           &#39;username&#39;: username,
-          &#39;expense&#39;: memberExpense,
-          &#39;percentageOfTotal&#39;: percentageOfTotal,
+          &#39;expense&#39;: memberExpenses[memberId].toDouble(),
+          &#39;percentageOfTotal&#39;: double.parse((percentageOfTotal).toStringAsFixed(2)),
         };
       }
-
       return memberExpenses;
     }
 

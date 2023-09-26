@@ -82,8 +82,7 @@
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; changeAdmin(String email) async {
   try {
 
-    final docRefUser = await db.collection(&quot;users&quot;).where(
-        &#39;email&#39;, isEqualTo: email).get();
+    final docRefUser = await db.collection(&quot;users&quot;).where(&#39;email&#39;, isEqualTo: email).get();
 
     &#47;&#47;&#47; Überprüfen ob der Benutzer existiert
     if (docRefUser.docs.isEmpty) return false;

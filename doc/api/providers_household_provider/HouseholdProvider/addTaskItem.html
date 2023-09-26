@@ -81,15 +81,12 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future&lt;bool&gt; addTaskItem(TaskItem item) async {
   try {
-    final docRefHousehold = await db.collection(&quot;households&quot;).doc(
-        _household.id.toString()).get();
+    final docRefHousehold = await db.collection(&quot;households&quot;).doc(_household.id.toString()).get();
 
-    final householdDetailData = docRefHousehold.data() as Map&lt;String,
-        dynamic&gt;;
+    final householdDetailData = docRefHousehold.data() as Map&lt;String, dynamic&gt;;
 
-    final List&lt;TaskItem&gt; taskList = householdDetailData[&#39;taskList&#39;].cast&lt;
-        TaskItem&gt;();
-    taskList.add(item);
+    final List&lt;Map&lt;String, dynamic&gt;&gt; taskList = householdDetailData[&#39;taskList&#39;]?.cast&lt;Map&lt;String, dynamic&gt;&gt;() ?? [];
+    taskList.add(item.toMap());
 
     await db.collection(&quot;households&quot;).doc(_household.id.toString()).update({
       &#39;taskList&#39;: taskList,
