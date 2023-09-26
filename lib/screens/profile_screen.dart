@@ -124,52 +124,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
     context.read<UserProvider>().removeListener(userProviderListener);
   }
 
+  /// Speichert die Änderungen des Benutzerprofils.
+  ///
+  /// Diese Methode aktualisiert die Benutzerinformationen in der Firestore-Datenbank und im `UserProvider`.
+  /// Nachdem die Informationen aktualisiert wurden, wird `checkForChange` aufgerufen, um zu überprüfen, ob die Benutzerdaten geändert wurden.
+  /// Wenn die Daten erfolgreich gespeichert wurden, wird eine Snackbar mit einer Erfolgsmeldung angezeigt.
+  Future saveProfileChanges() async {
+    // Absicherung das die Funktion wirklich nicht zwei mal ausgeführt wird
+    if (_isSendingToFirebase) return;
+
+    if (_profileFormKey.currentState!.validate()) {
+      setState(() => _isSendingToFirebase = true);
+
+      try {
+        final userProvider = Provider.of<UserProvider>(context, listen: false);
+        final docRefUser = userProvider.db.collection("users").doc(userProvider.user.uid);
+
+        await docRefUser.update({
+          'username': _usernameController.text.trim(),
+          'firstName': _firstNameController.text.trim(),
+          'lastName': _lastNameController.text.trim(),
+          'email': _emailController.text.trim(),
+          'birthdate': _birthdateController.text.trim(),
+        });
+
+        await userProvider.updateUserInformation();
+
+        setState(() {
+          _isSendingToFirebase = false;
+        });
+
+        checkForChange();
+
+        showAwesomeSnackbar(context, 'Speichern erfolgreich', Colors.green, Icons.check);
+
+      } catch (e) {
+        if (kDebugMode) {
+          print(e);
+        }
+      }
+    }
+  }
 
 
   @override
   Widget build(BuildContext context) {
 
-    /// Speichert die Änderungen des Benutzerprofils.
-    ///
-    /// Diese Methode aktualisiert die Benutzerinformationen in der Firestore-Datenbank und im `UserProvider`.
-    /// Nachdem die Informationen aktualisiert wurden, wird `checkForChange` aufgerufen, um zu überprüfen, ob die Benutzerdaten geändert wurden.
-    /// Wenn die Daten erfolgreich gespeichert wurden, wird eine Snackbar mit einer Erfolgsmeldung angezeigt.
-    Future saveProfileChanges() async {
-      // Absicherung das die Funktion wirklich nicht zwei mal ausgeführt wird
-      if (_isSendingToFirebase) return;
 
-      if (_profileFormKey.currentState!.validate()) {
-        setState(() => _isSendingToFirebase = true);
-
-        try {
-          final userProvider = Provider.of<UserProvider>(context, listen: false);
-          final docRefUser = userProvider.db.collection("users").doc(userProvider.user.uid);
-
-          await docRefUser.update({
-            'username': _usernameController.text.trim(),
-            'firstName': _firstNameController.text.trim(),
-            'lastName': _lastNameController.text.trim(),
-            'email': _emailController.text.trim(),
-            'birthdate': _birthdateController.text.trim(),
-          });
-
-          await userProvider.updateUserInformation();
-
-          setState(() {
-            _isSendingToFirebase = false;
-          });
-
-          checkForChange();
-
-          showAwesomeSnackbar(context, 'Speichern erfolgreich', Colors.green, Icons.check);
-
-        } catch (e) {
-          if (kDebugMode) {
-            print(e);
-          }
-        }
-      }
-    }
 
     return Scaffold(
       body: SingleChildScrollView(
