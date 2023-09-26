@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
 
-      /// Proof if email is verified or not and navigate to the right screen
+      /// Prüfen ob die Email-Adresse verifiziert wurde
       if (userCredential.user!.emailVerified) {
         AutoRouter.of(context).replace(const HomeRoute());
       } else {
@@ -70,6 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
         _isLoading = false;
       });
 
+      /// Fehlermeldungen anzeigen wenn der Login fehlschlägt
       if (e.code == 'user-not-found') {
         if (kDebugMode) {
           print('No user found for that email.');
