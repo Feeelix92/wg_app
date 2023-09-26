@@ -183,12 +183,15 @@ class _TaskListScreenState extends State<TaskListScreen> {
               isScrollControlled: true,
               builder: (context) => Padding(
                 padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    TaskListAddScreen(householdId: widget.householdId, edit: false)
-                  ],
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      TaskListAddScreen(householdId: widget.householdId, edit: false)
+                    ],
+                  ),
                 ),
               ),
             );

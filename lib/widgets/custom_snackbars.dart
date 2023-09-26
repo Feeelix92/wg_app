@@ -18,7 +18,7 @@ void showAwesomeSnackbar(BuildContext context, String message, Color color, Icon
             color: Colors.white,
           ),
           const SizedBox(width: 12),
-          Text(message),
+          Flexible(child: Text(message)),
           const SizedBox(width: 12),
         ],
       ),
