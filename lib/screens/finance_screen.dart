@@ -106,7 +106,7 @@ class _FinanceScreenState extends State<FinanceScreen> {
 
   PieChartSectionData buildPieChartSectionData(String personName, double personValue, double percentageOfTotal) {
     const fontSize = 20.0;
-    const radius = 160.0;
+    const radius = 140.0;
     const shadows = [Shadow(color: Colors.black, blurRadius: 10)];
     return PieChartSectionData(
       color: increaseBrightness(convertToColor(personName), 0.3),
@@ -122,7 +122,6 @@ class _FinanceScreenState extends State<FinanceScreen> {
         shadows: shadows,
       ),
       badgeWidget: buildMemberCircle(personName, 50.0, 0.2),
-      borderSide: const BorderSide(color: Colors.grey, width: 1),
       badgePositionPercentageOffset: .99,
     );
   }
