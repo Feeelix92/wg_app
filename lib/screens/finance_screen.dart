@@ -7,6 +7,8 @@ import '../providers/household_provider.dart';
 import '../widgets/color_functions.dart';
 import '../widgets/build_member_circle.dart';
 import '../widgets/navigation/app_drawer.dart';
+import '../widgets/pie_chart/build_indicator.dart';
+import '../widgets/pie_chart/build_pie_chart_section_data.dart';
 import '../widgets/pie_chart/indicator.dart';
 import '../widgets/text/h1.dart';
 
@@ -149,35 +151,5 @@ class _FinanceScreenState extends State<FinanceScreen> {
     });
 
     return sections;
-  }
-
-  Indicator buildIndicator(String username, double memberExpense) {
-    return Indicator(
-      color: increaseBrightness(convertToColor(username), 0.2),
-      text: '$username: ${memberExpense.toStringAsFixed(2)} €',
-      isSquare: false,
-    );
-  }
-
-  PieChartSectionData buildPieChartSectionData(String personName, double personValue, double percentageOfTotal) {
-    const fontSize = 20.0;
-    const radius = 140.0;
-    const shadows = [Shadow(color: Colors.black, blurRadius: 10)];
-    return PieChartSectionData(
-      color: increaseBrightness(convertToColor(personName), 0.3),
-      value: personValue,
-      title: '$percentageOfTotal %',
-      radius: radius,
-      titlePositionPercentageOffset: .60,
-      showTitle: true,
-      titleStyle: const TextStyle(
-        fontSize: fontSize,
-        fontWeight: FontWeight.bold,
-        color: Colors.white,
-        shadows: shadows,
-      ),
-      badgeWidget: buildMemberCircle(personName, 50.0, 0.2),
-      badgePositionPercentageOffset: .99,
-    );
   }
 }
