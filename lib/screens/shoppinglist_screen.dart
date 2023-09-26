@@ -178,14 +178,17 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               context: context,
               isScrollControlled: true,
               builder: (context) => Padding(
-                padding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
-                child: Column(
+                padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                child: SingleChildScrollView(
+                  physics: const NeverScrollableScrollPhysics(),
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       ShoppingListAddScreen(householdId: widget.householdId, edit: false)
-                    ]),
+                    ],
+                  ),
+                )
               ),
             );
           },

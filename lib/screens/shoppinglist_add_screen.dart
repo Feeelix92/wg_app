@@ -88,7 +88,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             TextField(
               controller: _descriptionController,
               decoration: InputDecoration(
@@ -99,7 +99,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             TextField(
               controller: _amountController,
               keyboardType: TextInputType.number,
@@ -111,7 +111,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             TextField(
               controller: _priceController,
               keyboardType: TextInputType.number,
@@ -123,7 +123,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             TextField(
               controller: _pointsController,
               keyboardType: TextInputType.number,
@@ -135,7 +135,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             FutureBuilder<Map<String, Map<String, dynamic>>>(
               future: householdProvider.getHouseholdMembersData(householdProvider.household.id),
               builder: (context, snapshot) {
@@ -171,7 +171,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
                 }
               }
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
