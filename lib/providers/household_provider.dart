@@ -541,7 +541,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein ShoppingItem aus einem Haushalt entfernt
+  /// Funktion die ein ShoppingItem aus einem Haushalt entfernt
   Future<bool> removeShoppingItem(String itemId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
@@ -746,7 +746,7 @@ class HouseholdProvider extends ChangeNotifier {
     }
   }
 
-  // Funktion die ein TaskItem aus einem Haushalt entfernt
+  /// Funktion die ein TaskItem aus einem Haushalt entfernt
   Future<bool> removeTaskItem(String itemId) async {
     try {
       final docRefHousehold = await db.collection("households").doc(_household.id.toString()).get();
