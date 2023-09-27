@@ -40,6 +40,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
               child: H1(text: 'Aufgabenliste'),
             ),
             Expanded(
+              /// Führe nur Aktionen aus, wenn die Aufgabenliste nicht leer ist. Sonst gib "Die Aufgabenliste ist momentan leer." aus.
               child: taskList.isNotEmpty
                   ? FutureBuilder<Map<String, Map<String, dynamic>>>(
                       future: householdProvider.getHouseholdMembersData(householdProvider.household.id),

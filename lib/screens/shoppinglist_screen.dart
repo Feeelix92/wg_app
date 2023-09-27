@@ -39,6 +39,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               child: H1(text: 'Einkaufsliste'),
             ),
             Expanded(
+              /// Führe nur Aktionen aus, wenn die Einkaufsliste nicht leer ist. Sonst gib "Die Einkaufsliste ist momentan leer." aus.
               child: shoppingList.isNotEmpty
                   ? FutureBuilder<Map<String, Map<String, dynamic>>>(
                       future: householdProvider.getHouseholdMembersData(householdProvider.household.id),
@@ -159,9 +160,10 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                         title: const Text('Erledigte Items entfernen?'),
                         actions: [
                           IconButton(
-                            onPressed: () {Navigator.of(context, rootNavigator: true).pop('dialog');
-                                  householdProvider.removeDoneShoppingItems();
-                                  householdProvider.loadHousehold(widget.householdId);
+                            onPressed: () {
+                              Navigator.of(context, rootNavigator: true).pop('dialog');
+                              householdProvider.removeDoneShoppingItems();
+                              householdProvider.loadHousehold(widget.householdId);
                             },
                             icon: const Icon(Icons.check),
                           )

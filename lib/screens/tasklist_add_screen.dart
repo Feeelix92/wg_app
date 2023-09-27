@@ -43,6 +43,7 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
   String? _selectedUserId;
   DateTime _selectedDate = DateTime.now();
 
+  /// Wird im initState aufgerufen, falls es sich um einen Editiervorgang handelt und füllt die Input Felder mit den aktuellen Werten
   void editPrefillValues() {
     _titleController.text = widget.title!;
     _descriptionController.text = widget.description!;
@@ -60,6 +61,7 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
     return super.initState();
   }
 
+  /// Überprüft, ob das erforderliche Feld Titel befüllt ist und gibt ggf. eine Feedback Snackbar aus
   bool validateTaskItemData() {
     if(_titleController.text.isNotEmpty) {
       if(widget.edit) {showAwesomeSnackbar(context, "Aufgabe bearbeitet.", Colors.green, Icons.check_circle);}
@@ -138,6 +140,7 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
             },
           ),
           const SizedBox(height: 20.0),
+          /// FutureBuilder zeigt einen Ladekreis an, bis das Backend die Daten der Haushaltsmitglieder async geladen hat
           FutureBuilder<Map<String, Map<String, dynamic>>>(
               future: householdProvider.getHouseholdMembersData(householdProvider.household.id),
               builder: (context, snapshot) {
@@ -179,6 +182,8 @@ class _TaskListAddScreenState extends State<TaskListAddScreen> {
             children: [
               ElevatedButton(
                 onPressed: () {
+                  /// Validiere den Input, generiere ggf. eine neue ID für das Item, erstelle ein neues TaskItem und sende es ans Backend.
+                  /// Lade anschließend den Haushalt neu, um die Änderungen darzustellen.
                   if (validateTaskItemData()) {
                     String itemId;
                     if(widget.id != null) {

@@ -21,6 +21,8 @@ class ShoppingListAddScreen extends StatefulWidget {
     @PathParam('assignedTo') this.assignedTo,
   });
 
+  /// erforderliche Parameter: Haushalt ID und edit (ob es sich um ein neues Item handelt oder ob ein bestehendes bearbeitet wird)
+  /// optionale Parameter: werden mitgesendet, wenn es sich um einen Bearbeitungsvorgang handelt, um die Input Felder mit den aktuellen Werten zu befüllen
   final String householdId;
   final bool edit;
   final String? id;
@@ -43,6 +45,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
   final TextEditingController _pointsController = TextEditingController();
   String? _selectedUserId;
 
+  /// Wird im initState aufgerufen, falls es sich um einen Editiervorgang handelt und füllt die Input Felder mit den aktuellen Werten
   void editPrefillValues() {
     _titleController.text = widget.title!;
     _descriptionController.text = widget.description!;
@@ -61,6 +64,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
     return super.initState();
   }
 
+  /// Überprüft, ob die erforderlichen Felder Titel und Beschreibung befüllt sind und gibt ggf. eine Feedback Snackbar aus
   bool validateShoppingItemData() {
     if(_titleController.text.isNotEmpty && _descriptionController.text.isNotEmpty) {
       if(widget.edit) {showAwesomeSnackbar(context, "Eintrag bearbeitet.", Colors.green, Icons.check_circle);}
@@ -136,6 +140,7 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
               ),
             ),
             const SizedBox(height: 20.0),
+            /// FutureBuilder zeigt einen Ladekreis an, bis das Backend die Daten der Haushaltsmitglieder async geladen hat
             FutureBuilder<Map<String, Map<String, dynamic>>>(
               future: householdProvider.getHouseholdMembersData(householdProvider.household.id),
               builder: (context, snapshot) {
@@ -177,6 +182,8 @@ class _ShoppingListAddScreenState extends State<ShoppingListAddScreen> {
               children: [
                 ElevatedButton(
                   onPressed: () {
+                    /// Validiere den Input, generiere ggf. eine neue ID für das Item, erstelle ein neues ShoppingItem und sende es ans Backend.
+                    /// Lade anschließend den Haushalt neu, um die Änderungen darzustellen.
                     if (validateShoppingItemData()) {
                       String itemId;
                       if(widget.id != null) {
