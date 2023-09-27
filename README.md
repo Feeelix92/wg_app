@@ -44,6 +44,7 @@ nur auf Android Geräten getestet und für Android Smartphones optimiert.
 - Firebase
 - GitHub
 - Discord
+- Google Drive
 
 ## Development
 
