@@ -4,7 +4,7 @@ WG-App für die gemeinsame Einkaufs- und Haushaltsplanung in einer Wohngemeinsch
 
 ## Über die App
 
-Die Anwendung wurde im Rahmen des Moduls "Verteilte Anwendungen" im Sommersemester 2023 an der
+Die Anwendung wurde im Rahmen des Moduls "Entwicklung Verteilter Anwendungen" im Sommersemester 2023 an der
 Technischen Hochschule Mittelhessen entwickelt.
 
 ## Team
