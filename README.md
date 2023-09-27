@@ -1,6 +1,6 @@
 # Liv2Gether
 
-Eine App die beim Organisieren einer WG hilft.
+WG-App für die gemeinsame Einkaufs- und Haushaltsplanung in einer Wohngemeinschaft.
 
 ## Über die App
 
@@ -39,7 +39,7 @@ nur auf Android Geräten getestet und für Android Smartphones optimiert.
 
 ## Verwendete Technologien und Hilfen
 
-- Flutter
+- Flutter (Dart)
 - Android Studio
 - Firebase
 - GitHub
