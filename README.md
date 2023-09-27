@@ -34,7 +34,7 @@ nur auf Android Geräten getestet und für Android Smartphones optimiert.
   zu entfernen und Bewohnern zuzuweisen.
 - Ausgabenverwaltung für gemeinsame Ausgaben.
 - Rangliste mit Punktestand über gesammelte Punkte
-- ausstehend: Belohnungen in Form von Punkten für erledigte Aufgaben
+- Belohnungen in Form von Punkten für erledigte Aufgaben
 - ausstehend: Erinnerungsfunktion für anstehende Aufgaben
 
 ## Verwendete Technologien und Hilfen
