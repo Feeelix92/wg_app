@@ -22,6 +22,8 @@ class TaskListAddScreen extends StatefulWidget {
     @PathParam('dateDue') this.dateDue,
   });
 
+  /// erforderliche Parameter: Haushalt ID und edit (ob es sich um ein neues Item handelt oder ob ein bestehendes bearbeitet wird)
+  /// optionale Parameter: werden mitgesendet, wenn es sich um einen Bearbeitungsvorgang handelt, um die Input Felder mit den aktuellen Werten zu befüllen
   final String householdId;
   final bool edit;
   final String? id;
