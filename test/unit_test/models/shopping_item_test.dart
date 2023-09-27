@@ -3,6 +3,10 @@ import 'package:wg_app/model/shopping_item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
+
+  final dateDueTime = Timestamp.now();
+  final dateDoneTime = Timestamp.now();
+
   group('ShoppingItem Model Tests', () {
     test('ShoppingItem erstellen', () {
       final shoppingItem = ShoppingItem(
@@ -11,11 +15,11 @@ void main() {
         description: 'Item Description',
         amount: 2,
         price: 10.99,
-        dateDue: Timestamp.now(),
+        dateDue: dateDueTime,
         assignedTo: 'assignedUserId',
         done: false,
         doneBy: 'doneByUserId',
-        doneOn: Timestamp.now(),
+        doneOn: dateDoneTime,
         points: 5,
       );
 
@@ -39,11 +43,11 @@ void main() {
         description: 'Item Description',
         amount: 2,
         price: 10.99,
-        dateDue: Timestamp.now(),
+        dateDue: dateDueTime,
         assignedTo: 'assignedUserId',
         done: false,
         doneBy: 'doneByUserId',
-        doneOn: Timestamp.now(),
+        doneOn: dateDoneTime,
         points: 5,
       );
 
@@ -53,11 +57,11 @@ void main() {
         description: 'Item Description',
         amount: 2,
         price: 10.99,
-        dateDue: Timestamp.now(),
+        dateDue: dateDueTime,
         assignedTo: 'assignedUserId',
         done: false,
         doneBy: 'doneByUserId',
-        doneOn: Timestamp.now(),
+        doneOn: dateDoneTime,
         points: 5,
       );
 
@@ -67,11 +71,11 @@ void main() {
         description: 'Another Description',
         amount: 1,
         price: 5.99,
-        dateDue: Timestamp.now(),
+        dateDue: dateDueTime,
         assignedTo: 'anotherUserId',
         done: true,
         doneBy: 'doneByUserId',
-        doneOn: Timestamp.now(),
+        doneOn: dateDoneTime,
         points: 10,
       );
 

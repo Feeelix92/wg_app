@@ -3,17 +3,21 @@ import 'package:wg_app/model/task_Item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() {
+
+  final dateDueTime = Timestamp.now();
+  final dateDoneTime = Timestamp.now();
+
   group('TaskItem Model Tests', () {
     test('Create TaskItem', () {
       final taskItem = TaskItem(
         id: 'itemId',
         name: 'Task Name',
         description: 'Task Description',
-        dateDue: Timestamp.now(),
+        dateDue: dateDueTime,
         assignedTo: 'assignedUserId',
         done: false,
         doneBy: 'doneByUserId',
-        doneOn: Timestamp.now(),
+        doneOn: dateDoneTime,
         points: 5,
       );
 
@@ -33,11 +37,11 @@ void main() {
         id: 'itemId',
         name: 'Task Name',
         description: 'Task Description',
-        dateDue: Timestamp.now(),
+        dateDue: dateDueTime,
         assignedTo: 'assignedUserId',
         done: false,
         doneBy: 'doneByUserId',
-        doneOn: Timestamp.now(),
+        doneOn: dateDoneTime,
         points: 5,
       );
 
@@ -45,11 +49,11 @@ void main() {
         id: 'itemId',
         name: 'Task Name',
         description: 'Task Description',
-        dateDue: Timestamp.now(),
+        dateDue: dateDueTime,
         assignedTo: 'assignedUserId',
         done: false,
         doneBy: 'doneByUserId',
-        doneOn: Timestamp.now(),
+        doneOn: dateDoneTime,
         points: 5,
       );
 
@@ -57,11 +61,11 @@ void main() {
         id: 'anotherId',
         name: 'Another Task',
         description: 'Another Description',
-        dateDue: Timestamp.now(),
+        dateDue: dateDueTime,
         assignedTo: 'anotherUserId',
         done: true,
         doneBy: 'doneByUserId',
-        doneOn: Timestamp.now(),
+        doneOn: dateDoneTime,
         points: 10,
       );
 
