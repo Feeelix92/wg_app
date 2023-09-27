@@ -80,21 +80,30 @@
   <h2><span>Implementation</span></h2>
   <pre class="language-dart"><code class="language-dart">Future updateUserInformation() async {
   try {
+    print(auth.currentUser!.uid);
     final docRefUser = db.collection(&quot;users&quot;).doc(auth.currentUser!.uid);
+
+    print(&quot;1&quot;);
 
     await docRefUser.get().then((DocumentSnapshot doc) {
       snap = doc;
 
+      print(&quot;2&quot;);
+
       final userDetailData = doc.data() as Map&lt;String, dynamic&gt;;
 
+      print(&quot;3 ${userDetailData.toString()}&quot;);
+
       _user = UserModel(
-          firstName: userDetailData[&#39;name&#39;],
-          lastName: userDetailData[&#39;name&#39;],
+          firstName: userDetailData[&#39;firstName&#39;],
+          lastName: userDetailData[&#39;lastName&#39;],
           uid: auth.currentUser!.uid,
           email: auth.currentUser!.email as String,
           birthdate: userDetailData[&#39;birthdate&#39;],
           username: userDetailData[&#39;username&#39;]);
     });
+
+    print(&quot;Hallo&quot;);
 
     _userIsSet = true;
 
@@ -108,6 +117,7 @@
     return;
   } catch (e) {
     if (kDebugMode) {
+      print(&quot;Hallo Fehler&quot;);
       print(e);
     }
   }
