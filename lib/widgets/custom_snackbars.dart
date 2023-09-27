@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 void showAwesomeSnackbar(BuildContext context, String message, Color color, IconData icon) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
-      behavior: SnackBarBehavior.floating,
+      behavior: SnackBarBehavior.fixed,
       backgroundColor: color,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(10.0)),

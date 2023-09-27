@@ -8,6 +8,8 @@ import '../model/user_model.dart';
 import '../providers/user_provider.dart';
 import '../widgets/custom_input_decoration.dart';
 import '../widgets/custom_snackbars.dart';
+import '../widgets/navigation/app_drawer.dart';
+import '../widgets/navigation/custom_app_bar.dart';
 
 /// Erstelle einen GLoablKey für das Form Widget
 final _profileFormKey = GlobalKey<FormState>();
@@ -43,8 +45,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// Controller für die Eingabe der Email
   final TextEditingController _emailController = TextEditingController(text: '');
 
-  /// Controller für die Eingabe des Geburtsdatums
-  final TextEditingController _birthdateController = TextEditingController(text: '');
+  /// Controller für die Eingabe des Geburtsdatums. Wird auf DateTime.now() gesetzt, da sonst kurz eine
+  /// kleine Fehlermeldung zu sehen ist.
+  DateTime _selectedDate = DateTime.now();
 
   /// Überprüft, ob die Benutzerdaten geändert wurden.
   ///
@@ -58,7 +61,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _firstNameController.text.trim() == user.firstName &&
         _lastNameController.text.trim() == user.lastName &&
         _emailController.text.trim() == user.email &&
-        _birthdateController.text.trim() == user.birthdate) {
+        _selectedDate == DateFormat("dd.MM.yyyy").parse(user.birthdate)) {
       setState(() => _userDataIsChanged = false);
     } else {
       setState(() => _userDataIsChanged = true);
@@ -73,11 +76,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
     await userProvider.updateUserInformation();
 
-    print("Before User is set: ${userProvider.user}");
-
     if (userProvider.userIsSet) {
-
-      print("After User is set: ${userProvider.userIsSet}");
 
       final UserModel user = userProvider.user;
 
@@ -86,7 +85,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         _firstNameController.text = user.firstName;
         _lastNameController.text = user.lastName;
         _emailController.text = user.email;
-        _birthdateController.text = user.birthdate;
+        _selectedDate = DateFormat("dd.MM.yyyy").parse(user.birthdate);
       });
     }
   }
@@ -110,7 +109,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) => initialiseValues());
 
-    context.read<UserProvider>().addListener(userProviderListener);
+    // context.read<UserProvider>().addListener(userProviderListener);
   }
 
   /// Bereinigt den Zustand des Widgets.
@@ -121,7 +120,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void dispose() {
     super.dispose();
 
-    context.read<UserProvider>().removeListener(userProviderListener);
+    // context.read<UserProvider>().removeListener(userProviderListener);
   }
 
   /// Speichert die Änderungen des Benutzerprofils.
@@ -145,8 +144,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           'firstName': _firstNameController.text.trim(),
           'lastName': _lastNameController.text.trim(),
           'email': _emailController.text.trim(),
-          'birthdate': _birthdateController.text.trim(),
+          'birthdate': DateFormat("dd.MM.yyyy").format(_selectedDate).toString(),
         });
+
+        /// Hat sich die Email geändert, wird diese auch in Firebase Auth geändert
+        if(_emailController.text.trim() != userProvider.user.email) {
+          await userProvider.changeEmail(_emailController.text.trim());
+        }
 
         await userProvider.updateUserInformation();
 
@@ -169,13 +173,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return Scaffold(
+      appBar: const CustomAppBar(),
+      endDrawer: const AppDrawer(),
       body: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(top: 64),
+          padding: const EdgeInsets.only(top: 16),
           child: Column(
             children: [
               Padding(
@@ -246,32 +249,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       TextFormField(
                         autofocus: false,
                         readOnly: true,
-                        controller: _birthdateController,
-                        keyboardType: TextInputType.emailAddress,
-                        decoration: materialInputDecoration('Geburtsdatum', null, Icons.date_range),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your birthdate';
-                          }
-                          return null;
-                        },
+                        controller: TextEditingController(
+                            text: DateFormat('dd.MM.yyyy').format(_selectedDate)),
+                        decoration: InputDecoration(
+                          labelText: 'Geburtsdatum',
+                          // helperText: 'Geburtsdatum auswählen',
+                          prefixIcon: const Icon(Icons.date_range),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                        ),
                         onTap: () async {
-                          DateTime? pickedDate = await showDatePicker(
-                              context: context,
-                              locale: const Locale('de', 'DE'),
-                              initialDate: _birthdateController.text.isNotEmpty
-                                  ? DateTime(
-                                  int.parse(_birthdateController.text.substring(6)),
-                                  int.parse(_birthdateController.text.substring(3, 5)),
-                                  int.parse(_birthdateController.text.substring(0, 2)))
-                                  : DateTime.now(),
-                              firstDate: DateTime(1900),
-                              lastDate: DateTime.now());
-
-                          if (pickedDate != null) {
-                            String formattedDate = DateFormat('dd-MM-yyy').format(pickedDate);
+                          final DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: _selectedDate,
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
+                          if (pickedDate != null && pickedDate != _selectedDate) {
                             setState(() {
-                              _birthdateController.text = formattedDate;
+                              _selectedDate = pickedDate;
                               checkForChange();
                             });
                           }
@@ -279,13 +276,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       const SizedBox(
                         height: 22,
-                      ),
-                      SizedBox(
-                        height: 28,
-                        child: Divider(
-                          thickness: 1.5,
-                          color: Colors.grey[400],
-                        ),
                       ),
                     ],
                   ),

@@ -117,4 +117,16 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
+  /// Mit der Methode userStream wird ein Stream für den aktuellen User zurückgegeben, wodu die Daten des
+  /// Users live abrufen werden können.
+  // Stream<UserModel?> get userStream {
+  //   return db
+  //       .collection('users')
+  //       .doc(auth.currentUser!.uid)
+  //       .snapshots()
+  //       .map((snapshot) => snapshot.data() != null ? UserModel.fromMap(snapshot.data()!) : null);
+  // }
+
+
+
 }
