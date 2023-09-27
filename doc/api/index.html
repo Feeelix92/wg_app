@@ -53,7 +53,16 @@
       
 <section class="desc markdown">
   <h1 id="liv2gether">Liv2Gether</h1>
-<p>Eine App die beim Organisieren einer WG hilft.</p>
+<p>WG-App für die gemeinsame Einkaufs- und Haushaltsplanung in einer Wohngemeinschaft.</p>
+<h2 id="ber-die-app">Über die App</h2>
+<p>Die Anwendung wurde im Rahmen des Moduls "Entwicklung Verteilter Anwendungen" im Sommersemester 2023 an der
+Technischen Hochschule Mittelhessen entwickelt.</p>
+<h2 id="team">Team</h2>
+<ul>
+<li>Joey Croner</li>
+<li>Jerome Helzel</li>
+<li>Felix Maurer</li>
+</ul>
 <h2 id="app-plattformen">App-Plattformen</h2>
 <p>Die App ist für die nachfolgenden Plattformen verfügbar, jedoch wurde sie,
 aufgrund der zeitlichen Einschränkungen im Entwicklungsprozess,
@@ -69,17 +78,22 @@ nur auf Android Geräten getestet und für Android Smartphones optimiert.</p>
 <h2 id="features-der-app">Features der App:</h2>
 <ul>
 <li>Erstellung eines neuen Haushalts und Einladen/ Entfernen von Mitbewohnern.</li>
-<li>Erstellung einer funktionsfähigen Einkauf- und Aufgabenliste mit der Möglichkeit, Produkte und Aufgaben hinzuzufügen,
+<li>Erstellung einer funktionsfähigen Einkauf- und Aufgabenliste mit der Möglichkeit, Produkte und
+Aufgaben hinzuzufügen,
 zu entfernen und Bewohnern zuzuweisen.</li>
 <li>Ausgabenverwaltung für gemeinsame Ausgaben.</li>
 <li>Rangliste mit Punktestand über gesammelte Punkte</li>
 <li>ausstehend: Belohnungen in Form von Punkten für erledigte Aufgaben</li>
 <li>ausstehend: Erinnerungsfunktion für anstehende Aufgaben</li>
 </ul>
-<h2 id="verwendete-technologien">Verwendete Technologien</h2>
+<h2 id="verwendete-technologien-und-hilfen">Verwendete Technologien und Hilfen</h2>
 <ul>
-<li>Flutter</li>
+<li>Flutter (Dart)</li>
+<li>Android Studio</li>
 <li>Firebase</li>
+<li>GitHub</li>
+<li>Discord</li>
+<li>Google Drive</li>
 </ul>
 <h2 id="development">Development</h2>
 <p>Im nachfolgenden Abschnitt wird beschrieben, wie die App lokal gestartet werden kann.</p>
@@ -93,13 +107,19 @@ zu entfernen und Bewohnern zuzuweisen.</li>
 <ul>
 <li>Flutter installieren: <a href="https://flutter.dev/docs/get-started/install">https://flutter.dev/docs/get-started/install</a></li>
 <li>Android Studio installieren: <a href="https://developer.android.com/studio/install">https://developer.android.com/studio/install</a></li>
-<li>Flutter Plugin für Android Studio installieren: <a href="https://flutter.dev/docs/get-started/editor?tab=androidstudio">https://flutter.dev/docs/get-started/editor?tab=androidstudio</a></li>
+<li>Flutter Plugin für Android Studio
+installieren: <a href="https://flutter.dev/docs/get-started/editor?tab=androidstudio">https://flutter.dev/docs/get-started/editor?tab=androidstudio</a></li>
 <li>Android Studio starten und Flutter SDK Pfad angeben</li>
 <li>Flutter Projekt klonen: <code>git clone https://github.com/Feeelix92/wg_app</code></li>
 <li>Packages installieren: <code>flutter pub get</code></li>
 <li>Android Emulator starten oder Android Gerät anschließen</li>
 <li>App starten: <code>flutter run</code></li>
 </ul>
+<h3 id="tests">Tests</h3>
+<p>Es wurden Unit-Tests für die Model-Klassen und wichtigsten Funktionen der Household-Provider-Klasse
+der App geschrieben.
+Zu finden sind die Tests im Ordner <code>test/unit-test</code>, und können mit dem
+Befehl <code>flutter test test/unit-test</code> ausgeführt werden.</p>
 <h3 id="weitere-befehle">Weitere Befehle</h3>
 <ul>
 <li>App bauen: <code>flutter build apk</code></li>
@@ -111,7 +131,8 @@ zu entfernen und Bewohnern zuzuweisen.</li>
 <ul>
 <li>im jeweiligen Screen die Annotation <code>@RoutePage()</code> hinzufügen</li>
 <li>in /routes/app_router.dart kann ein Pfad für die Route hinzugefügt werden</li>
-<li>Befehl <code>flutter packages pub run build_runner build</code> ausführen, damit automatisch die Route generiert wird</li>
+<li>Befehl <code>flutter packages pub run build_runner build</code> ausführen, damit automatisch die Route
+generiert wird</li>
 </ul>
 </section>
 

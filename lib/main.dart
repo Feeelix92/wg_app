@@ -1,6 +1,5 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:wg_app/data/constants.dart';
 import 'package:wg_app/providers/household_provider.dart';
@@ -11,10 +10,6 @@ import 'firebase_options.dart';
 
 /// Die Main-Methode startet die App.
 Future main() async {
-
-  /// .env-Datei laden
-  await dotenv.load(fileName: ".env");
-
   /// Firebase auf für entsprechende Plattform konfigurieren
   WidgetsFlutterBinding.ensureInitialized();
 
