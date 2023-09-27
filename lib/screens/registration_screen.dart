@@ -84,7 +84,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
       'lastName': _lastNameController.text.trim(),
       'username': _usernameController.text.trim(),
       'email': _emailController.text.trim(),
-      'birthdate': _selectedDate.toString().trim(),
+      'birthdate': DateFormat('dd.MM.yyyy').format(_selectedDate).toString(),
       'isAdmin': false,
     }).then((value) {
       FirebaseAuth.instance.signOut();

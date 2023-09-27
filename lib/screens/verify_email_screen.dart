@@ -70,21 +70,20 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
   /// checkEmailVerified prüft ob die Email-Adresse verifiziert wurde
   Future checkEmailVerified() async {
 
-    /// Speichert den aktuell angemeldeten Benutzer
-    final user = FirebaseAuth.instance.currentUser;
+    /// Aktualisiert den Benutzer
+    await FirebaseAuth.instance.currentUser!.reload();
 
-    if (user != null) {
-      await user.reload();
+    /// Prüft ob die Email-Adresse verifiziert wurde
+    setState(() {
+      _isEmailVerified = FirebaseAuth.instance.currentUser!.emailVerified;
+    });
 
-      setState(() {
-        _isEmailVerified = user.emailVerified;
-      });
-
-      if (_isEmailVerified) {
-        timer?.cancel();
-        AutoRouter.of(context).replace(const HomeRoute());
-      }
+    /// Wenn die Email-Adresse verifiziert wurde, wird der Benutzer zur Startseite weitergeleitet
+    if (_isEmailVerified) {
+      timer?.cancel();
+      AutoRouter.of(context).replace(const HomeRoute());
     }
+
   }
 
 

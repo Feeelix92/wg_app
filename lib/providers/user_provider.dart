@@ -23,21 +23,30 @@ class UserProvider extends ChangeNotifier {
   /// Updated die Daten des Users
   Future updateUserInformation() async {
     try {
+      print(auth.currentUser!.uid);
       final docRefUser = db.collection("users").doc(auth.currentUser!.uid);
+
+      print("1");
 
       await docRefUser.get().then((DocumentSnapshot doc) {
         snap = doc;
 
+        print("2");
+
         final userDetailData = doc.data() as Map<String, dynamic>;
 
+        print("3 ${userDetailData.toString()}");
+
         _user = UserModel(
-            firstName: userDetailData['name'],
-            lastName: userDetailData['name'],
+            firstName: userDetailData['firstName'],
+            lastName: userDetailData['lastName'],
             uid: auth.currentUser!.uid,
             email: auth.currentUser!.email as String,
             birthdate: userDetailData['birthdate'],
             username: userDetailData['username']);
       });
+
+      print("Hallo");
 
       _userIsSet = true;
 
@@ -51,6 +60,7 @@ class UserProvider extends ChangeNotifier {
       return;
     } catch (e) {
       if (kDebugMode) {
+        print("Hallo Fehler");
         print(e);
       }
     }
@@ -106,5 +116,17 @@ class UserProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  /// Mit der Methode userStream wird ein Stream für den aktuellen User zurückgegeben, wodu die Daten des
+  /// Users live abrufen werden können.
+  // Stream<UserModel?> get userStream {
+  //   return db
+  //       .collection('users')
+  //       .doc(auth.currentUser!.uid)
+  //       .snapshots()
+  //       .map((snapshot) => snapshot.data() != null ? UserModel.fromMap(snapshot.data()!) : null);
+  // }
+
+
 
 }
