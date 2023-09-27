@@ -48,6 +48,7 @@ dependencies:
   provider: ^6.0.5
   fl_chart: ^0.63.0
   dartdoc: ^6.3.0
+  flutter_launcher_icons: ^0.13.1
 
 dev_dependencies:
   flutter_test:
@@ -108,3 +109,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+
+flutter_launcher_icons:
+    android: "launcher_icon"
+    ios: true
+    image_path: "assets/Liv2Gether_Icon_V2.png"
