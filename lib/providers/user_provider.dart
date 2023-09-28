@@ -23,19 +23,12 @@ class UserProvider extends ChangeNotifier {
   /// Updated die Daten des Users
   Future updateUserInformation() async {
     try {
-      print(auth.currentUser!.uid);
       final docRefUser = db.collection("users").doc(auth.currentUser!.uid);
-
-      print("1");
 
       await docRefUser.get().then((DocumentSnapshot doc) {
         snap = doc;
 
-        print("2");
-
         final userDetailData = doc.data() as Map<String, dynamic>;
-
-        print("3 ${userDetailData.toString()}");
 
         _user = UserModel(
             firstName: userDetailData['firstName'],
@@ -45,8 +38,6 @@ class UserProvider extends ChangeNotifier {
             birthdate: userDetailData['birthdate'],
             username: userDetailData['username']);
       });
-
-      print("Hallo");
 
       _userIsSet = true;
 
